@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 
 import javax.validation.ConstraintViolationException;
 
@@ -173,12 +175,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Handle javax.persistence.EntityNotFoundException
+     * Handle EntityNotFoundException
      */
-//    @ExceptionHandler(javax.persistence.EntityNotFoundException.class)
-//    protected ResponseEntity<Object> handleEntityNotFound(javax.persistence.EntityNotFoundException ex) {
-//        return buildResponseEntity(new ApiError(HttpStatus.NOT_FOUND, ex));
-//    }
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFound(EntityNotFoundException ex) {
+        return buildResponseEntity(new ApiError(NOT_FOUND, ex));
+    }
 
     /**
      * Handle DataIntegrityViolationException, inspects the cause for different DB causes.
@@ -194,6 +196,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         }
         return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex));
     }
+    
+    
+    /**
+     * Handle BadCredentialsException, inspects the cause for different DB causes.
+     *
+     * @param ex the BadCredentialsException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex,WebRequest request) {
+        if (ex.getCause() instanceof ConstraintViolationException) {
+            return buildResponseEntity(new ApiError(HttpStatus.CONFLICT, "Missing Authentication Credentials", ex.getCause()));
+        }
+        return buildResponseEntity(new ApiError(HttpStatus.UNAUTHORIZED, ex));
+    }
+
 
     /**
      * Handle Exception, handle generic Exception.class

@@ -10,12 +10,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import apps.kool.tms.api.errorhandling.EntityNotFoundException;
 import apps.kool.tms.api.repository.UserRepository;
 import apps.kool.tms.api.reqres.AuthenticationCredentials;
+import apps.kool.tms.api.reqres.AuthenticationResponse;
 import apps.kool.tms.api.security.UserAuthenticationService;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user/token")
@@ -45,10 +49,16 @@ final class AuthenticationController {
 //  }
 
   @RequestMapping(method = RequestMethod.POST)
-  String login(@RequestBody AuthenticationCredentials credentials ) {
-    return authentication
-      .login(credentials.getUsername(), credentials.getFirstLevelAuthenticationAnswer())
-      .orElseThrow(() -> new RuntimeException("invalid login and/or password"));
-  }
+  AuthenticationResponse login(@RequestBody AuthenticationCredentials credentials ) {
+	AuthenticationResponse response  = new AuthenticationResponse();
+	Optional<String> token =  authentication.login(credentials.getUsername(), credentials.getFirstLevelAuthenticationAnswer());
+	if (token.isPresent()) 
+		response.setToken(token.get()); 
+	else
+	    token.orElseThrow(() -> new EntityNotFoundException("invalid login and/or password")); ;
+	return response ;
+ }
+  
+  
   
 }

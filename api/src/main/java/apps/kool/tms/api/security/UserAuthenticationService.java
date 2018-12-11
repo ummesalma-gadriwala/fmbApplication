@@ -29,4 +29,15 @@ public interface UserAuthenticationService {
    * @param user the user to logout
    */
   void logout(User user);
+  
+  /**
+   * Verifies Token
+   * Finds a user by its dao-key.
+   * Renews Token
+   *
+   * @param token user dao key
+   * @return
+   */
+  
+  Optional<String> verifyAndRenewToken(final String token);
 }

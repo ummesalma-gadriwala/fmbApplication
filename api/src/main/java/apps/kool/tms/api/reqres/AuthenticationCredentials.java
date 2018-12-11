@@ -7,5 +7,6 @@ public class AuthenticationCredentials {
 	private String username;
 	private String firstLevelAuthenticationAnswer;
 	private String secondLevelAuthenticationAnswer; 
+	private String token;
 
 }

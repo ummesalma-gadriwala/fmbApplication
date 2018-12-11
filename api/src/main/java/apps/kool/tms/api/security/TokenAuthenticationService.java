@@ -39,6 +39,16 @@ final class TokenAuthenticationService implements UserAuthenticationService {
       .map(map -> map.get("username"))
       .flatMap(users::findByUsername);
   }
+  
+  @Override
+  public Optional<String> verifyAndRenewToken(final String token) {
+    return Optional
+      .of(tokens.verify(token))
+      .map(map -> map.get("username"))
+      .flatMap(users::findByUsername)
+      .map(user -> tokens.expiring(ImmutableMap.of("username",user.getUsername())));
+  }
+
 
   @Override
   public void logout(final User user) {

@@ -74,7 +74,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
       .httpBasic().disable()
       .logout().disable();
   }
-
+  
+  
   @Bean
   TokenAuthenticationFilter restAuthenticationFilter() throws Exception {
     final TokenAuthenticationFilter filter = new TokenAuthenticationFilter(PROTECTED_URLS);

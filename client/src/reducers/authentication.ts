@@ -1,8 +1,9 @@
 import { AUTH_USER, AUTH_ERROR } from './actionType';
+import { LOCAL_STORAGE_TOKEN} from '../util/constant';
 
 
 const INITIAL_STATE = {
-  authenticated: '',
+  authenticated: localStorage.getItem(LOCAL_STORAGE_TOKEN) ? localStorage.getItem(LOCAL_STORAGE_TOKEN) : '' ,
   errorMessage: ''
 };
 

@@ -1,5 +1,5 @@
 # FMB Application.
-## FMB stands for Faiz ul Mawaid al Burhaniyah, FMB is concept of Community Kitchen, where a individual pledges to serve meal to entire group of meal for a any number of days in a fisical year, inturn that households receives meal from other households on rest of the day.Inorder to bring above concept to reality needs well planned opearations in multiple areas like
+### FMB stands for Faiz ul Mawaid al Burhaniyah, FMB is concept of Community Kitchen, where a individual pledges to serve meal to entire group of meal for a any number of days in a fisical year, inturn that households receives meal from other households on rest of the day.Inorder to bring above concept to reality needs well planned opearations in multiple areas like
 - Grocery Managment.
 - Catrer Management.
 - Meal Packaging.

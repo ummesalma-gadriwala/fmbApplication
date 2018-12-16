@@ -1,0 +1,15 @@
+.Profile-avatarContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+    flex-direction: column;
+ }
+
+ 
+
+ .UserProfile-paper {
+  padding-bottom: 25px;
+ }
+
+ 

@@ -10,6 +10,7 @@ axios.interceptors.request.use(function (config) {
   console.log(config);
   return config;
 }, function (error) {
+   
   // Do something with request error
   return Promise.reject(error);
 });
@@ -21,14 +22,13 @@ axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
   // Do something with response error
-  console.log('error--->', error.response.status);
-  console.log('error.response.status.startsWith(4)---------->', error.response.status.toString().startsWith('4'));
-  //Setup Generic Response Messages
-    if(error.response.status.toString().startsWith('4') ){
-      store.dispatch({ type: API_USER_ERROR });
-    }else if(error.response.status.toString().startsWith('5')){
-      store.dispatch({ type: API_SERVER_ERROR });
-    }
+  if (!error.response) {
+    store.dispatch({ type: API_SERVER_ERROR });
+  } else if(error.response.status.toString().startsWith('4') ){
+    store.dispatch({ type: API_USER_ERROR });
+  }else if(error.response.status.toString().startsWith('5')){
+    store.dispatch({ type: API_SERVER_ERROR });
+  }
   return Promise.reject(error);
 });
 

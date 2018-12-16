@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+//import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { connect } from 'react-redux';
 import * as authenticationAction from '../../reducers/authenticationAction';
 import FormValidator from '../../util/FormValidator';
-import { Alert } from 'reactstrap';
 import Spinner  from '../Spinner/Spinner';
-
-
-
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import LockIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import  withStyles from './materialUIWithStyle';
+import FormHelperText from '@material-ui/core/FormHelperText'
+import Paper from '@material-ui/core/Paper';
+import './Login.css'
 
 class Login extends Component<any, any> {
 
@@ -20,7 +28,7 @@ class Login extends Component<any, any> {
         field: 'username', 
         method: 'isEmpty', 
         validWhen: false, 
-        message: 'ITS Number is required.' 
+        message: 'Please enter your ITS Number.' 
       },
       { 
         field: 'username',
@@ -32,7 +40,7 @@ class Login extends Component<any, any> {
         field: 'firstLevelAuthenticationAnswer', 
         method: 'isEmpty', 
         validWhen: false, 
-        message: 'Pleave provide a Postal code.'
+        message: 'Pleave enter your Postal code.'
       },
       // { 
       //   field: 'firstLevelAuthenticationAnswer',
@@ -84,12 +92,60 @@ class Login extends Component<any, any> {
   }
 
   render() {
+    const classes: any = withStyles;
     this.loginValidator.validate(this.state) ; 
     return (
       <Spinner active = { this.state.isInProgres}>
-        <div className="row">
-          <div className ="col-12">
-            <FormGroup>
+        <div className="Login row">
+          <Paper className ="Login-paper col-sm-12  col-lg-5">
+          <CssBaseline />
+            <div className= "Login-avatarContainer">
+              <Avatar className={classes.avatar}>
+                <LockIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+            </div>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="username">ITS Number :</InputLabel>
+              <Input 
+                type="number" required 
+                autoComplete="username" autoFocus
+                inputProps={{ max: 9999999 }}  
+                name="username"
+                id="username"
+                placeholder="11111111" 
+                value = { this.state.username } 
+                onChange={this.handleInputChange}
+                error={this.state.validation.username.isInvalid}
+                      
+              />
+              <FormHelperText>{this.state.validation.username.message}</FormHelperText>
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="postalCode">Postal Code:</InputLabel>
+              <Input 
+                required   name="firstLevelAuthenticationAnswer" 
+                id="postalCode"
+                placeholder="A1A2A3"
+                value = { this.state.firstLevelAuthenticationAnswer }
+                onChange={this.handleInputChange}
+                error={this.state.validation.firstLevelAuthenticationAnswer.isInvalid}
+              />
+              <FormHelperText>{this.state.validation.firstLevelAuthenticationAnswer.message}</FormHelperText>
+            </FormControl>
+            
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick = { this.signIn} 
+            >
+              Sign in
+            </Button>
+            {/* <FormGroup>
                 <div>
                   <Label for="username">ITS Number :</Label>
                   <Input type="number" required  maxLength = {8} name="username" id="username" placeholder="11111111" value = { this.state.username } onChange={this.handleInputChange}/>
@@ -101,8 +157,8 @@ class Login extends Component<any, any> {
                 <Input  name="firstLevelAuthenticationAnswer" id="postalCode" required  maxLength = {6}  placeholder="A1A2A3" value = { this.state.firstLevelAuthenticationAnswer } onChange={this.handleInputChange} />
                 { this.state.validation.firstLevelAuthenticationAnswer.isInvalid && <Alert color="danger">{this.state.validation.firstLevelAuthenticationAnswer.message}</Alert>}
               </FormGroup>
-              <Button onClick = { this.signIn} color="primary" size="lg" block>Submit</Button>
-            </div>
+              <Button onClick = { this.signIn} color="primary" size="lg" block>Submit</Button> */}
+          </Paper>
         </div>
       </Spinner>   
     )

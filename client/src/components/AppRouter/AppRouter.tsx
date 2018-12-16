@@ -21,7 +21,7 @@ class AppRouter extends Component<any, any> {
         <Router>
           <div>
             <Navigator/>
-            <Route path="/" exact component={Login} />
+             <Route path="/" exact component={Login} />
             <Route path="/dashboard/" component={Dashboard} />
           </div>
         </Router>

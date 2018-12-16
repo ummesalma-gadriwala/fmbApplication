@@ -1,0 +1,43 @@
+.Login-avatarContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+    flex-direction: column;
+ }
+
+ .Login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 15px 0px 15px ; 
+ }
+ 
+  @media screen and (min-width : 1224px) {
+    .Login {
+      padding:100px
+    }
+   
+ }
+
+ .Login-paper {
+  padding-bottom: 25px;
+ }
+
+ /* paper: {
+  marginTop: theme.spacing.unit * 8,
+  
+  padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+}, */
+
+
+ /* Smartphones (portrait and landscape) ----------- */ 
+ @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  /* Styles */
+ }
+
+ /* iPads (portrait and landscape) ----------- */
+ @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+  /* Styles */
+  }

@@ -1,0 +1,81 @@
+[Collection]User
+userId
+itsNumber [username]
+parentId [hofitsNumner]
+Name
+Address
+postalCode
+city
+==============================================================
+[Collection]MenuItemType
+{[
+   'Gravy',
+   'Bread',
+   'Rice',
+   'Soup',
+   'Noodles',
+   'Salad',
+   'Sweet'
+]
+}
+==============================================================
+[Collection]MenuItem
+menuItemId
+Name
+menuItemType
+*costPerThali
+===============================================================
+[Collection]Menu
+menuId
+menuItem:[menuItemId1, menuItem3, menuItem4]
+================================================================
+[Collection]MealSchedule
+mealScheduleId
+mealDate
+menuId
+menuComments
+isMealAvailable [Boolean for Miqats ]
+mealAvailabilityComments 
+=================================================================
+[Collection]SusbcriberMealSchedule
+subscriberMealScheduleId
+userId[hofitsNumber] 
+dayWiseMealSchedule : [ 
+          "Monday": { 
+		          thaliCount: 1    
+		  },
+		  "Tuesday": { 
+		          thaliCount: 2    
+		  },
+		  "Wednesday": { 
+		          thaliCount:  2   
+		  },
+		  "Thursday": { 
+		          thaliCount:   1  
+		  },
+		  "Friday": { 
+		          thaliCount:    2 
+		  }
+]
+====================================================================
+[Collection]SubscriberMealOverrideSchedule
+itsNumber
+overrideRequest : Add/Cancel
+overrideStartDate
+overrideEndDate
+overrideStatus
+=====================================================================
+[Collection]SubscriberAddonRequest[Fateha Request]
+itsNumber
+addonRequestDate
+addonMenuItem
+addonRequestStatus
+addonCost
+addonPaymentDetails
+======================================================================
+[Collection]Notifications
+
+======================================================================
+[Collection]Events
+
+

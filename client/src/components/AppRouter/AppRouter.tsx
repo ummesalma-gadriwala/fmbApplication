@@ -22,8 +22,8 @@ class AppRouter extends Component<any, any> {
         <Router>
           <div>
             <Navigator />
-            <Route path="/" exact component={Login} />
-            <Route path="/dashboard/" component={Dashboard} />
+             <Route path="/" exact component={ this.props.auth ? Dashboard : Login} />
+             <Route path="/dashboard/" component={Dashboard} />
             <Route path="/profile/" component={UserProfile} />
 
           </div>
@@ -34,7 +34,7 @@ class AppRouter extends Component<any, any> {
 }
 
 function mapStateToProps(state: any) {
-  return { auth: state.auth ? state.auth.authenticated : undefined };
+  return { auth: state.authentication.authenticated ? state.authentication.authenticated : undefined };
 }
 
 export default connect(mapStateToProps)(AppRouter);

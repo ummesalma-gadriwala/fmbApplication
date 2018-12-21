@@ -11,7 +11,6 @@ import authentication from '../../reducers/authentication';
   }
 
   render() {
-    console.log('Props', this.props);
     return (
       this.props.authenticated ?
       <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -48,7 +47,6 @@ import authentication from '../../reducers/authentication';
 }
 
 function mapStateToProps(state: any) {
-  console.log('authenticated', state);
   return { authenticated:   state.authentication.authenticated };
 }
 

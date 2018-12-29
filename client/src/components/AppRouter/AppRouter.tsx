@@ -25,7 +25,6 @@ class AppRouter extends Component<any, any> {
              <Route path="/" exact component={ this.props.auth ? Dashboard : Login} />
              <Route path="/dashboard/" component={Dashboard} />
             <Route path="/profile/" component={UserProfile} />
-
           </div>
         </Router>
       </div>

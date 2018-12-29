@@ -17,6 +17,7 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import Paper from '@material-ui/core/Paper';
 import './Login.css'
 import '../Common/styles.css'
+import { workFlowRouteProcessor } from '../../util/workFlowProcessor';
 
 class Login extends Component<any, any> {
 
@@ -81,14 +82,17 @@ class Login extends Component<any, any> {
 
   signIn = () => {
     const validation = this.loginValidator.validate(this.state);
+    console.log(this.context);
     this.setState({ validation });
     if (validation.isValid) {
       this.setState({ isInProgres: true });
-      this.props.signin({ username: this.state.username, firstLevelAuthenticationAnswer: this.state.firstLevelAuthenticationAnswer }, () => {
-        this.props.history.push('/dashboard');
-
+      const localHistory = {};
+      Object.assign(localHistory, this.props.history);
+      this.props.signin({ username: this.state.username, firstLevelAuthenticationAnswer: this.state.firstLevelAuthenticationAnswer }, 
+      (workFlowRoute:String) => {
+        workFlowRouteProcessor(this.props.history, '/dashboard', workFlowRoute);
       },
-        () => this.setState({ isInProgres: false }));
+      () => this.setState({ isInProgres: false }));
     }
   }
 

@@ -17,7 +17,7 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
   // Do something with response data
-  console.log('response', response.headers);
+  //console.log('response', response.headers);
   response.headers.Authorization  &&  localStorage.setItem(LOCAL_STORAGE_TOKEN,response.config.headers.Authorization ); 
   return response;
 }, function (error) {

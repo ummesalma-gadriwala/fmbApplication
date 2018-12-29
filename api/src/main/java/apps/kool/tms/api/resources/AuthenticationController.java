@@ -14,7 +14,9 @@ import apps.kool.tms.api.errorhandling.EntityNotFoundException;
 import apps.kool.tms.api.repository.UserRepository;
 import apps.kool.tms.api.reqres.AuthenticationCredentials;
 import apps.kool.tms.api.reqres.AuthenticationResponse;
+import apps.kool.tms.api.reqres.WorkFlowResponse;
 import apps.kool.tms.api.security.UserAuthenticationService;
+import apps.kool.tms.api.utils.WorkFlowUtils;
 
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
@@ -48,16 +50,21 @@ final class AuthenticationController {
 //    return login(username, password);
 //  }
 
-  @RequestMapping(method = RequestMethod.POST)
-  AuthenticationResponse login(@RequestBody AuthenticationCredentials credentials ) {
-	AuthenticationResponse response  = new AuthenticationResponse();
-	Optional<String> token =  authentication.login(credentials.getUsername(), credentials.getFirstLevelAuthenticationAnswer());
-	if (token.isPresent()) 
-		response.setToken(token.get()); 
-	else
-	    token.orElseThrow(() -> new EntityNotFoundException("invalid login and/or password")); ;
-	return response ;
- }
+	  @RequestMapping(method = RequestMethod.POST)
+	  AuthenticationResponse login(@RequestBody AuthenticationCredentials credentials ) {
+		AuthenticationResponse response  = new AuthenticationResponse();
+		Optional<String> token =  authentication.login(credentials.getUsername(), credentials.getFirstLevelAuthenticationAnswer());
+		if (token.isPresent()) 
+			response.setToken(token.get()); 
+		else
+		    token.orElseThrow(() -> new EntityNotFoundException("invalid login and/or password")); 
+		
+		//This is temporary once Workflow engine is ready will move to WorkFlow engine.
+		if(WorkFlowUtils.hasSubscriberVerifiedInfo(users.findByUsername(credentials.getUsername()).get())){   
+		    response.setWorkFlowResponse(WorkFlowResponse.builder().goToRoute("/profile").build());
+		}
+		return response ;
+	 }
   
   
   

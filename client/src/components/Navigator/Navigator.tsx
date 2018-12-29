@@ -17,13 +17,10 @@ import authentication from '../../reducers/authentication';
       <div className="collapse navbar-collapse">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <Link className="nav-link" to="/">Home</Link>
+            <Link className="nav-link" to="/dashboard">Home</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="/dashboard/">Dash</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/users/">Users</Link>
+            <Link className="nav-link" to="/admin/">Admin</Link>
           </li>
           {/* <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

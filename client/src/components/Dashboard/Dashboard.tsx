@@ -9,7 +9,24 @@ class Dashboard extends Component<any, any> {
 
   render () {
     return (
-      <h2>DashBoard</h2>
+      <div>
+        <h2>DashBoard</h2>
+
+        <div>
+          <div>
+            Menu
+          </div>
+          <div>
+            Meal Cancellation
+          </div> 
+          <div>
+            Request Salwaat/Fateha
+          </div>
+          <div>
+            Update Profile
+          </div>     
+        </div>
+      </div>  
     )
   }
 }

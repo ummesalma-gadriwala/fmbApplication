@@ -7,7 +7,7 @@ import {  API_SERVER_ERROR, API_USER_ERROR } from '../reducers/actionType';
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem(LOCAL_STORAGE_TOKEN);
   config.headers.Authorization =  token;
-  console.log(config);
+  //console.log(config);
   return config;
 }, function (error) {
    

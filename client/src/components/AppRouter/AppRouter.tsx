@@ -6,25 +6,23 @@ import { connect } from "react-redux";
 import Login from "../Login/Login";
 import Dashboard from "../Dashboard/Dashboard";
 import UserProfile from "../UserProfile/UserProfile";
-
-
-const About = () => <h2>About</h2>;
-const Users = () => <h2>Users</h2>;
+import  './AppRouter.css';
 
 class AppRouter extends Component<any, any> {
   constructor(props: any) {
     super(props);
   }
-
   render() {
     return (
-      <div>
+      <div className="App-container">
         <Router>
           <div>
+            <div>
+              <Route path="/" exact component={ this.props.auth ? Dashboard : Login} />
+              <Route path="/dashboard/" component={Dashboard} />
+              <Route path="/profile/" component={UserProfile} />
+            </div>
             <Navigator />
-             <Route path="/" exact component={ this.props.auth ? Dashboard : Login} />
-             <Route path="/dashboard/" component={Dashboard} />
-            <Route path="/profile/" component={UserProfile} />
           </div>
         </Router>
       </div>

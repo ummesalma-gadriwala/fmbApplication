@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <div className ="container-fluid">
        <GlobalErrorHandler>
-        <AppRouter/>
+       <AppRouter/>
        </GlobalErrorHandler> 
       </div>
     );

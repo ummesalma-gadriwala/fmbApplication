@@ -12,7 +12,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import withStyles from '../Common/materialUIWithStyle';
+//import withStyles from '../Common/materialUIWithStyle';
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Paper from '@material-ui/core/Paper';
 import './Login.css'
@@ -82,7 +82,7 @@ class Login extends Component<any, any> {
 
   signIn = () => {
     const validation = this.loginValidator.validate(this.state);
-    console.log(this.context);
+    //console.log(this.context);
     this.setState({ validation });
     if (validation.isValid) {
       this.setState({ isInProgres: true });
@@ -97,7 +97,7 @@ class Login extends Component<any, any> {
   }
 
   render() {
-    const classes: any = withStyles;
+    //console.log('classes', classes);
     this.loginValidator.validate(this.state);
     return (
       <Spinner active={this.state.isInProgres}>
@@ -105,7 +105,7 @@ class Login extends Component<any, any> {
           <Paper className="Login-paper col-sm-12  col-lg-5">
             <CssBaseline />
             <div className="Login-avatarContainer">
-              <Avatar className={classes.avatar}>
+              <Avatar>
                 <LockIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
@@ -150,19 +150,6 @@ class Login extends Component<any, any> {
             >
               Sign in
             </Button>
-            {/* <FormGroup>
-                <div>
-                  <Label for="username">ITS Number :</Label>
-                  <Input type="number" required  maxLength = {8} name="username" id="username" placeholder="11111111" value = { this.state.username } onChange={this.handleInputChange}/>
-                  { this.state.validation.username.isInvalid && <Alert color="danger">{this.state.validation.username.message}</Alert>}
-                </div>
-              </FormGroup>
-              <FormGroup>
-                <Label for="postalCode">Postal Code:</Label>
-                <Input  name="firstLevelAuthenticationAnswer" id="postalCode" required  maxLength = {6}  placeholder="A1A2A3" value = { this.state.firstLevelAuthenticationAnswer } onChange={this.handleInputChange} />
-                { this.state.validation.firstLevelAuthenticationAnswer.isInvalid && <Alert color="danger">{this.state.validation.firstLevelAuthenticationAnswer.message}</Alert>}
-              </FormGroup>
-              <Button onClick = { this.signIn} color="primary" size="lg" block>Submit</Button> */}
           </Paper>
         </div>
       </Spinner>

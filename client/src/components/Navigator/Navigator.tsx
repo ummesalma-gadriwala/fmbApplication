@@ -1,9 +1,25 @@
 import  React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux'
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import { withStyles } from '@material-ui/core/styles';
+import './Navigator';
+
 import authentication from '../../reducers/authentication';
 
- class Navigator extends Component<any, any> {
+const styles = ( theme:any) => ({
+  appBar: {
+    top: 'auto',
+    bottom: 0,
+  }
+});
+ 
+
+class Navigator extends Component<any, any> {
   
   constructor(props:any) {
     super(props);
@@ -11,33 +27,24 @@ import authentication from '../../reducers/authentication';
   }
 
   render() {
+    const DashBoardLink = (props:any) => <Link to="/dashboard" {...props} />
+
     return (
       this.props.authenticated ?
-      <nav className="navbar navbar-expand-sm navbar-light bg-light">
-      <div className="collapse navbar-collapse">
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
-            <Link className="nav-link" to="/dashboard">Home</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/admin/">Admin</Link>
-          </li>
-          {/* <li className="nav-item dropdown">
-            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a className="dropdown-item" href="#">Action</a>
-              <a className="dropdown-item" href="#">Another action</a>
-              <div className="dropdown-divider"></div>
-              <a className="dropdown-item" href="#">Something else here</a>
-            </div>
-          </li> */}
-          
-        </ul>
-      </div>
-      </nav>
-      : null
+          <div>
+            <AppBar position="fixed" color="primary" className= { this.props.classes.appBar } >
+              <Toolbar >
+                <IconButton component={DashBoardLink} color="inherit" aria-label="Open Dashboard">
+                  
+                  <DashboardIcon />
+                </IconButton>
+                <IconButton color="inherit" aria-label="Show Notifications">
+                  <NotificationsIcon />
+               </IconButton>
+              </Toolbar>
+            </AppBar>
+          </div>
+       : null
      
     );
   }
@@ -47,5 +54,5 @@ function mapStateToProps(state: any) {
   return { authenticated:   state.authentication.authenticated };
 }
 
-export default connect(mapStateToProps)(Navigator);
+export default connect(mapStateToProps) (withStyles(styles)  (Navigator));
 

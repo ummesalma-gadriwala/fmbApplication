@@ -35,6 +35,12 @@ const styles: any = (theme: Theme) => ({
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
+
+  buttonCustom : {
+    fontSize: 1,
+  }
+
+
 });
 
 export default withStyles(styles);

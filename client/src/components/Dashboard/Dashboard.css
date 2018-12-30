@@ -1,0 +1,57 @@
+.Dashboard-container {
+  display: flex;
+  flex-direction: column
+  
+}
+
+.Dashboard-button-container{
+
+}
+
+.Dashboard-button-row{
+  display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.Dashboard-button-row-container{
+   display: flex;
+   justify-content: center;
+}
+
+.Dashboard-button-container {
+  margin: 10px;
+  height: 85px;
+  width: 95%;
+}
+
+.Dashboard-button {
+  width: inherit;
+  height: inherit;
+}
+
+.Dashboard-button-content-container {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem
+
+}
+.Dashboard-card-container {
+  margin-bottom: 10px;
+}
+
+.Card-container {
+  background: #ECE9E6;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+.Header-container {
+  background: #ECE9E6;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ECE9E6, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #ECE9E6, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}

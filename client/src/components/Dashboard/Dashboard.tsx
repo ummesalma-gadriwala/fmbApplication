@@ -34,39 +34,10 @@ class Dashboard extends Component<any, any> {
     return (
       <div>
         <div className="Dashboard-container">
-          <div className="Dashboard-card-container">
+        <div className="Dashboard-card-container">
             <Card className= "Card-container">
               <CardContent>
-                <Typography  color="textSecondary" gutterBottom>
-                  Head of the Family
-                </Typography>
-                <Typography variant="h5" component="h2">
-                   Bhai Aaaa Nanana  
-                </Typography>
-                <Typography  color="textSecondary">
-                  Sector : Jamali
-                </Typography>
-                
-                <Typography  color="textSecondary">
-                  Thali Pick up Address
-                </Typography>
-                <Typography component="p">
-                  155 Argentia Rd, Mississauga, L1L2L3
-                  <br />
-                </Typography>
-              </CardContent>
-              {/* <CardActions>
-                <Button size="small">Learn More</Button>
-              </CardActions> */}
-            </Card> 
-          </div>
-          <div className="Dashboard-card-container">
-            <Card className= "Card-container">
-              <CardContent>
-                <Typography  color="textSecondary" gutterBottom>
-                  <CalendarTodayRoundedIcon/>
-                  Today's Thali Information
-                </Typography>
+                <CalendarTodayRoundedIcon fontSize= "large"/>
                 <Typography variant="h5" component="h2">
                    By   
                 </Typography>
@@ -74,7 +45,7 @@ class Dashboard extends Component<any, any> {
                   Hussain and Rasheeda Khambaati Famliy
                   <br />
                 </Typography>
-                <Typography variant="h5" component="h2">
+                <Typography variant="h6">
                    Menu   
                 </Typography>
                 <Typography component="ul">
@@ -89,7 +60,26 @@ class Dashboard extends Component<any, any> {
                 <Button size="small">Learn More</Button>
               </CardActions> */}
             </Card> 
-          </div> 
+          </div>
+          <div className="Dashboard-card-container">
+            <Card className= "Card-container">
+              <CardContent>
+                <Typography  color="textSecondary">
+                  Sector : Jamali
+                </Typography>
+                <Typography  color="textSecondary">
+                  Thali Pick up Address
+                </Typography>
+                <Typography component="p">
+                  155 Argentia Rd, Mississauga, L1L2L3
+                  <br />
+                </Typography>
+              </CardContent>
+              {/* <CardActions>
+                <Button size="small">Learn More</Button>
+              </CardActions> */}
+            </Card> 
+          </div>
           <div className="Dashboard-button-row-container">
             <div className="Dashboard-button-row">
               <div className="Dashboard-button-container">

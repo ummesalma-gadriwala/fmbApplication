@@ -1,0 +1,20 @@
+.Header-container {
+  display: flex;
+  align-items: center;
+  /* align-items: center; */
+  justify-content: space-between;
+  margin-top: 20px;
+  border: 2px dashed rgba(0, 0, 0, 0.14);
+  border-radius: 10px;
+}
+.Header-imgwrap {
+   width: 30%; /*or whatever you choose*/
+   margin: auto;
+}
+.Header-imgwrap img {
+   display: block;
+   width: 100%;
+   max-width: 500px; /*actual image width*/
+   height: auto; /* maintain aspect ratio*/
+   margin: auto; /*optional centering of image*/
+}

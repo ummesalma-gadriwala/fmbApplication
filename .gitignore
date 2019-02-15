@@ -50,3 +50,4 @@ hs_err_pid*
 api/target/**/*
 api/target/classes/META-INF/maven/apps.kool.tms/api/pom.properties
 api/target/classes/META-INF/maven/apps.kool.tms/api/pom.xml
+api/target/classes/META-INF/MANIFEST.MF

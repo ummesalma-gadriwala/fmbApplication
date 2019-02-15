@@ -10,19 +10,21 @@
 
 .Dashboard-button-row{
   display: flex;
-    flex-direction: column;
-    flex: 1;
+  
 }
 
 .Dashboard-button-row-container{
    display: flex;
    justify-content: center;
+   flex-direction: column;
+
 }
 
 .Dashboard-button-container {
   margin: 10px;
   height: 85px;
   width: 95%;
+  flex:0.5;
 }
 
 .Dashboard-button {

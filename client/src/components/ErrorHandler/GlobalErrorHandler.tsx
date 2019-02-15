@@ -29,7 +29,10 @@ class GlobalErrorHandler extends Component<any,any> {
         }
         {
           this.props.apiError === USER_ERROR &&     
-          <Alert color="danger">Oops looks like something went wrong, please enter correct information and retry.</Alert>
+          <Alert color="warning"> 
+            { this.props.errorMessage && this.props.errorMessage } 
+            { !this.props.errorMessage &&  "Oops looks like something went wrong, please enter correct information and retry."}
+          </Alert>
         }
         { this.props.children}
       </div>
@@ -39,7 +42,8 @@ class GlobalErrorHandler extends Component<any,any> {
 
 const mapStateToProps = (state:any) => {
   return {
-    apiError: state.apiError.type 
+    apiError: state.apiError.type, 
+    errorMessage : state.apiError.message
   }
 };
 export default connect(mapStateToProps,null) (GlobalErrorHandler);

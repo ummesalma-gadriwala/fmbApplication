@@ -12,7 +12,7 @@ export default function(state = INITIAL_STATE, action: any) {
     case API_SERVER_ERROR:
       return { ...state, type: SERVER_ERROR };
     case API_USER_ERROR:
-      return { ...state, type: USER_ERROR };
+      return { ...state, type: USER_ERROR, message: action.payload };
     default:
       return state;
   }

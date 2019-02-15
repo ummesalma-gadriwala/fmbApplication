@@ -25,7 +25,11 @@ axios.interceptors.response.use(function (response) {
   if (!error.response) {
     store.dispatch({ type: API_SERVER_ERROR });
   } else if(error.response.status.toString().startsWith('4') ){
+    if(error.response.status === 401) {
+      localStorage.removeItem(LOCAL_STORAGE_TOKEN);
+    } else {
     store.dispatch({ type: API_USER_ERROR });
+    }
   }else if(error.response.status.toString().startsWith('5')){
     store.dispatch({ type: API_SERVER_ERROR });
   }

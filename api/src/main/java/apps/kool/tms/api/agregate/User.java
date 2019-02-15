@@ -27,7 +27,7 @@ public class User implements UserDetails {
   private String password=null;
   private String mobileNumber = null;
   private String additionalInfo = null; 
-  private String parentId=null;//hof
+  private String subscriberId=null;//hof
   private Address primaryAddress = new Address();
 	
 

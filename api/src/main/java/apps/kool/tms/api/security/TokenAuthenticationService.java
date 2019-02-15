@@ -29,7 +29,10 @@ final class TokenAuthenticationService implements UserAuthenticationService {
     return users
       .findByUsername(username)
       .filter(user -> Objects.equals(firstLevelAuthenticationAnswer, user.getPrimaryAddress().getPostalCode()))
-      .map(user -> tokens.expiring(ImmutableMap.of("username", username)));
+      .map(filteredUser -> tokens.expiring(ImmutableMap.of("username", username,
+    		                                                "subscriberId", filteredUser.getSubscriberId()
+    		  											   )
+    	  ));
   }
 
   @Override
@@ -46,7 +49,10 @@ final class TokenAuthenticationService implements UserAuthenticationService {
       .of(tokens.verify(token))
       .map(map -> map.get("username"))
       .flatMap(users::findByUsername)
-      .map(user -> tokens.expiring(ImmutableMap.of("username",user.getUsername())));
+      .map(user -> tokens.expiring(ImmutableMap.of("username", user.getUsername(),
+            "subscriberId", user.getSubscriberId()) 
+			 ));
+
   }
 
 

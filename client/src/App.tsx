@@ -9,9 +9,9 @@ class App extends Component {
   render() {
     return (
       <div className ="container-fluid">
-       <GlobalErrorHandler>
        <Header/>  
-       <AppRouter/>
+       <GlobalErrorHandler>
+        <AppRouter/>
        </GlobalErrorHandler> 
       </div>
     );

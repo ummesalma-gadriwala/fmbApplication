@@ -13,6 +13,7 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
 
 import classNames from 'classnames';
+import { Link } from "react-router-dom";
 
 
 import Icon from '@material-ui/core/Icon';
@@ -30,7 +31,7 @@ class Dashboard extends Component<any, any> {
   }
 
   render () {
-    
+    const MealScheduleLink = (props:any) => <Link to="/meal-schedule" {...props} />
     return (
       <div>
         <div className="Dashboard-container">
@@ -91,9 +92,9 @@ class Dashboard extends Component<any, any> {
                 </Button>
               </div>
               <div className="Dashboard-button-container">
-                <Button variant="contained" color="secondary" className="Dashboard-button">
+                <Button component={MealScheduleLink} variant="contained" color="secondary" className="Dashboard-button">
                 <span className="Dashboard-button-content-container">   
-                   Add/Cancel Thali
+                      Going on Vacation
                   <CreateRoundedIcon/>
                 </span>  
                 </Button>
@@ -101,7 +102,7 @@ class Dashboard extends Component<any, any> {
             </div>  
             <div className="Dashboard-button-row">  
               <div className="Dashboard-button-container">
-              <Button variant="contained" color="secondary" className="Dashboard-button" >
+              <Button  variant="contained" color="secondary" className="Dashboard-button" >
                 <span className="Dashboard-button-content-container">  
                   Request Salwaat/Fateha
                   <AddCircleOutlineIcon />

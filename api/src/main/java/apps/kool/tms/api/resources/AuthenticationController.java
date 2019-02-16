@@ -4,12 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import apps.kool.tms.api.agregate.OverrideSubscriptionSchedule;
+import apps.kool.tms.api.agregate.SubscriptionSchedule;
 import apps.kool.tms.api.errorhandling.EntityNotFoundException;
 import apps.kool.tms.api.repository.UserRepository;
 import apps.kool.tms.api.reqres.AuthenticationCredentials;
@@ -21,6 +26,7 @@ import apps.kool.tms.api.utils.WorkFlowUtils;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
+import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -65,6 +71,11 @@ final class AuthenticationController {
 		}
 		return response ;
 	 }
+	  
+	  @RequestMapping(method = RequestMethod.GET , value = "/hello")
+		ResponseEntity<String> hello() {
+			return ResponseEntity.ok("Hello")  ;
+		} 
   
   
   

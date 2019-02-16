@@ -180,8 +180,9 @@ class MealSchedule extends Component<any, IMealScheduleState> {
                  subscriberId = { this.props.subscriberId }
                 /> 
                 <div className ="Margin-Container">
-                  <h6> Change Thali Schedule </h6>
+                  <h6> Vacation Planner </h6>
                   <Divider/>
+                  <p>Please select dates where you dont want thali prepared for your family</p>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <div className ="MealSchedule-Datepicker-Container">
                       <DatePicker  
@@ -235,7 +236,7 @@ class MealSchedule extends Component<any, IMealScheduleState> {
                       //@ts-ignore
                       onClick={()=> validateAndOverride()}
                     >
-                      Edit Schedule
+                      Cancel Thali
                     </Button>
                   </div>
                 </div>  

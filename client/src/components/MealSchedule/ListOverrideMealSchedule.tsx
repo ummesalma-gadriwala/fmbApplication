@@ -1,6 +1,7 @@
 import  React, { Component } from 'react';
 import { IOverrideSchedule } from '../../type/Type';
-import Button from '@material-ui/core/Button';
+import Button  from '@material-ui/core/Button';
+import IconButton  from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -31,7 +32,7 @@ const styles = (theme:any) => ({
       <div className ="Margin-Container">
       { this.props.overrideSchedules && this.props.overrideSchedules.length > 0 &&
         <div>
-          <h6 className="Margin-Container"> Upcoming Updated Schedules  </h6>
+          <h6 className="Margin-Container"> Current Cancellation Schedules  </h6>
           
           <Paper>
             <Table>
@@ -54,12 +55,12 @@ const styles = (theme:any) => ({
                     </TableCell>
                     <TableCell className={this.props.classes.root} align="left">
                      <div className="Override-OP-Container">
-                      <Button  variant="outlined"  //@ts-ignore
+                      <IconButton  aria-label="Delete"  //@ts-ignore
                       onClick={()=> this.props.deleteOverrideScheduleFunc(this.props.subscriberId,overrideSchedule.overrideStartDate )} >
                         <span>
-                          <DeleteIcon/>
+                          <DeleteIcon fontSize="small"/>
                         </span>
-                      </Button>
+                      </IconButton>
                      </div>
                     </TableCell>
                   

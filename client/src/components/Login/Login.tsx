@@ -151,6 +151,9 @@ class Login extends Component<any, any> {
                 error={
                   this.state.validation.firstLevelAuthenticationAnswer.isInvalid
                 }
+                inputProps={{
+                  maxLength: 6,
+                }}
               />
               <FormHelperText>
                 {this.state.validation.firstLevelAuthenticationAnswer.message}

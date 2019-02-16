@@ -28,7 +28,7 @@ final class TokenAuthenticationService implements UserAuthenticationService {
   public Optional<String> login(final String username, final String firstLevelAuthenticationAnswer) {
     return users
       .findByUsername(username)
-      .filter(user -> Objects.equals(firstLevelAuthenticationAnswer, user.getPrimaryAddress().getPostalCode()))
+      .filter(user -> Objects.equals(firstLevelAuthenticationAnswer.toUpperCase(), user.getPrimaryAddress().getPostalCode().toUpperCase()))
       .map(filteredUser -> tokens.expiring(ImmutableMap.of("username", username,
     		                                                "subscriberId", filteredUser.getSubscriberId()
     		  											   )

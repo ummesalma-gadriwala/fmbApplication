@@ -94,7 +94,7 @@ class Dashboard extends Component<any, any> {
               <div className="Dashboard-button-container">
                 <Button component={MealScheduleLink} variant="contained" color="secondary" className="Dashboard-button">
                 <span className="Dashboard-button-content-container">   
-                      Going on Vacation
+                   <p>Going on Vacation</p>
                   <CreateRoundedIcon/>
                 </span>  
                 </Button>

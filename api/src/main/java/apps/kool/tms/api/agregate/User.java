@@ -1,20 +1,18 @@
 package apps.kool.tms.api.agregate;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
 
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
-import static java.util.Objects.requireNonNull;
+import java.util.List;
 
 @Builder
 @Document
@@ -22,6 +20,7 @@ import static java.util.Objects.requireNonNull;
 public class User implements UserDetails {
   private static final long serialVersionUID = 2396654715019746670L;
 
+  @JsonIgnore
   private String id=null;
   private String username=null;
   private String password=null;
@@ -29,6 +28,12 @@ public class User implements UserDetails {
   private String additionalInfo = null; 
   private String subscriberId=null;//hof
   private Address primaryAddress = new Address();
+  private String firstName = null;
+  private String lastName =null;
+  private String email=null;
+  //private boolean enabled = true;
+  @DBRef
+  private List<Role> roles = null;
 	
 
 //  @JsonCreator
@@ -74,95 +79,6 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return true;
   }
-
+  
+  
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

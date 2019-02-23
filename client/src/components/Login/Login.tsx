@@ -53,7 +53,7 @@ class Login extends Component<any, any> {
       {
         field: "firstLevelAuthenticationAnswer",
         method: "matches",
-        args: [/^[A-Z]\d[A-Z][ -]?\d[A-Z]\d$/], // args is an optional array of arguements that will be passed to the validation method
+        args: [/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/], // args is an optional array of arguements that will be passed to the validation method
         validWhen: true,
         message: "That is not a valid Postal code."
       }

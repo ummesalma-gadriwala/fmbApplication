@@ -11,8 +11,12 @@ const INITIAL_STATE:IAuthentication  = {
     //@ts-ignore
     subscriberId:localStorage.getItem(LOCAL_STORAGE_TOKEN) ? jwt.decode(localStorage.getItem(LOCAL_STORAGE_TOKEN)).subscriberId : null,
     //@ts-ignore
-    username:localStorage.getItem(LOCAL_STORAGE_TOKEN) ? jwt.decode(localStorage.getItem(LOCAL_STORAGE_TOKEN)).subscriberId : null
-  }
+    username:localStorage.getItem(LOCAL_STORAGE_TOKEN) ? jwt.decode(localStorage.getItem(LOCAL_STORAGE_TOKEN)).username : null,
+    //@ts-ignore
+    scopes:localStorage.getItem(LOCAL_STORAGE_TOKEN) ? jwt.decode(localStorage.getItem(LOCAL_STORAGE_TOKEN)).scopes.split(",") : null ,
+    //@ts-ignore
+    roles:localStorage.getItem(LOCAL_STORAGE_TOKEN) ? jwt.decode(localStorage.getItem(LOCAL_STORAGE_TOKEN)).roles.split(",") : null ,
+   }
 };
 
 export default function(state:IAuthentication = INITIAL_STATE, action: any) {
@@ -22,7 +26,11 @@ export default function(state:IAuthentication = INITIAL_STATE, action: any) {
       const subscriberId =action? action.payload ? jwt.decode(action.payload) ? jwt.decode(action.payload).subscriberId : null: null : null ;
       //@ts-ignore
       const username =action? action.payload ? jwt.decode(action.payload) ? jwt.decode(action.payload).username : null: null : null ;
-      return { ...state, authenticated: action.payload, decodedToken :{ subscriberId, username }};
+      //@ts-ignore
+      const roles =action? action.payload ? jwt.decode(action.payload) ? jwt.decode(action.payload).roles.split(",") : null: null : null ;
+      //@ts-ignore
+      const scopes =action? action.payload ? jwt.decode(action.payload) ? jwt.decode(action.payload).scopes.split(",") : null: null : null ;
+      return { ...state, authenticated: action.payload, decodedToken :{ subscriberId, username, roles, scopes }};
     case AUTH_ERROR:
       return { ...state, errorMessage: action.payload };
     default:

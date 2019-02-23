@@ -49,6 +49,8 @@ export interface IAuthentication {
 export interface IToken {
   subscriberId: string|null;
   username:string|null;
+  roles:string[],
+  scopes:string[];
 } 
 
 export interface IAPIError {
@@ -59,8 +61,25 @@ export interface IAPIError {
 
 export interface IAppState {
   authentication:IAuthentication;
-  mealSchedule: ISubscriptionSchedule
-  apiError: IAPIError
+  mealSchedule: ISubscriptionSchedule;
+  profile:IProfile;
+  apiError: IAPIError;
+}
+
+
+export interface IProfile {
+    username : string;
+    mobileNumber : string;
+    primaryAddress : {
+        streetName : string;
+        postalCode : string;
+        city : string;
+        province : string;
+        country : string;
+    },
+    firstName : string;
+    lastName : string;
+    email : string;
 }
 
 

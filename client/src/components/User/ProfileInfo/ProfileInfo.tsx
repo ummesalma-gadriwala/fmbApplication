@@ -1,4 +1,10 @@
 import React, { Component } from "react";
+
+import  requireAuth from '../../../requireAuth';
+import { connect } from "react-redux";
+import * as profileAction from "../../../reducers/profileAction";
+import { IAppState } from '../../../type/Type'
+
 import Spinner from "./../../Spinner/Spinner";
 import {
   Paper,
@@ -28,6 +34,10 @@ class ProfileInfo extends Component<any, any> {
     e.preventDefault();
     this.props.prevStep();
   };
+
+  componentDidMount() {
+    this.props.getUserProfile( this.props.username);
+  }
 
   render() {
     const classes: any = withStyles;
@@ -192,4 +202,13 @@ class ProfileInfo extends Component<any, any> {
   }
 }
 
-export default ProfileInfo;
+
+const mapStateToProps = (state: IAppState) => {
+  return Object.assign({}, state, {
+    username : state.authentication.decodedToken.username
+    
+  });
+};
+
+export default connect(mapStateToProps,profileAction) (requireAuth(ProfileInfo));
+

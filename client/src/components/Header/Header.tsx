@@ -4,9 +4,7 @@ import fmblogo from '../../static/images/fmblogo.png';
 
 import './Header.css';
 
-console.log(aeflogo); // /logo.84287d09.png
 class Header extends Component<any, any> {
-
   constructor(props: any) {
     super(props)
   } 

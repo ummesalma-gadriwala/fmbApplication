@@ -31,7 +31,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableGlobalMethodSecurity(prePostEnabled=true,  securedEnabled = true, jsr250Enabled = true)
 @FieldDefaults(level = PRIVATE, makeFinal = true)
 class SecurityConfig extends WebSecurityConfigurerAdapter {
   private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(

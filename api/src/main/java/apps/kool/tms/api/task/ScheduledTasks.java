@@ -26,7 +26,7 @@ public class ScheduledTasks {
     @Value("${scheduler.rest-url}")
     private String schedulerRestUrl;
     
-    @Scheduled(fixedDelay= 5000)
+    @Scheduled(fixedDelay= 60000)
     public void reportCurrentTime() {
         log.info("The time is now {}", dateFormat.format(new Date()));
         RestTemplate rest = new RestTemplate();

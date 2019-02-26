@@ -9,6 +9,7 @@ import OperationDashboard from "../Dashboard/OperationDashboard";
 import MealSchedule from "../MealSchedule/MealSchedule";
 import UserProfile from "../User/ProfileInfo/ProfileInfo";
 import UserForm from "../User/UserForm";
+import MenuSchedule from "../Menu/Subscriber/MenuSchedule";
 
 import {IAppState} from '../../type/Type';
 
@@ -32,6 +33,7 @@ class AppRouter extends Component<any, any> {
               />
               <Route exact path="/dashboard/" component={Dashboard} />
               <Route exact path="/meal-schedule/" component={MealSchedule} />
+              <Route exact path="/menu-schedule/" component={MenuSchedule} />
               <Route exact path="/profile/" component={UserForm} />
               <Route exact path="/operation/dashboard/" component={OperationDashboard} />
             </div>

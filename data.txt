@@ -1,0 +1,8 @@
+---User
+{"username":"12345678","jamaatId":"M230","gender":"F","firstName":"Subsriber1","lastName":"Lastname1","subscriberId":"30445078","primaryAddress":{"streetName":"Apr 1010, 220 Steeles Ave. W","city":"Brampton","province":"ON","postalCode":"L6L7L8","country":"Canada"},"email":"murtaza_khambati@yahoo.com","eamil2":"","mobileNumber":"","mobileNumber1":"","mobileNumber2":"19055993256","zone":"4B"}
+{"username":"99998888","jamaatId":"A159","gender":"F","firstName":"FirstName3","lastName":"Lastname2","subscriberId":"40444020","primaryAddress":{"streetName":"244 McDoughall Crossing","city":"Milton","province":"ON","postalCode":"L6L7L8","country":"Canada"},"email":"afbmarvi@hotmail.com","eamil2":"","mobileNumber":"647-530-4941","mobileNumber1":"","mobileNumber2":"","zone":"1B"}
+{"username":"00001111","jamaatId":"S154","gender":"F","firstName":"FirstName2","lastName":"Lastname3","subscriberId":"30456352","primaryAddress":{"streetName":"3320 Erin Centre Blvd","city":"Mississauga","province":"ON","postalCode":"L1L2L3","country":"Canada"},"email":"sajjadjiwaji@hotmail.com","eamil2":"sajjadjiwaji@yahoo.com","mobileNumber":"905-997-0161","mobileNumber1":"","mobileNumber2":"","zone":"2A"}
+----Subscriber Schedule
+{"subscriberId":"30445078","zone":"Fakhri","optedSchedule":{"MONDAY":"1","TUESDAY":"1","WEDNESDAY":"1","THURSDAY":"1","FRIDAY":"1"}}
+{"subscriberId":"40444020","zone":"Burhani","optedSchedule":{"MONDAY":"1","TUESDAY":"2","WEDNESDAY":"0","THURSDAY":"1","FRIDAY":"1"}}
+{"subscriberId":"30456352","zone":"Burhani","optedSchedule":{"MONDAY":"1","TUESDAY":"1","WEDNESDAY":"1","THURSDAY":"2","FRIDAY":"2"}}

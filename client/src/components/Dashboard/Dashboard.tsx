@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import  requireAuth from '../../requireAuth';
+import { connect } from 'react-redux';
+
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -12,11 +14,12 @@ import CalendarTodayRoundedIcon from '@material-ui/icons/CalendarTodayRounded';
 import RestaurantMenuRoundedIcon from '@material-ui/icons/RestaurantMenuRounded';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
+import * as scheduleAction  from '../../reducers/scheduleAction'
+import { ISchedule, IAppState } from '../../type/Type'
+
 
 import classNames from 'classnames';
 import { Link } from "react-router-dom";
-
-
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
 import './Dashboard.css'
@@ -25,15 +28,20 @@ import './Dashboard.css'
 
 
 class Dashboard extends Component<any, any> {
-
   
   constructor(props:any){
     super(props);
   }
+
+  componentDidMount(){
+    //this.setState({isBusy : true});
+    this.props.getMonthsSchedule();
+  };
   
   
   render () {
     const MealScheduleLink = (props:any) => <Link to="/meal-schedule" {...props} />
+    const MenuScheduleLink = (props:any) => <Link to="/menu-schedule" {...props} />
     return (
       <div>
         <div className="Dashboard-container">
@@ -86,7 +94,7 @@ class Dashboard extends Component<any, any> {
           <div className="Dashboard-button-row-container">
             <div className="Dashboard-button-row">
               <div className="Dashboard-button-container">
-                <Button variant="contained" color="secondary" className="Dashboard-button" >
+                <Button component={MenuScheduleLink} variant="contained" color="secondary" className="Dashboard-button" >
                   <span className="Dashboard-button-content-container">  
                     Menu
                     <RestaurantMenuRoundedIcon />
@@ -132,5 +140,8 @@ class Dashboard extends Component<any, any> {
   }
 }
 
+const mapStateToProps = (state: IAppState) => {
+  return {};
+};
 
-export default requireAuth(Dashboard)
+export default requireAuth(connect(mapStateToProps, scheduleAction) (Dashboard));

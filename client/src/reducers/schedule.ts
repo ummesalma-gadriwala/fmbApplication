@@ -8,7 +8,7 @@ export default function(state:any = INITIAL_STATE , action: any) {
     
     case GET_SCHEDULE_MONTHLY:
    //  console.log({state, action.payload});
-     return[ ...state, ...action.payload];
+     return[ ...action.payload];
      
     default:
       return state;

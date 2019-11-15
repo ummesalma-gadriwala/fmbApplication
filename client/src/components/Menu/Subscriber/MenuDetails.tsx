@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import  requireAuth from '../../../requireAuth';
 import { withStyles } from '@material-ui/core/styles';
 
-import { ISchedule, IAppState, IMenu, IMenuItem } from '../../../type/Type'
+import { ISchedule, IAppState, IMenu, IMenuItem, IOverrideSchedule } from '../../../type/Type'
 import * as scheduleAction  from '../../../reducers/scheduleAction'
+import * as mealscheduleAction  from '../../../reducers/mealscheduleAction'
+import isWithinInterval from 'date-fns/esm/fp/isWithinInterval';
 
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import Button from "@material-ui/core/Button/Button";
@@ -40,32 +42,34 @@ var dateFns = require('date-fns');
 
 import './MenuSchedule.css'
 
-class MenuSchedule extends PureComponent<any, any> {
+class MenuDetails extends PureComponent<any, any> {
   
   constructor(props:any){
     super(props);
+    const { match: { params } } = this.props;
+    
     this.state = {
       weekStartDate: dateFns.startOfWeek( new Date()),
-      activeWeekRelativeToCurrentWeek:0
+      activeWeekRelativeToCurrentWeek:0,
+      currentDate:dateFns.parseISO(params.currentDate)
     }
-    console.log(this.state);
-    console.log(dateFns.addWeeks(new Date(),1));
-    
+  
     //isSameWeek
     //startOfWeek
   }
 
   componentDidMount(){
     //this.setState({isBusy : true});
+    console.log(this.state);
+    console.log(this.props);
     console.log(this.props.schedule);
     if(this.props.schedule && this.props.schedule.length ==0) {
       this.props.getMonthsSchedule();
     }
+    this.props.getSubscriptionSchedule(this.props.subscriberId);
   };
 
    render(){
-
-  
 
     const buildMenuItem = (menuItems: IMenuItem[] | null, noMealReason:string )=>{
         return(
@@ -80,16 +84,12 @@ class MenuSchedule extends PureComponent<any, any> {
     const buildMenu = () => {
       return this.props.schedule && this.props.schedule.length > 0 && this.props.schedule.map((day:ISchedule,index: number) => {
         return (
-           dateFns.isSameWeek(new Date(day.dailyDate), this.state.weekStartDate) &&
+           day.dailyDate === this.state.currentDate &&
            <div key={index}  className="daily-menu-container">
             <Card className={this.props.classes.card}>
               <CardActionArea
-                onClick = {()=> this.props.history.push(`/menu-schedule/details/${day.dailyDate}`)} 
+                onClick = {()=> console.log('Menu Card Touched')} 
               >
-                <CardHeader
-                      title= {dateFns.format(dateFns.parseISO(day.dailyDate), 'd MMM YY', {'awareOfUnicodeTokens': true}) }
-                  
-                />
                 <Divider/>
                 <CardContent className={this.props.classes.cardcontent}>
                   <ul>
@@ -106,6 +106,38 @@ class MenuSchedule extends PureComponent<any, any> {
         }) 
       };
 
+      const buildMealSchedule = () => {
+        return this.props.mealSchedule && this.props.mealSchedule.overrideSchedules.length > 0 && this.props.mealSchedule.overrideSchedules.map((overrideSchedule:IOverrideSchedule,index: number) => {
+          //console.log(`${dateFns.parseISO(new Date()).getTime()}`);
+          //console.log(`${dateFns.parseISO(overrideSchedule.overrideEndDate)}`);
+          return (
+            //@ts-ignore
+            
+            dateFns.isWithinInterval( this.state.currentDate,{start : dateFns.parseISO(overrideSchedule.overrideStartDate), end:  dateFns.parseISO(overrideSchedule.overrideEndDate) }, {unit: 'day'}) &&
+             <div key={index}  className="daily-menu-container">
+              <Card className={this.props.classes.card}>
+                <CardActionArea
+                  onClick = {()=> console.log('Menu Card Touched')} 
+                >
+                  <Divider/>
+                  <CardContent className={this.props.classes.cardcontent}>
+                    <ul>
+                      <Typography component="p">
+
+                        Schedule
+
+                      </Typography>
+                    </ul>
+                  </CardContent>
+                </CardActionArea>    
+                  
+              </Card>
+              </div>                    
+            );
+          }) 
+        };
+  
+
     const navigatePreviousWeek = () => {
       this.setState( {weekStartDate : dateFns.addWeeks(this.state.weekStartDate,-1)});
     }
@@ -117,15 +149,11 @@ class MenuSchedule extends PureComponent<any, any> {
     return(
       <div>
           <Paper className="menu-schedule-week-navigator-container">
-            <Fab  onClick= { () => navigatePreviousWeek()}  aria-label="Open Dashboard" className={this.props.classes.fab} >
-                  <NavigateBeforeIcon />
-            </Fab >
-            <h6>{ ` Menu for week of ${dateFns.format(this.state.weekStartDate, 'd MMM', {'awareOfUnicodeTokens': true})}` } </h6>
-            <Fab onClick= { () => navigateNextWeek()} className={this.props.classes.fab}>
-               <NavigateNextIcon />
-            </Fab >
+            <h6>{ ` Menu For ${dateFns.format( this.state.currentDate, 'd MMM', {'awareOfUnicodeTokens': true})}` } </h6>
+            
           </Paper> 
               {buildMenu()}
+              {buildMealSchedule()}
       </div>
       
     )
@@ -137,7 +165,9 @@ class MenuSchedule extends PureComponent<any, any> {
 const mapStateToProps = (state: IAppState) => {
   console.log(state.schedule);
   return Object.assign({}, state, {
-    schedule: state.schedule as ISchedule[]
+    schedule: state.schedule as ISchedule[],
+    subscriberId: state.authentication.decodedToken.subscriberId,
+    mealSchedule: state.mealSchedule
   });
 };
 const styles = (theme:any) => ({
@@ -175,4 +205,4 @@ const styles = (theme:any) => ({
 //   })
 // }
 
-export default requireAuth(connect(mapStateToProps, scheduleAction) (withStyles(styles) (MenuSchedule)));
+export default requireAuth(connect(mapStateToProps, {...scheduleAction,...mealscheduleAction} ) (withStyles(styles) (MenuDetails)));

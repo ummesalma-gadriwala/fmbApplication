@@ -7,6 +7,5 @@ import lombok.Data;
 
 @Data
 public class ContributionAttribute {
-	private  Date contributionDate;
-	private  ContributionType type;
+	
 }

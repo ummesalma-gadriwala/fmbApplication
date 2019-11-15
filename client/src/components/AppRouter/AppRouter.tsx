@@ -10,6 +10,7 @@ import MealSchedule from "../MealSchedule/MealSchedule";
 import UserProfile from "../User/ProfileInfo/ProfileInfo";
 import UserForm from "../User/UserForm";
 import MenuSchedule from "../Menu/Subscriber/MenuSchedule";
+import MenuDetails from "../Menu/Subscriber/MenuDetails"
 
 import {IAppState} from '../../type/Type';
 
@@ -34,6 +35,7 @@ class AppRouter extends Component<any, any> {
               <Route exact path="/dashboard/" component={Dashboard} />
               <Route exact path="/meal-schedule/" component={MealSchedule} />
               <Route exact path="/menu-schedule/" component={MenuSchedule} />
+              <Route exact path="/menu-schedule/details/:currentDate" component={MenuDetails} />
               <Route exact path="/profile/" component={UserForm} />
               <Route exact path="/operation/dashboard/" component={OperationDashboard} />
             </div>

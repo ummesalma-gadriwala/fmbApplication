@@ -27,4 +27,6 @@ public class Schedule {
 	private Menu menu;
 	private boolean noMeal;
 	private String  noMealReason;
+	@DBRef
+	private Contributor[] contributors;
 }

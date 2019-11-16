@@ -187,8 +187,8 @@ class MealSchedule extends Component<any, IMealScheduleState> {
                     <div className ="MealSchedule-Datepicker-Container">
                       <DatePicker  
                         name={"startDate"}
-                        minDate = { dateFns.format( dateFns.addWeeks(new Date(),2),'YYYY-MM-dd',{ awareOfUnicodeTokens: true }) }
-                        maxDate = { dateFns.format( dateFns.addMonths(new Date(),2),'YYYY-MM-dd',{ awareOfUnicodeTokens: true }) }
+                        minDate = { dateFns.format( dateFns.addWeeks(new Date(),2),'yyyy-MM-dd',{ awareOfUnicodeTokens: true }) }
+                        maxDate = { dateFns.format( dateFns.addMonths(new Date(),2),'yyyy-MM-dd',{ awareOfUnicodeTokens: true }) }
                         margin="normal"
                         label="From Date"
                         value={ this.state.newPlanOverride.overrideStartDate }

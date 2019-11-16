@@ -36,8 +36,8 @@ export const addOverrideSchedule = (subscriberId: string, overrideSchedule: IOve
   try {
     const addOverrideSchedule:IOverrideSchedule = Object.assign({}, overrideSchedule);
     
-    overrideSchedule.overrideStartDate = dateFns.format(overrideSchedule.overrideStartDate, 'YYYY-MM-dd',{'awareOfUnicodeTokens': true});
-    overrideSchedule.overrideEndDate = dateFns.format(overrideSchedule.overrideEndDate, 'YYYY-MM-dd',{'awareOfUnicodeTokens': true})
+    overrideSchedule.overrideStartDate = dateFns.format(overrideSchedule.overrideStartDate, 'yyyy-MM-dd',{'awareOfUnicodeTokens': true});
+    overrideSchedule.overrideEndDate = dateFns.format(overrideSchedule.overrideEndDate, 'yyyy-MM-dd',{'awareOfUnicodeTokens': true})
     //@ts-ignore
     //addOverrideSchedule.overrideStartDate = `${addOverrideSchedule.overrideStartDate.getFullYear()}-${addOverrideSchedule.overrideStartDate.getMonth()+1}-${addOverrideSchedule.overrideStartDate.getDate()}`;
     //@ts-ignore

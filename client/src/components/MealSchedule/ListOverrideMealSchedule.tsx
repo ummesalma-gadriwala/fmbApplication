@@ -48,10 +48,10 @@ const styles = (theme:any) => ({
                 return(
                   <TableRow key={index}>
                     <TableCell  className={this.props.classes.root}  component="th" scope="row">
-                    {dateFns.format(dateFns.parseISO(overrideSchedule.overrideStartDate), 'YYYY-MM-dd',{'awareOfUnicodeTokens': true})}
+                    {dateFns.format(dateFns.parseISO(overrideSchedule.overrideStartDate), 'yyyy-MM-dd',{'awareOfUnicodeTokens': true})}
                     </TableCell>
                     <TableCell className={this.props.classes.root} >
-                    {dateFns.format(dateFns.parseISO(overrideSchedule.overrideEndDate), 'YYYY-MM-dd',{'awareOfUnicodeTokens': true})}
+                    {dateFns.format(dateFns.parseISO(overrideSchedule.overrideEndDate), 'yyyy-MM-dd',{'awareOfUnicodeTokens': true})}
                     </TableCell>
                     <TableCell className={this.props.classes.root} align="left">
                      <div className="Override-OP-Container">

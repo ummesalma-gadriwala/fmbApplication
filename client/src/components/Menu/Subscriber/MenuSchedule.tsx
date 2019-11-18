@@ -87,7 +87,7 @@ class MenuSchedule extends PureComponent<any, any> {
                 onClick = {()=> this.props.history.push(`/menu-schedule/details/${day.dailyDate}`)} 
               >
                 <CardHeader
-                      title= {dateFns.format(dateFns.parseISO(day.dailyDate), 'd MMM YY', {'awareOfUnicodeTokens': true}) }
+                      title= {dateFns.format(dateFns.parseISO(day.dailyDate), 'd MMM yy', {'awareOfUnicodeTokens': true}) }
                   
                 />
                 <Divider/>

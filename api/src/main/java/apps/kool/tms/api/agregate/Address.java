@@ -6,7 +6,7 @@ import lombok.Data;
 public class Address {
 	
 	private String streetNumber;
-	private String unitNUmber;
+	private String unitNumber;
 	private String streetName;
 	private String postalCode;
 	private String city;

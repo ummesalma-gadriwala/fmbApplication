@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import SubscriptionInfo from "./SubscriptionInfo/SubscriptionInfo";
-import ContributionInfo from "./ContributionInfo/ContributionInfo";
+import Dashboard from "../Dashboard/Dashboard";
 
 export class UserForm extends Component {
   steps = {
     step1: "ProfileInfo",
     step2: "SubscriptionInfo",
-    step3: "ContributionInfo"
+    step3: "Dashboard"
+   
   };
   state = {
     step: this.steps.step1
@@ -17,7 +18,7 @@ export class UserForm extends Component {
   nextStep = () => {
     this.setState({
       step:
-        this.state.step == "ProfileInfo" ? this.steps.step2 : this.steps.step3
+        this.state.step == "ProfileInfo" ? this.steps.step2 :  this.steps.step3
     });
   };
 
@@ -26,12 +27,9 @@ export class UserForm extends Component {
     this.setState(
       {
         step:
-          this.state.step == "ContributionInfo"
+          this.state.step == "Dashboard"
             ? this.steps.step2
             : this.steps.step1
-      },
-      () => {
-        console.log(this.state.step);
       }
     );
   };
@@ -45,10 +43,11 @@ export class UserForm extends Component {
         return (
           <SubscriptionInfo nextStep={this.nextStep} prevStep={this.prevStep} />
         );
-      case "ContributionInfo":
+      case "Dashboard":
         return (
-          <ContributionInfo nextStep={this.nextStep} prevStep={this.prevStep} />
-        );
+          <Dashboard />
+        );  
+      
     }
   }
 }

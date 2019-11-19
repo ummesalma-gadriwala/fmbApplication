@@ -1,8 +1,11 @@
 package apps.kool.tms.api.agregate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,9 +20,12 @@ import java.util.List;
 @Builder
 @Document
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
   private static final long serialVersionUID = 2396654715019746670L;
-
+  
+ 
   @JsonIgnore
   private String id=null;
   private String username=null;
@@ -32,6 +38,7 @@ public class User implements UserDetails {
   private String lastName =null;
   private String email=null;
   //private boolean enabled = true;
+  private  boolean hasSubscriberVerifiedInfo = false;
   @DBRef
   private List<Role> roles = null;
 	

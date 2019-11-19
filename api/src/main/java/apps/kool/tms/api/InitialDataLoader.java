@@ -50,7 +50,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		
 		List<User> users = userRepository.findAll();
 		users.forEach(user -> {
-			if(user.getRoles()==null || !user.getRoles().contains(subscriberRole)){
+		    if(user.getRoles()==null || !user.getRoles().contains(subscriberRole)){
 				user.setRoles(Arrays.asList(subscriberRole));
 				userRepository.save(user);
 			}

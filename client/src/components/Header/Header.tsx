@@ -1,6 +1,6 @@
 import  React, { Component } from 'react';
-import aeflogo from '../../static/images/aeflogo.bmp'; // Tell Webpack this JS file uses this image
-import fmblogo from '../../static/images/fmblogo.png';
+import aeflogo from '../../static/images/aeflogo.png'; // Tell Webpack this JS file uses this image
+import fmblogo from '../../static/images/fmblogo.jpg';
 
 import './Header.css';
 

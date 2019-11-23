@@ -15,7 +15,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { IOverrideSchedule, IAppState } from '../../type/Type'
 import './MealSchedule.css';
-var dateFns = require('date-fns');
 import getOverlappingDaysInRanges from 'date-fns/esm/fp/getOverlappingDaysInIntervals';
 import * as mealscheduleAction  from '../../reducers/mealscheduleAction'
 import { connect } from 'react-redux';
@@ -24,6 +23,7 @@ import { Alert } from 'reactstrap';
 import ListOverrideMealSchedule from './ListOverrideMealSchedule';
 import Divider from '@material-ui/core/Divider';
 
+var dateFns = require('date-fns');
 
 interface IMealScheduleState {
   existingPlanOverrides ?: [IOverrideSchedule];

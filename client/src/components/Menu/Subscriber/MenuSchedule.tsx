@@ -36,9 +36,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-var dateFns = require('date-fns');
 
 import './MenuSchedule.css'
+
+var dateFns = require('date-fns');
 
 class MenuSchedule extends PureComponent<any, any> {
   

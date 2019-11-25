@@ -59,7 +59,7 @@ export interface APIError {
 }
 
 
-export interface IAppState {
+export interface AppState {
   authentication:Authentication;
   mealSchedule: SubscriptionSchedule;
   profile:Profile;

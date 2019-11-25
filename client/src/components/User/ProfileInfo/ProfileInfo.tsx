@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import  requireAuth from '../../../requireAuth';
 import { connect } from "react-redux";
 import * as profileAction from "../../../reducers/profileAction";
-import { IAppState } from '../../../type/Type'
+import { AppState } from '../../../type/Type'
 import PersonIcon from '@material-ui/icons/Person';
 import Spinner from "./../../Spinner/Spinner";
 import FormValidator from "../../../util/FormValidator";
@@ -360,7 +360,7 @@ class ProfileInfo extends Component<any, any> {
 }
 
 
-const mapStateToProps = (state: IAppState) => {
+const mapStateToProps = (state: AppState) => {
   return Object.assign({}, state, {
     username : state.authentication.decodedToken.username,
     profile: state.profile

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import  requireAuth from '../../../requireAuth';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Schedule, IAppState, Menu, MenuItem } from '../../../type/Type'
+import { Schedule, AppState, Menu, MenuItem } from '../../../type/Type'
 import * as scheduleAction  from '../../../reducers/scheduleAction'
 
 import FormControl from "@material-ui/core/FormControl/FormControl";
@@ -135,7 +135,7 @@ class MenuSchedule extends PureComponent<any, any> {
 }
 
 
-const mapStateToProps = (state: IAppState) => {
+const mapStateToProps = (state: AppState) => {
   console.log(state.schedule);
   return Object.assign({}, state, {
     schedule: state.schedule as Schedule[]

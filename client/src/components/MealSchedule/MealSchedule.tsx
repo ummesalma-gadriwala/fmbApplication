@@ -13,7 +13,7 @@ import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { OverrideSchedule, IAppState } from '../../type/Type'
+import { OverrideSchedule, AppState } from '../../type/Type'
 import './MealSchedule.css';
 import getOverlappingDaysInRanges from 'date-fns/esm/fp/getOverlappingDaysInIntervals';
 import * as mealscheduleAction  from '../../reducers/mealscheduleAction'
@@ -247,7 +247,7 @@ class MealSchedule extends Component<any, IMealScheduleState> {
     );
   }
 };
-const mapStateToProps = (state: IAppState) => {
+const mapStateToProps = (state: AppState) => {
   return Object.assign({}, state, {
     subscriberId : state.authentication.decodedToken.subscriberId,
     mealSchedule: state.mealSchedule

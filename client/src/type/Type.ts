@@ -83,19 +83,19 @@ export interface Profile {
     email : string;
 }
 
-export interface IMenuItem {
+export interface MenuItem {
    itemName: string;
    menuItemType: string;
 }
 
 
-export interface IMenu {
-    items: IMenuItem[] | [];
+export interface Menu {
+    items: MenuItem[] | [];
 }
 
 export interface Schedule {
   dailyDate: string;
-  menu: IMenu | null;
+  menu: Menu | null;
   noMeal: boolean;
   noMealReason: string;
 }

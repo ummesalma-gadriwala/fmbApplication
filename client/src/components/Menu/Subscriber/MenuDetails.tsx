@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import  requireAuth from '../../../requireAuth';
 import { withStyles } from '@material-ui/core/styles';
 
-import { Schedule, IAppState, IMenu, IMenuItem, OverrideSchedule } from '../../../type/Type'
+import { Schedule, IAppState, MenuItem, OverrideSchedule } from '../../../type/Type'
 import * as scheduleAction  from '../../../reducers/scheduleAction'
 import * as mealscheduleAction  from '../../../reducers/mealscheduleAction'
 import isWithinInterval from 'date-fns/esm/fp/isWithinInterval';
@@ -72,9 +72,9 @@ class MenuDetails extends PureComponent<any, any> {
 
    render(){
 
-    const buildMenuItem = (menuItems: IMenuItem[] | null, noMealReason:string )=>{
+    const buildMenuItem = (menuItems: MenuItem[] | null, noMealReason:string )=>{
         return(
-          menuItems && menuItems.map( (menuItem:IMenuItem, index:number) =>{
+          menuItems && menuItems.map( (menuItem:MenuItem, index:number) =>{
             return (
               <li key={index}> { menuItem.itemName }</li>
             )

@@ -18,7 +18,7 @@ const INITIAL_STATE : ISubscriptionSchedule = {
     SATURDAY:null,
     SUNDAY:null
   },
-  overrideSchedule :  []
+  overrideSchedules :  []
 };
 
 export default function(state = INITIAL_STATE, action: any) {
@@ -28,10 +28,10 @@ export default function(state = INITIAL_STATE, action: any) {
     case GET_SUBSCRIBER_OVERRIDESCHEDULE:
       return { ...state, overrideSchedules: action.payload };
     case ADD_SUBSCRIBER_OVERRIDESCHEDULE:
-      let overrideSchedules = state.overrideSchedule as Array<IOverrideSchedule>;
+      let overrideSchedules = state.overrideSchedules as Array<IOverrideSchedule>;
       return { ...state, overrideSchedules: [...overrideSchedules, action.payload] };
     case DELETE_SUBSCRIBER_OVERRIDESCHEDULE:
-      let delOverrideSchedules = state.overrideSchedule as Array<IOverrideSchedule>;
+      let delOverrideSchedules = state.overrideSchedules as Array<IOverrideSchedule>;
       delOverrideSchedules = delOverrideSchedules.filter((schedule:IOverrideSchedule) => schedule.overrideStartDate != action.payload )
       return { ...state, overrideSchedules: [ ...delOverrideSchedules] };
     case API_USER_ERROR:

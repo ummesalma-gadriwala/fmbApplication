@@ -1,5 +1,5 @@
 import  React, { Component } from 'react';
-import { IOverrideSchedule } from '../../type/Type';
+import { OverrideSchedule } from '../../type/Type';
 import Button  from '@material-ui/core/Button';
 import IconButton  from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
@@ -45,7 +45,7 @@ const styles = (theme:any) => ({
                 </TableRow>
               </TableHead>
               <TableBody>
-              { this.props.overrideSchedules.map( (overrideSchedule:IOverrideSchedule, index:any) =>{
+              { this.props.overrideSchedules.map( (overrideSchedule:OverrideSchedule, index:any) =>{
                 return(
                   <TableRow key={index}>
                     <TableCell  className={this.props.classes.root}  component="th" scope="row">

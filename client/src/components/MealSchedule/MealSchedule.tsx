@@ -13,7 +13,7 @@ import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { IOverrideSchedule, IAppState } from '../../type/Type'
+import { OverrideSchedule, IAppState } from '../../type/Type'
 import './MealSchedule.css';
 import getOverlappingDaysInRanges from 'date-fns/esm/fp/getOverlappingDaysInIntervals';
 import * as mealscheduleAction  from '../../reducers/mealscheduleAction'
@@ -26,8 +26,8 @@ import Divider from '@material-ui/core/Divider';
 var dateFns = require('date-fns');
 
 interface IMealScheduleState {
-  existingPlanOverrides ?: [IOverrideSchedule];
-  newPlanOverride:IOverrideSchedule;
+  existingPlanOverrides ?: [OverrideSchedule];
+  newPlanOverride:OverrideSchedule
   thaliSchedule: Object;
   isBusy: boolean;
   isInValid: boolean;
@@ -37,7 +37,7 @@ class MealSchedule extends Component<any, IMealScheduleState> {
   constructor(props: any) {
     super(props);
     this.handleMealCountChange = this.handleMealCountChange.bind(this);
-    const newPlanOverride:IOverrideSchedule = {
+    const newPlanOverride:OverrideSchedule= {
           overrideStartDate: dateFns.addWeeks(new Date(),2),
           overrideEndDate:dateFns.addWeeks(new Date(),3),
           weeklyOverrideSchedule : {
@@ -80,7 +80,7 @@ class MealSchedule extends Component<any, IMealScheduleState> {
     const target = event.target;
     const value = target.value;
     const name : string = target.name;
-    const changedOverridePlan:IOverrideSchedule = Object.assign({}, this.state.newPlanOverride);
+    const changedOverridePlan:OverrideSchedule = Object.assign({}, this.state.newPlanOverride);
     const changedKey = Object.keys(this.state.newPlanOverride.weeklyOverrideSchedule).find( key => key===name);
     //@ts-ignore
     changedOverridePlan.weeklyOverrideSchedule[changedKey]= value;
@@ -151,7 +151,7 @@ class MealSchedule extends Component<any, IMealScheduleState> {
       
       if (!isValidDate) {
         this.setState({isBusy : true});
-        const cancelPlan:IOverrideSchedule = Object.assign({}, this.state.newPlanOverride);
+        const cancelPlan:OverrideSchedule = Object.assign({}, this.state.newPlanOverride);
         cancelPlan.weeklyOverrideSchedule.MONDAY=  "0";
         cancelPlan.weeklyOverrideSchedule.TUESDAY=  "0";
         cancelPlan.weeklyOverrideSchedule.WEDNESDAY=  "0";
@@ -193,7 +193,7 @@ class MealSchedule extends Component<any, IMealScheduleState> {
                         label="From Date"
                         value={ this.state.newPlanOverride.overrideStartDate }
                         onChange={ (value)=> {
-                          const changedOverridePlan:IOverrideSchedule = Object.assign({}, this.state.newPlanOverride);
+                          const changedOverridePlan:OverrideSchedule = Object.assign({}, this.state.newPlanOverride);
                           changedOverridePlan.overrideStartDate= value;   
                           this.setState({newPlanOverride:changedOverridePlan});
                         }}
@@ -206,7 +206,7 @@ class MealSchedule extends Component<any, IMealScheduleState> {
                         label="To Date"
                         value={ this.state.newPlanOverride.overrideEndDate }
                         onChange={ (value)=> {
-                          const changedOverridePlan:IOverrideSchedule = Object.assign({}, this.state.newPlanOverride);
+                          const changedOverridePlan:OverrideSchedule = Object.assign({}, this.state.newPlanOverride);
                           changedOverridePlan.overrideEndDate= value;      
                           this.setState({newPlanOverride:changedOverridePlan});
                         }}

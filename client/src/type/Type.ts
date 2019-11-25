@@ -10,7 +10,7 @@ export enum DayOfWeek {
   Sunday
 }
 
-export interface ISubscriptionSchedule {
+export interface SubscriptionSchedule {
   optedSchedule:{
     MONDAY:string | null;
     TUESDAY:string | null;
@@ -20,12 +20,12 @@ export interface ISubscriptionSchedule {
     SATURDAY?: string | null;
     SUNDAY?: string | null;
   }
-  overrideSchedules ?:  Array<IOverrideSchedule> | null;
+  overrideSchedules ?:  Array<OverrideSchedule> | null;
   
 }
 
 
-export interface IOverrideSchedule {
+export interface OverrideSchedule {
   overrideStartDate: Date | string;
   overrideEndDate:Date | string;
   weeklyOverrideSchedule: {
@@ -61,7 +61,7 @@ export interface IAPIError {
 
 export interface IAppState {
   authentication:IAuthentication;
-  mealSchedule: ISubscriptionSchedule;
+  mealSchedule: SubscriptionSchedule;
   profile:IProfile;
   schedule: ISchedule[];
   apiError: IAPIError;

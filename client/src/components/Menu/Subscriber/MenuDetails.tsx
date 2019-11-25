@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import  requireAuth from '../../../requireAuth';
 import { withStyles } from '@material-ui/core/styles';
 
-import { ISchedule, IAppState, IMenu, IMenuItem, IOverrideSchedule } from '../../../type/Type'
+import { ISchedule, IAppState, IMenu, IMenuItem, OverrideSchedule } from '../../../type/Type'
 import * as scheduleAction  from '../../../reducers/scheduleAction'
 import * as mealscheduleAction  from '../../../reducers/mealscheduleAction'
 import isWithinInterval from 'date-fns/esm/fp/isWithinInterval';
@@ -108,7 +108,7 @@ class MenuDetails extends PureComponent<any, any> {
       };
 
       const buildMealSchedule = () => {
-        return this.props.mealSchedule && this.props.mealSchedule.overrideSchedules.length > 0 && this.props.mealSchedule.overrideSchedules.map((overrideSchedule:IOverrideSchedule,index: number) => {
+        return this.props.mealSchedule && this.props.mealSchedule.overrideSchedules.length > 0 && this.props.mealSchedule.overrideSchedules.map((overrideSchedule:OverrideSchedule,index: number) => {
           //console.log(`${dateFns.parseISO(new Date()).getTime()}`);
           //console.log(`${dateFns.parseISO(overrideSchedule.overrideEndDate)}`);
           return (

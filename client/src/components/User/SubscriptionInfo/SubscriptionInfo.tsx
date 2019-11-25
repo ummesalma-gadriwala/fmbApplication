@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import  requireAuth from '../../../requireAuth';
-import { IOverrideSchedule, IAppState } from '../../../type/Type'
+import { OverrideSchedule, IAppState } from '../../../type/Type'
 import * as mealscheduleAction  from '../../../reducers/mealscheduleAction'
 
 import FormControl from "@material-ui/core/FormControl/FormControl";

@@ -5,10 +5,10 @@ import { GET_SUBSCRIBER_SCHEDULE,
          EDIT_SUBSCRIBER_OVERRIDESCHEDULE, 
          DELETE_SUBSCRIBER_OVERRIDESCHEDULE,
         API_USER_ERROR } from './actionType';
-import { ISubscriptionSchedule, IOverrideSchedule } from '../type/Type';
+import { SubscriptionSchedule, OverrideSchedule } from '../type/Type';
 
 
-const INITIAL_STATE : ISubscriptionSchedule = {
+const INITIAL_STATE : SubscriptionSchedule = {
   optedSchedule:{
     MONDAY:null,
     TUESDAY:null,
@@ -28,11 +28,11 @@ export default function(state = INITIAL_STATE, action: any) {
     case GET_SUBSCRIBER_OVERRIDESCHEDULE:
       return { ...state, overrideSchedules: action.payload };
     case ADD_SUBSCRIBER_OVERRIDESCHEDULE:
-      let overrideSchedules = state.overrideSchedules as Array<IOverrideSchedule>;
+      let overrideSchedules = state.overrideSchedules as Array<OverrideSchedule>;
       return { ...state, overrideSchedules: [...overrideSchedules, action.payload] };
     case DELETE_SUBSCRIBER_OVERRIDESCHEDULE:
-      let delOverrideSchedules = state.overrideSchedules as Array<IOverrideSchedule>;
-      delOverrideSchedules = delOverrideSchedules.filter((schedule:IOverrideSchedule) => schedule.overrideStartDate != action.payload )
+      let delOverrideSchedules = state.overrideSchedules as Array<OverrideSchedule>;
+      delOverrideSchedules = delOverrideSchedules.filter((schedule:OverrideSchedule) => schedule.overrideStartDate != action.payload )
       return { ...state, overrideSchedules: [ ...delOverrideSchedules] };
     case API_USER_ERROR:
       return { ...state, errorMessage: action.payload };

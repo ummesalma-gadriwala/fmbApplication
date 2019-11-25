@@ -18,10 +18,8 @@ export const getSubscriptionSchedule = (subscriberId: string, workFlowProcessor:
     if(response && response.data) {
       const subscriptionSchedule: ISubscriptionSchedule = response.data;
       dispatch({ type: GET_SUBSCRIBER_SCHEDULE , payload: subscriptionSchedule.optedSchedule });
-      //@ts-ignore
-      if(subscriptionSchedule && subscriptionSchedule.overrideSchedule && subscriptionSchedule.overrideSchedule[0]) {
-        //@ts-ignore
-        dispatch({ type: GET_SUBSCRIBER_OVERRIDESCHEDULE , payload: subscriptionSchedule.overrideSchedule });
+      if(subscriptionSchedule && subscriptionSchedule.overrideSchedules && subscriptionSchedule.overrideSchedules[0]) {
+        dispatch({ type: GET_SUBSCRIBER_OVERRIDESCHEDULE , payload: subscriptionSchedule.overrideSchedules });
       }  
     }
     workFlowProcessor && workFlowProcessor(response.data.workFlowResponse && response.data.workFlowResponse.goToRoute);

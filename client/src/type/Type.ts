@@ -20,7 +20,7 @@ export interface ISubscriptionSchedule {
     SATURDAY?: string | null;
     SUNDAY?: string | null;
   }
-  overrideSchedules ?:  Array<IOverrideSchedule> | null;
+  overrideSchedule ?:  Array<IOverrideSchedule> | null;
   
 }
 

@@ -62,13 +62,13 @@ export interface APIError {
 export interface IAppState {
   authentication:Authentication;
   mealSchedule: SubscriptionSchedule;
-  profile:IProfile;
+  profile:Profile;
   schedule: ISchedule[];
   apiError: APIError;
 }
 
 
-export interface IProfile {
+export interface Profile {
     username : string;
     mobileNumber : string;
     primaryAddress : {

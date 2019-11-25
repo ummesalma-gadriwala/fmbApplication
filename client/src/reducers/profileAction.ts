@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FETCH_USER_PROFILE, AUTH_ERROR, UPDATE_USER_PROFILE } from './actionType';
 import { TOKEN_API_ENPOINT, USER_PROFILE_ENDPOINT} from '../api/API';
-import { IProfile } from '../type/Type';
+import { Profile } from '../type/Type';
 
 export const getUserProfile = (username:string,  onErrorCallback: Function ) => async (dispatch:Function) => {
   try {
@@ -13,7 +13,7 @@ export const getUserProfile = (username:string,  onErrorCallback: Function ) => 
   }
 };
 
-export const updateUserProfile = (profile:IProfile, workFlowProcessor:Function,  onErrorCallback: Function ) => async (dispatch:Function) => {
+export const updateUserProfile = (profile: Profile, workFlowProcessor:Function,  onErrorCallback: Function ) => async (dispatch:Function) => {
   try {
     const response = await axios.put(USER_PROFILE_ENDPOINT(null),profile);
     if( response &&  response.status === 200 ) {

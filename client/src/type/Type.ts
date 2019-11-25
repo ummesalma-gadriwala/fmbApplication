@@ -40,13 +40,13 @@ export interface OverrideSchedule {
   
 }
 
-export interface IAuthentication {
+export interface Authentication {
   authenticated?: string | null;
   errorMessage?: string| null;
-  decodedToken: IToken
+  decodedToken: Token
 }
 
-export interface IToken {
+export interface Token {
   subscriberId: string|null;
   username:string|null;
   roles:string[],
@@ -60,7 +60,7 @@ export interface IAPIError {
 
 
 export interface IAppState {
-  authentication:IAuthentication;
+  authentication:Authentication;
   mealSchedule: SubscriptionSchedule;
   profile:IProfile;
   schedule: ISchedule[];

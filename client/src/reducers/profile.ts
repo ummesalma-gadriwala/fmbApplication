@@ -1,5 +1,5 @@
 import { FETCH_USER_PROFILE } from './actionType';
-import { IProfile, IToken } from '../type/Type';
+import { IProfile } from '../type/Type';
 
 const INITIAL_STATE:any  = {};
 

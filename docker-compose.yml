@@ -2,6 +2,8 @@ version: '3'
 services:
   web:
     image: node:12-alpine
+    environment:
+      - REACT_APP_API_ENDPOINT=https://aeffmbtestapi.azurewebsites.net/
     ports:
       - "3000:3000"
       - "35729:35729"
@@ -9,15 +11,3 @@ services:
       - ./client:/app
     command: sh -c "npm i && npm run start"
     working_dir: /app
-    links:
-      - mongodb
-  mongodb:
-    image: mongo:4.2-bionic
-    ports:
-      - "27017:27017"
-    volumes:
-      - 'mongodb_data:/data/db'
-
-volumes:
-  mongodb_data:
-    driver: local

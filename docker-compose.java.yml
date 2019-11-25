@@ -1,0 +1,14 @@
+services:
+  web:
+    environment:
+      - REACT_APP_API_ENDPOINT=
+  mongodb:
+    image: mongo:4.2-bionic
+    ports:
+      - "27017:27017"
+    volumes:
+      - 'mongodb_data:/data/db'
+
+volumes:
+  mongodb_data:
+    driver: local

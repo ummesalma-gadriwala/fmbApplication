@@ -1,17 +1,20 @@
 {
-  "short_name": "AEF FMB",
-  "name": "FMB Application",
+  "short_name": "FMB Mississauga (AEF)",
+  "name": "Faizul-Mawaidil-Burhaniyah Mississauga (AEF)",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "32x32",
-      "type": "image/x-icon"
+      "src": "favicon.png",
+      "sizes": "96x96 64x64 32x32 24x24 16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "aeflogo.png",
+      "type": "image/png",
+      "sizes": "260x260 192x192"
     }
   ],
   "start_url": "/dashboard",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#3367D6",
-  "display": "standalone",
-  "theme_color": "#3367D6"
+  "theme_color": "#bf8753",
+  "background_color": "#ffffff"
 }

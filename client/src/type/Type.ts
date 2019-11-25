@@ -53,7 +53,7 @@ export interface Token {
   scopes:string[];
 } 
 
-export interface IAPIError {
+export interface APIError {
   type:string  ,
   message: string | null
 }
@@ -64,7 +64,7 @@ export interface IAppState {
   mealSchedule: SubscriptionSchedule;
   profile:IProfile;
   schedule: ISchedule[];
-  apiError: IAPIError;
+  apiError: APIError;
 }
 
 

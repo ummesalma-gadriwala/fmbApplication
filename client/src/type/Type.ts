@@ -63,7 +63,7 @@ export interface IAppState {
   authentication:Authentication;
   mealSchedule: SubscriptionSchedule;
   profile:Profile;
-  schedule: ISchedule[];
+  schedule: Schedule[];
   apiError: APIError;
 }
 
@@ -93,7 +93,7 @@ export interface IMenu {
     items: IMenuItem[] | [];
 }
 
-export interface ISchedule {
+export interface Schedule {
   dailyDate: string;
   menu: IMenu | null;
   noMeal: boolean;

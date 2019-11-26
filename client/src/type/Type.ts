@@ -10,7 +10,7 @@ export enum DayOfWeek {
   Sunday
 }
 
-export interface ISubscriptionSchedule {
+export interface SubscriptionSchedule {
   optedSchedule:{
     MONDAY:string | null;
     TUESDAY:string | null;
@@ -20,12 +20,12 @@ export interface ISubscriptionSchedule {
     SATURDAY?: string | null;
     SUNDAY?: string | null;
   }
-  overrideSchedules ?:  Array<IOverrideSchedule> | null;
+  overrideSchedules ?:  Array<OverrideSchedule> | null;
   
 }
 
 
-export interface IOverrideSchedule {
+export interface OverrideSchedule {
   overrideStartDate: Date | string;
   overrideEndDate:Date | string;
   weeklyOverrideSchedule: {
@@ -40,35 +40,35 @@ export interface IOverrideSchedule {
   
 }
 
-export interface IAuthentication {
+export interface Authentication {
   authenticated?: string | null;
   errorMessage?: string| null;
-  decodedToken: IToken
+  decodedToken: Token
 }
 
-export interface IToken {
+export interface Token {
   subscriberId: string|null;
   username:string|null;
   roles:string[],
   scopes:string[];
 } 
 
-export interface IAPIError {
+export interface APIError {
   type:string  ,
   message: string | null
 }
 
 
-export interface IAppState {
-  authentication:IAuthentication;
-  mealSchedule: ISubscriptionSchedule;
-  profile:IProfile;
-  schedule: ISchedule[];
-  apiError: IAPIError;
+export interface AppState {
+  authentication:Authentication;
+  mealSchedule: SubscriptionSchedule;
+  profile:Profile;
+  schedule: Schedule[];
+  apiError: APIError;
 }
 
 
-export interface IProfile {
+export interface Profile {
     username : string;
     mobileNumber : string;
     primaryAddress : {
@@ -83,19 +83,19 @@ export interface IProfile {
     email : string;
 }
 
-export interface IMenuItem {
+export interface MenuItem {
    itemName: string;
    menuItemType: string;
 }
 
 
-export interface IMenu {
-    items: IMenuItem[] | [];
+export interface Menu {
+    items: MenuItem[] | [];
 }
 
-export interface ISchedule {
+export interface Schedule {
   dailyDate: string;
-  menu: IMenu | null;
+  menu: Menu | null;
   noMeal: boolean;
   noMealReason: string;
 }

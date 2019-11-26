@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import  requireAuth from '../../../requireAuth';
 import { withStyles } from '@material-ui/core/styles';
 
-import { ISchedule, IAppState, IMenu, IMenuItem } from '../../../type/Type'
+import { Schedule, AppState, Menu, MenuItem } from '../../../type/Type'
 import * as scheduleAction  from '../../../reducers/scheduleAction'
 
 import FormControl from "@material-ui/core/FormControl/FormControl";
@@ -68,9 +68,9 @@ class MenuSchedule extends PureComponent<any, any> {
 
   
 
-    const buildMenuItem = (menuItems: IMenuItem[] | null, noMealReason:string )=>{
+    const buildMenuItem = (menuItems: MenuItem[] | null, noMealReason:string )=>{
         return(
-          menuItems && menuItems.map( (menuItem:IMenuItem, index:number) =>{
+          menuItems && menuItems.map( (menuItem:MenuItem, index:number) =>{
             return (
               <li key={index}> { menuItem.itemName }</li>
             )
@@ -79,7 +79,7 @@ class MenuSchedule extends PureComponent<any, any> {
     }
 
     const buildMenu = () => {
-      return this.props.schedule && this.props.schedule.length > 0 && this.props.schedule.map((day:ISchedule,index: number) => {
+      return this.props.schedule && this.props.schedule.length > 0 && this.props.schedule.map((day:Schedule,index: number) => {
         return (
            dateFns.isSameWeek(new Date(day.dailyDate), this.state.weekStartDate) &&
            <div key={index}  className="daily-menu-container">
@@ -135,10 +135,10 @@ class MenuSchedule extends PureComponent<any, any> {
 }
 
 
-const mapStateToProps = (state: IAppState) => {
+const mapStateToProps = (state: AppState) => {
   console.log(state.schedule);
   return Object.assign({}, state, {
-    schedule: state.schedule as ISchedule[]
+    schedule: state.schedule as Schedule[]
   });
 };
 const styles = (theme:any) => ({

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux';
 import  requireAuth from '../../../requireAuth';
-import { IOverrideSchedule, IAppState } from '../../../type/Type'
+import { OverrideSchedule, AppState } from '../../../type/Type'
 import * as mealscheduleAction  from '../../../reducers/mealscheduleAction'
 
 import FormControl from "@material-ui/core/FormControl/FormControl";
@@ -161,7 +161,7 @@ class SubscriptionInfo extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: IAppState) => {
+const mapStateToProps = (state: AppState) => {
   return Object.assign({}, state, {
     subscriberId : state.authentication.decodedToken.subscriberId,
     mealSchedule: state.mealSchedule

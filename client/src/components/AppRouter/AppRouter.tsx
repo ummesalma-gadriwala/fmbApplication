@@ -12,7 +12,7 @@ import UserForm from "../User/UserForm";
 import MenuSchedule from "../Menu/Subscriber/MenuSchedule";
 import MenuDetails from "../Menu/Subscriber/MenuDetails"
 
-import {IAppState} from '../../type/Type';
+import {AppState} from '../../type/Type';
 
 import { doesUserBelongsToOperation, isUserSubscriber } from '../../util/authorization'
 
@@ -49,7 +49,7 @@ class AppRouter extends Component<any, any> {
   }
 }
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return {
     auth: state.authentication.authenticated
       ? state.authentication.authenticated

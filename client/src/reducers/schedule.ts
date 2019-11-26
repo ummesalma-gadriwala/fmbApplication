@@ -1,5 +1,5 @@
 import { GET_SCHEDULE_MONTHLY } from './actionType';
-import { ISchedule } from '../type/Type';
+import { Schedule } from '../type/Type';
 
 const INITIAL_STATE:any  = [];
 

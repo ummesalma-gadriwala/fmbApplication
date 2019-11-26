@@ -11,7 +11,7 @@ import PersonOutlineIcon from '@material-ui/icons/PersonOutlineTwoTone';
 import { withStyles } from '@material-ui/core/styles';
 import './Navigator';
 
-import {IAppState} from '../../type/Type';
+import {AppState} from '../../type/Type';
 
 import { doesUserBelongsToOperation, isUserSubscriber } from '../../util/authorization'
 
@@ -70,7 +70,7 @@ class Navigator extends Component<any, any> {
   }
 }
 
-function mapStateToProps(state: IAppState) {
+function mapStateToProps(state: AppState) {
   return { authenticated:   state.authentication.authenticated, roles: state.authentication.decodedToken.roles };
 }
 

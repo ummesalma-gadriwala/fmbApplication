@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import  requireAuth from '../../../requireAuth';
 import { withStyles } from '@material-ui/core/styles';
 
-import { ISchedule, IAppState, IMenu, IMenuItem, IOverrideSchedule } from '../../../type/Type'
+import { Schedule, AppState, MenuItem, OverrideSchedule } from '../../../type/Type'
 import * as scheduleAction  from '../../../reducers/scheduleAction'
 import * as mealscheduleAction  from '../../../reducers/mealscheduleAction'
 import isWithinInterval from 'date-fns/esm/fp/isWithinInterval';
@@ -72,9 +72,9 @@ class MenuDetails extends PureComponent<any, any> {
 
    render(){
 
-    const buildMenuItem = (menuItems: IMenuItem[] | null, noMealReason:string )=>{
+    const buildMenuItem = (menuItems: MenuItem[] | null, noMealReason:string )=>{
         return(
-          menuItems && menuItems.map( (menuItem:IMenuItem, index:number) =>{
+          menuItems && menuItems.map( (menuItem:MenuItem, index:number) =>{
             return (
               <li key={index}> { menuItem.itemName }</li>
             )
@@ -83,7 +83,7 @@ class MenuDetails extends PureComponent<any, any> {
     }
 
     const buildMenu = () => {
-      return this.props.schedule && this.props.schedule.length > 0 && this.props.schedule.map((day:ISchedule,index: number) => {
+      return this.props.schedule && this.props.schedule.length > 0 && this.props.schedule.map((day:Schedule,index: number) => {
         return (
            day.dailyDate === this.state.currentDate &&
            <div key={index}  className="daily-menu-container">
@@ -108,7 +108,7 @@ class MenuDetails extends PureComponent<any, any> {
       };
 
       const buildMealSchedule = () => {
-        return this.props.mealSchedule && this.props.mealSchedule.overrideSchedules.length > 0 && this.props.mealSchedule.overrideSchedules.map((overrideSchedule:IOverrideSchedule,index: number) => {
+        return this.props.mealSchedule && this.props.mealSchedule.overrideSchedules.length > 0 && this.props.mealSchedule.overrideSchedules.map((overrideSchedule:OverrideSchedule,index: number) => {
           //console.log(`${dateFns.parseISO(new Date()).getTime()}`);
           //console.log(`${dateFns.parseISO(overrideSchedule.overrideEndDate)}`);
           return (
@@ -163,10 +163,10 @@ class MenuDetails extends PureComponent<any, any> {
 }
 
 
-const mapStateToProps = (state: IAppState) => {
+const mapStateToProps = (state: AppState) => {
   console.log(state.schedule);
   return Object.assign({}, state, {
-    schedule: state.schedule as ISchedule[],
+    schedule: state.schedule as Schedule[],
     subscriberId: state.authentication.decodedToken.subscriberId,
     mealSchedule: state.mealSchedule
   });

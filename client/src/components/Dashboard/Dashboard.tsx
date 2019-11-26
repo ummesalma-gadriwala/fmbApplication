@@ -15,7 +15,7 @@ import RestaurantMenuRoundedIcon from '@material-ui/icons/RestaurantMenuRounded'
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
 import * as scheduleAction  from '../../reducers/scheduleAction'
-import { ISchedule, IAppState } from '../../type/Type'
+import { AppState } from '../../type/Type'
 
 
 import classNames from 'classnames';
@@ -140,7 +140,7 @@ class Dashboard extends Component<any, any> {
   }
 }
 
-const mapStateToProps = (state: IAppState) => {
+const mapStateToProps = (state: AppState) => {
   return {};
 };
 

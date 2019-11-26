@@ -9,14 +9,14 @@ import { GET_SUBSCRIBER_SCHEDULE,
          API_USER_ERROR
         } from './actionType';
 import { GET_THALI_SCHEDULE_ENDPOINT,UPDATE_THALI_SCHEDULE_ENDPOINT , DELETE_THALI_SCHEDULE_ENDPOINT} from '../api/API';
-import { ISubscriptionSchedule, IOverrideSchedule } from '../type/Type';
+import { SubscriptionSchedule, OverrideSchedule } from '../type/Type';
 var dateFns = require('date-fns');
 
 export const getSubscriptionSchedule = (subscriberId: string, workFlowProcessor:Function | null, onErrorCallback: Function | null ) => async (dispatch:Function) => {
   try {
     const response = await axios.get(GET_THALI_SCHEDULE_ENDPOINT(subscriberId)) 
     if(response && response.data) {
-      const subscriptionSchedule: ISubscriptionSchedule = response.data;
+      const subscriptionSchedule: SubscriptionSchedule = response.data;
       dispatch({ type: GET_SUBSCRIBER_SCHEDULE , payload: subscriptionSchedule.optedSchedule });
       if(subscriptionSchedule && subscriptionSchedule.overrideSchedules && subscriptionSchedule.overrideSchedules[0]) {
         dispatch({ type: GET_SUBSCRIBER_OVERRIDESCHEDULE , payload: subscriptionSchedule.overrideSchedules });
@@ -30,9 +30,9 @@ export const getSubscriptionSchedule = (subscriberId: string, workFlowProcessor:
   }
 };
 
-export const addOverrideSchedule = (subscriberId: string, overrideSchedule: IOverrideSchedule, workFlowProcessor:Function, onErrorCallback:Function ) => async (dispatch:Function) => {
+export const addOverrideSchedule = (subscriberId: string, overrideSchedule: OverrideSchedule, workFlowProcessor:Function, onErrorCallback:Function ) => async (dispatch:Function) => {
   try {
-    const addOverrideSchedule:IOverrideSchedule = Object.assign({}, overrideSchedule);
+    const addOverrideSchedule:OverrideSchedule = Object.assign({}, overrideSchedule);
     
     overrideSchedule.overrideStartDate = dateFns.format(overrideSchedule.overrideStartDate, 'yyyy-MM-dd',{'awareOfUnicodeTokens': true});
     overrideSchedule.overrideEndDate = dateFns.format(overrideSchedule.overrideEndDate, 'yyyy-MM-dd',{'awareOfUnicodeTokens': true})

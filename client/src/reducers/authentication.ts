@@ -1,10 +1,10 @@
 import { AUTH_USER, AUTH_ERROR } from './actionType';
 import { LOCAL_STORAGE_TOKEN} from '../util/constant';
-import { IAuthentication, IToken } from '../type/Type';
+import { Authentication, Token } from '../type/Type';
 import jwt from 'jsonwebtoken';
 
 
-const INITIAL_STATE:IAuthentication  = {
+const INITIAL_STATE:Authentication  = {
   authenticated: localStorage.getItem(LOCAL_STORAGE_TOKEN) ? localStorage.getItem(LOCAL_STORAGE_TOKEN) : '' ,
   errorMessage: '',
   decodedToken : {
@@ -19,7 +19,7 @@ const INITIAL_STATE:IAuthentication  = {
    }
 };
 
-export default function(state:IAuthentication = INITIAL_STATE, action: any) {
+export default function(state:Authentication = INITIAL_STATE, action: any) {
   switch (action.type) {
     case AUTH_USER:
       //@ts-ignore

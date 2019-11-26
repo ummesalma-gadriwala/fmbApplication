@@ -1,9 +1,9 @@
 import { FETCH_USER_PROFILE } from './actionType';
-import { IProfile, IToken } from '../type/Type';
+import { Profile } from '../type/Type';
 
 const INITIAL_STATE:any  = {};
 
-export default function(state:IProfile = INITIAL_STATE, action: any) {
+export default function(state:Profile = INITIAL_STATE, action: any) {
   switch (action.type) {
     case FETCH_USER_PROFILE:
       console.log(action)

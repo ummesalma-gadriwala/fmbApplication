@@ -1,24 +1,24 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 //import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-import { connect } from "react-redux";
-import * as authenticationAction from "../../reducers/authenticationAction";
-import FormValidator from "../../util/FormValidator";
-import Spinner from "../Spinner/Spinner";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import FormControl from "@material-ui/core/FormControl";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import LockIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
+import { connect } from 'react-redux';
+import * as authenticationAction from '../../reducers/authenticationAction';
+import FormValidator from '../../util/FormValidator';
+import Spinner from '../Spinner/Spinner';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import FormControl from '@material-ui/core/FormControl';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import LockIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
 //import withStyles from '../Common/materialUIWithStyle';
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Paper from "@material-ui/core/Paper";
-import "./Login.css";
-import "../Common/styles.css";
-import { workFlowRouteProcessor } from "../../util/workFlowProcessor";
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Paper from '@material-ui/core/Paper';
+import './Login.css';
+import '../Common/styles.css';
+import { workFlowRouteProcessor } from '../../util/workFlowProcessor';
 
 class Login extends Component<any, any> {
   loginValidator: FormValidator;
@@ -27,22 +27,22 @@ class Login extends Component<any, any> {
     super(props);
     this.loginValidator = new FormValidator([
       {
-        field: "username",
-        method: "isEmpty",
+        field: 'username',
+        method: 'isEmpty',
         validWhen: false,
-        message: "Please enter your ITS Number."
+        message: 'Please enter your ITS Number.'
       },
       {
-        field: "username",
-        method: "isInt",
+        field: 'username',
+        method: 'isInt',
         validWhen: true,
-        message: "That is not a valid ITS Number."
+        message: 'That is not a valid ITS Number.'
       },
       {
-        field: "firstLevelAuthenticationAnswer",
-        method: "isEmpty",
+        field: 'firstLevelAuthenticationAnswer',
+        method: 'isEmpty',
         validWhen: false,
-        message: "Pleave enter your Postal code."
+        message: 'Pleave enter your Postal code.'
       },
       // {
       //   field: 'firstLevelAuthenticationAnswer',
@@ -51,17 +51,17 @@ class Login extends Component<any, any> {
       //   message: 'That is not a valid Postal code..'
       // },
       {
-        field: "firstLevelAuthenticationAnswer",
-        method: "matches",
+        field: 'firstLevelAuthenticationAnswer',
+        method: 'matches',
         args: [/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/], // args is an optional array of arguements that will be passed to the validation method
         validWhen: true,
-        message: "That is not a valid Postal code."
+        message: 'That is not a valid Postal code.'
       }
     ]);
 
     this.state = {
-      username: "",
-      firstLevelAuthenticationAnswer: "",
+      username: '',
+      firstLevelAuthenticationAnswer: '',
       validation: this.loginValidator.valid(),
       isInProgres: false
     };
@@ -93,10 +93,10 @@ class Login extends Component<any, any> {
           firstLevelAuthenticationAnswer: this.state
             .firstLevelAuthenticationAnswer
         },
-        (workFlowRoute: String) => {
+        (workFlowRoute: string) => {
           workFlowRouteProcessor(
             this.props.history,
-            "/dashboard",
+            '/dashboard',
             workFlowRoute
           );
         },
@@ -152,7 +152,7 @@ class Login extends Component<any, any> {
                   this.state.validation.firstLevelAuthenticationAnswer.isInvalid
                 }
                 inputProps={{
-                  maxLength: 6,
+                  maxLength: 6
                 }}
               />
               <FormHelperText>
@@ -175,7 +175,4 @@ class Login extends Component<any, any> {
     );
   }
 }
-export default connect(
-  null,
-  authenticationAction
-)(Login);
+export default connect(null, authenticationAction)(Login);

@@ -1,9 +1,8 @@
 import { API_SERVER_ERROR, API_USER_ERROR } from './actionType';
-import { SERVER_ERROR, USER_ERROR} from '../util/constant';
-
+import { SERVER_ERROR, USER_ERROR } from '../util/constant';
 
 const INITIAL_STATE = {
-  type:''  ,
+  type: '',
   message: ''
 };
 
@@ -17,4 +16,3 @@ export default function(state = INITIAL_STATE, action: any) {
       return state;
   }
 }
- 

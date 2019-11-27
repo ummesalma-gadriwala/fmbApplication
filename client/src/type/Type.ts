@@ -1,4 +1,4 @@
-import apiError from "../reducers/apiError";
+import apiError from '../reducers/apiError';
 
 export enum DayOfWeek {
   Monday,
@@ -11,86 +11,80 @@ export enum DayOfWeek {
 }
 
 export interface SubscriptionSchedule {
-  optedSchedule:{
-    MONDAY:string | null;
-    TUESDAY:string | null;
-    WEDNESDAY:string | null;
-    THURSDAY:string | null;
-    FRIDAY:string | null;
+  optedSchedule: {
+    MONDAY: string | null;
+    TUESDAY: string | null;
+    WEDNESDAY: string | null;
+    THURSDAY: string | null;
+    FRIDAY: string | null;
     SATURDAY?: string | null;
     SUNDAY?: string | null;
-  }
-  overrideSchedules ?:  Array<OverrideSchedule> | null;
-  
+  };
+  overrideSchedules?: Array<OverrideSchedule> | null;
 }
-
 
 export interface OverrideSchedule {
   overrideStartDate: Date | string;
-  overrideEndDate:Date | string;
+  overrideEndDate: Date | string;
   weeklyOverrideSchedule: {
-    MONDAY:string | null;
-    TUESDAY:string | null;
-    WEDNESDAY:string | null;
-    THURSDAY:string | null;
-    FRIDAY:string | null;
+    MONDAY: string | null;
+    TUESDAY: string | null;
+    WEDNESDAY: string | null;
+    THURSDAY: string | null;
+    FRIDAY: string | null;
     SATURDAY?: string | null;
     SUNDAY?: string | null;
-  }
-  
+  };
 }
 
 export interface Authentication {
   authenticated?: string | null;
-  errorMessage?: string| null;
-  decodedToken: Token
+  errorMessage?: string | null;
+  decodedToken: Token;
 }
 
 export interface Token {
-  subscriberId: string|null;
-  username:string|null;
-  roles:string[],
-  scopes:string[];
-} 
-
-export interface APIError {
-  type:string  ,
-  message: string | null
+  subscriberId: string | null;
+  username: string | null;
+  roles: string[];
+  scopes: string[];
 }
 
+export interface APIError {
+  type: string;
+  message: string | null;
+}
 
 export interface AppState {
-  authentication:Authentication;
+  authentication: Authentication;
   mealSchedule: SubscriptionSchedule;
-  profile:Profile;
+  profile: Profile;
   schedule: Schedule[];
   apiError: APIError;
 }
 
-
 export interface Profile {
-    username : string;
-    mobileNumber : string;
-    primaryAddress : {
-        streetName : string;
-        postalCode : string;
-        city : string;
-        province : string;
-        country : string;
-    },
-    firstName : string;
-    lastName : string;
-    email : string;
+  username: string;
+  mobileNumber: string;
+  primaryAddress: {
+    streetName: string;
+    postalCode: string;
+    city: string;
+    province: string;
+    country: string;
+  };
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 export interface MenuItem {
-   itemName: string;
-   menuItemType: string;
+  itemName: string;
+  menuItemType: string;
 }
 
-
 export interface Menu {
-    items: MenuItem[] | [];
+  items: MenuItem[] | [];
 }
 
 export interface Schedule {
@@ -99,5 +93,3 @@ export interface Schedule {
   noMeal: boolean;
   noMealReason: string;
 }
-
-

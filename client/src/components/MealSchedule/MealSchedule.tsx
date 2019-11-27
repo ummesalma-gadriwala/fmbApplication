@@ -1,6 +1,6 @@
 import 'date-fns';
-import  React, { Component } from 'react';
-import  requireAuth from '../../requireAuth';
+import React, { Component } from 'react';
+import requireAuth from '../../requireAuth';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,22 +13,22 @@ import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { OverrideSchedule, AppState } from '../../type/Type'
+import { OverrideSchedule, AppState } from '../../type/Type';
 import './MealSchedule.css';
 import getOverlappingDaysInRanges from 'date-fns/esm/fp/getOverlappingDaysInIntervals';
-import * as mealscheduleAction  from '../../reducers/mealscheduleAction'
+import * as mealscheduleAction from '../../reducers/mealscheduleAction';
 import { connect } from 'react-redux';
 import Spinner from '../Spinner/Spinner';
 import { Alert } from 'reactstrap';
 import ListOverrideMealSchedule from './ListOverrideMealSchedule';
 import Divider from '@material-ui/core/Divider';
 
-var dateFns = require('date-fns');
+const dateFns = require('date-fns');
 
 interface IMealScheduleState {
-  existingPlanOverrides ?: [OverrideSchedule];
-  newPlanOverride:OverrideSchedule
-  thaliSchedule: Object;
+  existingPlanOverrides?: [OverrideSchedule];
+  newPlanOverride: OverrideSchedule;
+  thaliSchedule: Record<string, any>;
   isBusy: boolean;
   isInValid: boolean;
 }
@@ -37,58 +37,70 @@ class MealSchedule extends Component<any, IMealScheduleState> {
   constructor(props: any) {
     super(props);
     this.handleMealCountChange = this.handleMealCountChange.bind(this);
-    const newPlanOverride:OverrideSchedule= {
-          overrideStartDate: dateFns.addWeeks(new Date(),2),
-          overrideEndDate:dateFns.addWeeks(new Date(),3),
-          weeklyOverrideSchedule : {
-            MONDAY:null,
-            TUESDAY:null,
-            WEDNESDAY:null,
-            THURSDAY:null,
-            FRIDAY:null
-          }
+    const newPlanOverride: OverrideSchedule = {
+      overrideStartDate: dateFns.addWeeks(new Date(), 2),
+      overrideEndDate: dateFns.addWeeks(new Date(), 3),
+      weeklyOverrideSchedule: {
+        MONDAY: null,
+        TUESDAY: null,
+        WEDNESDAY: null,
+        THURSDAY: null,
+        FRIDAY: null
+      }
     };
     this.state = {
-         newPlanOverride:newPlanOverride,
-         thaliSchedule : {},
-         isBusy:false,
-         isInValid: false
-    }
-  };
-  componentDidMount(){
-    this.setState({isBusy : true});
+      newPlanOverride: newPlanOverride,
+      thaliSchedule: {},
+      isBusy: false,
+      isInValid: false
+    };
+  }
+  componentDidMount() {
+    this.setState({ isBusy: true });
     this.props.getSubscriptionSchedule(this.props.subscriberId);
-  };
- 
-  componentDidUpdate(prevProps:any) {
-    if(this.props.mealSchedule !== prevProps.mealSchedule && this.props.mealSchedule.optedSchedule){
+  }
+
+  componentDidUpdate(prevProps: any) {
+    if (
+      this.props.mealSchedule !== prevProps.mealSchedule &&
+      this.props.mealSchedule.optedSchedule
+    ) {
       this.setState({
-        isBusy:false,
+        isBusy: false,
         thaliSchedule: this.props.mealSchedule.optedSchedule,
         existingPlanOverrides: this.props.mealSchedule.overrideSchedules
       });
     }
-    if(this.props.mealSchedule !== prevProps.mealSchedule && this.props.mealSchedule.overrideSchedules != prevProps.mealSchedule.overrideSchedules){
+    if (
+      this.props.mealSchedule !== prevProps.mealSchedule &&
+      this.props.mealSchedule.overrideSchedules !=
+        prevProps.mealSchedule.overrideSchedules
+    ) {
       this.setState({
-        isBusy:false,
+        isBusy: false,
         existingPlanOverrides: this.props.mealSchedule.overrideSchedules
       });
     }
-  };
+  }
 
   handleMealCountChange(event: any) {
     const target = event.target;
     const value = target.value;
-    const name : string = target.name;
-    const changedOverridePlan:OverrideSchedule = Object.assign({}, this.state.newPlanOverride);
-    const changedKey = Object.keys(this.state.newPlanOverride.weeklyOverrideSchedule).find( key => key===name);
+    const name: string = target.name;
+    const changedOverridePlan: OverrideSchedule = Object.assign(
+      {},
+      this.state.newPlanOverride
+    );
+    const changedKey = Object.keys(
+      this.state.newPlanOverride.weeklyOverrideSchedule
+    ).find(key => key === name);
     //@ts-ignore
-    changedOverridePlan.weeklyOverrideSchedule[changedKey]= value;
+    changedOverridePlan.weeklyOverrideSchedule[changedKey] = value;
     this.setState({
-      newPlanOverride: changedOverridePlan 
+      newPlanOverride: changedOverridePlan
     });
-  };
- 
+  }
+
   render() {
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -96,10 +108,10 @@ class MealSchedule extends Component<any, IMealScheduleState> {
       PaperProps: {
         style: {
           maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-          width: 250,
-        },
-      },
-    }; 
+          width: 250
+        }
+      }
+    };
     // const buildSchedule = () => {
     //   return this.state.thaliSchedule && Object.keys(this.state.thaliSchedule).length > 0 ? Object.keys(this.state.thaliSchedule).map((day:any,index) => {
     //     return (
@@ -115,7 +127,7 @@ class MealSchedule extends Component<any, IMealScheduleState> {
     //             onChange={this.handleMealCountChange}
     //             input={<Input id= {day} />}
     //             MenuProps={MenuProps}
-    //           > 
+    //           >
     //             <MenuItem key="0" value="0">No Thali</MenuItem>
     //             <MenuItem key="1" value="1">1 </MenuItem>
     //             <MenuItem key="2" value="2">2 </MenuItem>
@@ -125,15 +137,19 @@ class MealSchedule extends Component<any, IMealScheduleState> {
     //         </TableCell>
     //      </TableRow>
     //     );
-    //   }) 
+    //   })
     //   : null;
     // }
     const validateAndOverride = () => {
-      this.setState({ isInValid : false});
-      const isValidDate : boolean = (dateFns.differenceInHours(this.state.newPlanOverride.overrideEndDate, this.state.newPlanOverride.overrideStartDate) < 0);
-      this.setState({ isInValid : isValidDate })
-        
-      //Overlapping 
+      this.setState({ isInValid: false });
+      const isValidDate: boolean =
+        dateFns.differenceInHours(
+          this.state.newPlanOverride.overrideEndDate,
+          this.state.newPlanOverride.overrideStartDate
+        ) < 0;
+      this.setState({ isInValid: isValidDate });
+
+      //Overlapping
 
       // this.props.mealSchedule.overrideSchedules.forEach((overrideSchedule:IOverrideSchedule )=> {
       //   //@ts-ignore
@@ -146,75 +162,100 @@ class MealSchedule extends Component<any, IMealScheduleState> {
       //   this.setState({ isInValid : true});
       //   return;
       //  }
-    
+
       // });
-      
+
       if (!isValidDate) {
-        this.setState({isBusy : true});
-        const cancelPlan:OverrideSchedule = Object.assign({}, this.state.newPlanOverride);
-        cancelPlan.weeklyOverrideSchedule.MONDAY=  "0";
-        cancelPlan.weeklyOverrideSchedule.TUESDAY=  "0";
-        cancelPlan.weeklyOverrideSchedule.WEDNESDAY=  "0";
-        cancelPlan.weeklyOverrideSchedule.THURSDAY=  "0";
-        cancelPlan.weeklyOverrideSchedule.FRIDAY=  "0";
-        cancelPlan.weeklyOverrideSchedule.SATURDAY=  "0";
-        cancelPlan.weeklyOverrideSchedule.SUNDAY=  "0";
+        this.setState({ isBusy: true });
+        const cancelPlan: OverrideSchedule = Object.assign(
+          {},
+          this.state.newPlanOverride
+        );
+        cancelPlan.weeklyOverrideSchedule.MONDAY = '0';
+        cancelPlan.weeklyOverrideSchedule.TUESDAY = '0';
+        cancelPlan.weeklyOverrideSchedule.WEDNESDAY = '0';
+        cancelPlan.weeklyOverrideSchedule.THURSDAY = '0';
+        cancelPlan.weeklyOverrideSchedule.FRIDAY = '0';
+        cancelPlan.weeklyOverrideSchedule.SATURDAY = '0';
+        cancelPlan.weeklyOverrideSchedule.SUNDAY = '0';
         this.setState({
-          newPlanOverride: cancelPlan 
+          newPlanOverride: cancelPlan
         });
-        return this.props.addOverrideSchedule(this.props.subscriberId, this.state.newPlanOverride,null, () => this.setState({ isBusy: false }));
+        return this.props.addOverrideSchedule(
+          this.props.subscriberId,
+          this.state.newPlanOverride,
+          null,
+          () => this.setState({ isBusy: false })
+        );
       }
-    }                    
+    };
 
     return (
-            <div className="MainSchedule-Container">
-              { this.state.isInValid  &&
-                <div>
-                     <Alert color="warning">Please Enter Valid Date</Alert>
-                </div>   
-              }
-              <Spinner active= { this.state.isBusy } >
-                <ListOverrideMealSchedule
-                 overrideSchedules = { this.props.mealSchedule.overrideSchedules}
-                 deleteOverrideScheduleFunc = { this.props.deleteOverrideSchedule }
-                 subscriberId = { this.props.subscriberId }
-                /> 
-                <div className ="Margin-Container">
-                  <h6> Vacation Planner </h6>
-                  <Divider/>
-                  <p>Please select dates where you dont want thali prepared for your family</p>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <div className ="MealSchedule-Datepicker-Container">
-                      <DatePicker  
-                        name={"startDate"}
-                        minDate = { dateFns.format( dateFns.addWeeks(new Date(),2),'yyyy-MM-dd',{ awareOfUnicodeTokens: true }) }
-                        maxDate = { dateFns.format( dateFns.addMonths(new Date(),2),'yyyy-MM-dd',{ awareOfUnicodeTokens: true }) }
-                        margin="normal"
-                        label="From Date"
-                        value={ this.state.newPlanOverride.overrideStartDate }
-                        onChange={ (value)=> {
-                          const changedOverridePlan:OverrideSchedule = Object.assign({}, this.state.newPlanOverride);
-                          changedOverridePlan.overrideStartDate= value;   
-                          this.setState({newPlanOverride:changedOverridePlan});
-                        }}
-                      />
-                      <DatePicker  
-                        name={"endDate"}
-                        minDate = { dateFns.addWeeks(new Date(),3) }
-                        maxDate = { dateFns.addMonths(new Date(),3) }
-                        margin="normal"
-                        label="To Date"
-                        value={ this.state.newPlanOverride.overrideEndDate }
-                        onChange={ (value)=> {
-                          const changedOverridePlan:OverrideSchedule = Object.assign({}, this.state.newPlanOverride);
-                          changedOverridePlan.overrideEndDate= value;      
-                          this.setState({newPlanOverride:changedOverridePlan});
-                        }}
-                      />
-                    </div>
-                  </MuiPickersUtilsProvider>
-                  
-                  {/* <Paper className ="Margin-Container">
+      <div className="MainSchedule-Container">
+        {this.state.isInValid && (
+          <div>
+            <Alert color="warning">Please Enter Valid Date</Alert>
+          </div>
+        )}
+        <Spinner active={this.state.isBusy}>
+          <ListOverrideMealSchedule
+            overrideSchedules={this.props.mealSchedule.overrideSchedules}
+            deleteOverrideScheduleFunc={this.props.deleteOverrideSchedule}
+            subscriberId={this.props.subscriberId}
+          />
+          <div className="Margin-Container">
+            <h6> Vacation Planner </h6>
+            <Divider />
+            <p>
+              Please select dates where you dont want thali prepared for your
+              family
+            </p>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <div className="MealSchedule-Datepicker-Container">
+                <DatePicker
+                  name={'startDate'}
+                  minDate={dateFns.format(
+                    dateFns.addWeeks(new Date(), 2),
+                    'yyyy-MM-dd',
+                    { awareOfUnicodeTokens: true }
+                  )}
+                  maxDate={dateFns.format(
+                    dateFns.addMonths(new Date(), 2),
+                    'yyyy-MM-dd',
+                    { awareOfUnicodeTokens: true }
+                  )}
+                  margin="normal"
+                  label="From Date"
+                  value={this.state.newPlanOverride.overrideStartDate}
+                  onChange={value => {
+                    const changedOverridePlan: OverrideSchedule = Object.assign(
+                      {},
+                      this.state.newPlanOverride
+                    );
+                    changedOverridePlan.overrideStartDate = value;
+                    this.setState({ newPlanOverride: changedOverridePlan });
+                  }}
+                />
+                <DatePicker
+                  name={'endDate'}
+                  minDate={dateFns.addWeeks(new Date(), 3)}
+                  maxDate={dateFns.addMonths(new Date(), 3)}
+                  margin="normal"
+                  label="To Date"
+                  value={this.state.newPlanOverride.overrideEndDate}
+                  onChange={value => {
+                    const changedOverridePlan: OverrideSchedule = Object.assign(
+                      {},
+                      this.state.newPlanOverride
+                    );
+                    changedOverridePlan.overrideEndDate = value;
+                    this.setState({ newPlanOverride: changedOverridePlan });
+                  }}
+                />
+              </div>
+            </MuiPickersUtilsProvider>
+
+            {/* <Paper className ="Margin-Container">
                     <Table>
                       <TableHead>
                         <TableRow>
@@ -227,29 +268,27 @@ class MealSchedule extends Component<any, IMealScheduleState> {
                       </TableBody>
                     </Table>
                   </Paper> */}
-                  <div className ="Margin-Container">
-                    <Button
-                      type="button"
-                      fullWidth
-                      variant="contained"
-                      color="secondary"
-                      //@ts-ignore
-                      onClick={()=> validateAndOverride()}
-                    >
-                      Cancel Thali
-                    </Button>
-                  </div>
-                </div>  
-              </Spinner>  
-             </div> 
-
-                
+            <div className="Margin-Container">
+              <Button
+                type="button"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                //@ts-ignore
+                onClick={() => validateAndOverride()}
+              >
+                Cancel Thali
+              </Button>
+            </div>
+          </div>
+        </Spinner>
+      </div>
     );
   }
-};
+}
 const mapStateToProps = (state: AppState) => {
   return Object.assign({}, state, {
-    subscriberId : state.authentication.decodedToken.subscriberId,
+    subscriberId: state.authentication.decodedToken.subscriberId,
     mealSchedule: state.mealSchedule
   });
 };
@@ -259,4 +298,6 @@ const mapStateToProps = (state: AppState) => {
 //   })
 // }
 
-export default requireAuth(connect(mapStateToProps, mealscheduleAction) (MealSchedule));
+export default requireAuth(
+  connect(mapStateToProps, mealscheduleAction)(MealSchedule)
+);

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import  requireAuth from '../../requireAuth';
+import requireAuth from '../../requireAuth';
 import { connect } from 'react-redux';
-
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -14,71 +13,63 @@ import CalendarTodayRoundedIcon from '@material-ui/icons/CalendarTodayRounded';
 import RestaurantMenuRoundedIcon from '@material-ui/icons/RestaurantMenuRounded';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
-import * as scheduleAction  from '../../reducers/scheduleAction'
-import { AppState } from '../../type/Type'
-
+import * as scheduleAction from '../../reducers/scheduleAction';
+import { AppState } from '../../type/Type';
 
 import classNames from 'classnames';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
-import './Dashboard.css'
-
-
-
+import './Dashboard.css';
 
 class Dashboard extends Component<any, any> {
-  
-  constructor(props:any){
+  constructor(props: any) {
     super(props);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     //this.setState({isBusy : true});
     this.props.getMonthsSchedule();
-  };
-  
-  
-  render () {
-    const MealScheduleLink = (props:any) => <Link to="/meal-schedule" {...props} />
-    const MenuScheduleLink = (props:any) => <Link to="/menu-schedule" {...props} />
+  }
+
+  render() {
+    const MealScheduleLink = (props: any) => (
+      <Link to="/meal-schedule" {...props} />
+    );
+    const MenuScheduleLink = (props: any) => (
+      <Link to="/menu-schedule" {...props} />
+    );
     return (
       <div>
         <div className="Dashboard-container">
-        <div className="Dashboard-card-container">
-            <Card className= "Card-container">
+          <div className="Dashboard-card-container">
+            <Card className="Card-container">
               <CardContent>
-                <CalendarTodayRoundedIcon fontSize= "large"/>
+                <CalendarTodayRoundedIcon fontSize="large" />
                 <Typography variant="h5" component="h2">
-                   By   
+                  By
                 </Typography>
                 <Typography component="p">
                   Hussain and Rasheeda Khambaati Famliy
                   <br />
                 </Typography>
-                <Typography variant="h6">
-                   Menu   
-                </Typography>
+                <Typography variant="h6">Menu</Typography>
                 <Typography component="ul">
-                  
-                    <li>Home Made Roti</li>
-                    <li>Jeera Rice</li>
-                    <li>Gosht Tarkaari</li>
-                   
+                  <li>Home Made Roti</li>
+                  <li>Jeera Rice</li>
+                  <li>Gosht Tarkaari</li>
                 </Typography>
               </CardContent>
               {/* <CardActions>
                 <Button size="small">Learn More</Button>
               </CardActions> */}
-            </Card> 
+            </Card>
           </div>
           <div className="Dashboard-card-container">
-            <Card className= "Card-container">
+            <Card className="Card-container">
               <CardContent>
-                <Typography  color="textSecondary">
-                  Sector : Jamali
-                </Typography>
-                <Typography  color="textSecondary">
+                <Typography color="textSecondary">Sector : Jamali</Typography>
+                <Typography color="textSecondary">
                   Thali Pick up Address
                 </Typography>
                 <Typography component="p">
@@ -89,36 +80,49 @@ class Dashboard extends Component<any, any> {
               {/* <CardActions>
                 <Button size="small">Learn More</Button>
               </CardActions> */}
-            </Card> 
+            </Card>
           </div>
           <div className="Dashboard-button-row-container">
             <div className="Dashboard-button-row">
               <div className="Dashboard-button-container">
-                <Button component={MenuScheduleLink} variant="contained" color="secondary" className="Dashboard-button" >
-                  <span className="Dashboard-button-content-container">  
+                <Button
+                  component={MenuScheduleLink}
+                  variant="contained"
+                  color="secondary"
+                  className="Dashboard-button"
+                >
+                  <span className="Dashboard-button-content-container">
                     Menu
                     <RestaurantMenuRoundedIcon />
-                  </span>    
+                  </span>
                 </Button>
               </div>
               <div className="Dashboard-button-container">
-                <Button component={MealScheduleLink} variant="contained" color="secondary" className="Dashboard-button">
-                <span className="Dashboard-button-content-container">   
-                   <p>Going on Vacation</p>
-                  <CreateRoundedIcon/>
-                </span>  
+                <Button
+                  component={MealScheduleLink}
+                  variant="contained"
+                  color="secondary"
+                  className="Dashboard-button"
+                >
+                  <span className="Dashboard-button-content-container">
+                    <p>Going on Vacation</p>
+                    <CreateRoundedIcon />
+                  </span>
                 </Button>
-              </div> 
-            </div>  
-            <div className="Dashboard-button-row">  
+              </div>
+            </div>
+            <div className="Dashboard-button-row">
               <div className="Dashboard-button-container">
-              <Button  variant="contained" color="secondary" className="Dashboard-button" >
-                <span className="Dashboard-button-content-container">  
-                  Request Salwaat/Fateha
-                  <AddCircleOutlineIcon />
-                </span>  
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className="Dashboard-button"
+                >
+                  <span className="Dashboard-button-content-container">
+                    Request Salwaat/Fateha
+                    <AddCircleOutlineIcon />
+                  </span>
                 </Button>
-                
               </div>
               {/* <div className="Dashboard-button-container">
               <Button variant="contained" color="secondary" className="Dashboard-button" >
@@ -129,14 +133,12 @@ class Dashboard extends Component<any, any> {
                 </Button>
                 
               </div>      */}
-            </div>  
-          </div>  
+            </div>
+          </div>
         </div>
-      <div>
-      {/*  */}
-    </div>
-    </div> 
-    )
+        <div>{/*  */}</div>
+      </div>
+    );
   }
 }
 
@@ -144,4 +146,4 @@ const mapStateToProps = (state: AppState) => {
   return {};
 };
 
-export default requireAuth(connect(mapStateToProps, scheduleAction) (Dashboard));
+export default requireAuth(connect(mapStateToProps, scheduleAction)(Dashboard));

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import FormControl from "@material-ui/core/FormControl";
-import { Button } from "@material-ui/core";
+import React, { Component } from 'react';
+import FormControl from '@material-ui/core/FormControl';
+import { Button } from '@material-ui/core';
 
 export default class ContributionInfo extends React.Component<any, any> {
   constructor(props: any) {

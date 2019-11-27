@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { AUTH_USER, AUTH_ERROR } from './actionType';
-import { TOKEN_API_ENPOINT, USER_PROFILE_ENDPOINT} from '../api/API';
-import { LOCAL_STORAGE_TOKEN} from '../util/constant';
+import { TOKEN_API_ENPOINT, USER_PROFILE_ENDPOINT } from '../api/API';
+import { LOCAL_STORAGE_TOKEN } from '../util/constant';
 import { createToken } from '../api/axiosInterceptor';
 import { workFlowRouteProcessor } from '../util/workFlowProcessor';
 import jwt from 'jsonwebtoken';
 import { Token } from '../type/Type';
-
 
 // export const signup = (formProps:object, callback:Function) => async (dispatch:Function) => {
 //   try {
@@ -23,21 +22,25 @@ import { Token } from '../type/Type';
 //   }
 // };
 
-export const signin = (formProps:object, workFlowProcessor:Function, onErrorCallback: Function ) => async (dispatch:Function) => {
+export const signin = (
+  formProps: object,
+  workFlowProcessor: Function,
+  onErrorCallback: Function
+) => async (dispatch: Function) => {
   try {
-    const response = await createToken(
-      TOKEN_API_ENPOINT,
-      formProps
-    );
+    const response = await createToken(TOKEN_API_ENPOINT, formProps);
     dispatch({ type: AUTH_USER, payload: response.data.token });
     localStorage.setItem(LOCAL_STORAGE_TOKEN, response.data.token);
-    workFlowProcessor(response.data.workFlowResponse && response.data.workFlowResponse.goToRoute);
-    const decodeToken  = jwt.decode(response.data.token) as Token; 
-    const userResponse = await axios.get(USER_PROFILE_ENDPOINT(decodeToken.username));
+    workFlowProcessor(
+      response.data.workFlowResponse && response.data.workFlowResponse.goToRoute
+    );
+    const decodeToken = jwt.decode(response.data.token) as Token;
+    const userResponse = await axios.get(
+      USER_PROFILE_ENDPOINT(decodeToken.username)
+    );
     //console.log('userResponse---->', userResponse);
-    
   } catch (e) {
-    onErrorCallback(); 
+    onErrorCallback();
     dispatch({ type: AUTH_ERROR, payload: 'Invalid login credentials' });
   }
 };

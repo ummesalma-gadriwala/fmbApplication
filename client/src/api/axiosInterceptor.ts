@@ -1,7 +1,7 @@
-import axios from "axios";
-import { LOCAL_STORAGE_TOKEN } from "../util/constant";
-import { store } from "../store/store";
-import { API_SERVER_ERROR, API_USER_ERROR } from "../reducers/actionType";
+import axios from 'axios';
+import { LOCAL_STORAGE_TOKEN } from '../util/constant';
+import { store } from '../store/store';
+import { API_SERVER_ERROR, API_USER_ERROR } from '../reducers/actionType';
 
 // Add a request interceptor
 axios.interceptors.request.use(
@@ -17,25 +17,34 @@ axios.interceptors.request.use(
   }
 );
 // Add a response interceptor
-axios.interceptors.response.use(function (response) {
-  // Do something with response data
-  //console.log('response', response.headers);
-  response.headers.Authorization  &&  localStorage.setItem(LOCAL_STORAGE_TOKEN,response.config.headers.Authorization ); 
-  return response;
-}, function (error) {
-  // Do something with response error
-  if (!error.response) {
-    store.dispatch({ type: API_SERVER_ERROR });
-  } else if(error.response.status.toString().startsWith('4') ){
-    if(error.response.status === 401) {
-      localStorage.removeItem(LOCAL_STORAGE_TOKEN);
-    } else {
-    store.dispatch({ type: API_USER_ERROR });
+axios.interceptors.response.use(
+  function(response) {
+    // Do something with response data
+    //console.log('response', response.headers);
+    response.headers.Authorization &&
+      localStorage.setItem(
+        LOCAL_STORAGE_TOKEN,
+        response.config.headers.Authorization
+      );
+    return response;
+  },
+  function(error) {
+    // Do something with response error
+    if (!error.response) {
+      store.dispatch({ type: API_SERVER_ERROR });
+    } else if (error.response.status.toString().startsWith('4')) {
+      if (error.response.status === 401) {
+        localStorage.removeItem(LOCAL_STORAGE_TOKEN);
+      } else {
+        store.dispatch({ type: API_USER_ERROR });
+      }
+    } else if (error.response.status.toString().startsWith('5')) {
+      store.dispatch({ type: API_SERVER_ERROR });
     }
-  }else if(error.response.status.toString().startsWith('5')){
-    store.dispatch({ type: API_SERVER_ERROR });
   }
-});
+);
 
-export const createToken = (TOKEN_API_ENPOINT: any, formProps: Object) =>
-  axios.post(TOKEN_API_ENPOINT, formProps);
+export const createToken = (
+  TOKEN_API_ENPOINT: any,
+  formProps: Record<string, any>
+) => axios.post(TOKEN_API_ENPOINT, formProps);

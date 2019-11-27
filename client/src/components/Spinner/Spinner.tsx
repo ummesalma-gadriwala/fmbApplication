@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 //@ts-ignore
-import LoadingOverlay from "react-loading-overlay";
+import LoadingOverlay from 'react-loading-overlay';
 //@ts-ignore
-import BounceLoader from "react-spinners/BounceLoader";
+import BounceLoader from 'react-spinners/BounceLoader';
 //@ts-ignore
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledLoader = styled(LoadingOverlay)`
   width: 100%;
@@ -23,7 +23,7 @@ export default function Spinner({ active, children }) {
     <StyledLoader
       active={active}
       classNamePrefix="Spinner_"
-      spinner={<BounceLoader color={"#4A90E2"} />}
+      spinner={<BounceLoader color={'#4A90E2'} />}
     >
       {children}
     </StyledLoader>

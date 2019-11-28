@@ -20,3 +20,24 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'client'
+    Contents: 'web.config'
+    TargetFolder: 'client/build'
+  displayName: 'Copy Files to: web.config'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'client'
+    Contents: 'build\**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+
+
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: 'client/build'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'

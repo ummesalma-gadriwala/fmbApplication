@@ -13,10 +13,6 @@ import { Alert } from 'reactstrap';
 import ListOverrideMealSchedule from './ListOverrideMealSchedule';
 import Divider from '@material-ui/core/Divider';
 
-
-
-
-
 const dateFns = require('date-fns');
 
 interface IMealScheduleState {

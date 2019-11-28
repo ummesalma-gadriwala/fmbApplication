@@ -22,6 +22,6 @@ public class SubscriptionSchedule extends APIResponse {
 	private String subscriberId; //hof
 	private Map <DayOfWeek, Integer > optedSchedule;
 	@DBRef
-	private List<OverrideSubscriptionSchedule> overrideSchedule;
+	private List<OverrideSubscriptionSchedule> overrideSchedules;
 	private WorkFlowStatus status;
 }

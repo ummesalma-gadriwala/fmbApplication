@@ -11,35 +11,14 @@ import {
 } from '../../../type/Type';
 import * as scheduleAction from '../../../reducers/scheduleAction';
 import * as mealscheduleAction from '../../../reducers/mealscheduleAction';
-import isWithinInterval from 'date-fns/esm/fp/isWithinInterval';
 
-import FormControl from '@material-ui/core/FormControl/FormControl';
-import Button from '@material-ui/core/Button/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Fab from '@material-ui/core/Fab';
 import Divider from '@material-ui/core/Divider/Divider';
 
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
-import classnames from 'classnames';
 
-import DeleteIcon from '@material-ui/icons/Delete';
-import CalendarTodayRoundedIcon from '@material-ui/icons/CalendarTodayRounded';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBeforeOutlined';
-import NavigateNextIcon from '@material-ui/icons/NavigateNextRounded';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 import './MenuSchedule.css';
@@ -125,8 +104,6 @@ class MenuDetails extends PureComponent<any, any> {
         this.props.mealSchedule.overrideSchedules.length > 0 &&
         this.props.mealSchedule.overrideSchedules.map(
           (overrideSchedule: OverrideSchedule, index: number) => {
-            //console.log(`${dateFns.parseISO(new Date()).getTime()}`);
-            //console.log(`${dateFns.parseISO(overrideSchedule.overrideEndDate)}`);
             return (
               dateFns.isWithinInterval(
                 this.state.currentDate,
@@ -186,9 +163,8 @@ class MenuDetails extends PureComponent<any, any> {
 }
 
 const mapStateToProps = (state: AppState) => {
-  console.log(state.schedule);
   return Object.assign({}, state, {
-    schedule: state.schedule as Schedule[],
+    schedule: state.schedules as Schedule[],
     subscriberId: state.authentication.decodedToken.subscriberId,
     mealSchedule: state.mealSchedule
   });

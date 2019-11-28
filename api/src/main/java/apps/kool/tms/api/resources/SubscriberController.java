@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import apps.kool.tms.api.agregate.ParticipantAggregate;
 import apps.kool.tms.api.agregate.User;
 import apps.kool.tms.api.errorhandling.EntityNotFoundException;
-import apps.kool.tms.api.repository.ParticipantRepository;
 import apps.kool.tms.api.repository.UserRepository;
 import apps.kool.tms.api.reqres.SubcriberResponse;
 import apps.kool.tms.api.reqres.WorkFlowResponse;

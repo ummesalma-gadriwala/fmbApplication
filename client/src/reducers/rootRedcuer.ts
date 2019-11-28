@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
 import authentication from './authentication';
-import apiError from './apiError';
+import  apiError from './apiError';
 import mealSchedule from './mealSchedule';
 import profile from './profile';
-import schedule from './schedule';
+import {schedules} from './schedule';
 
 export default combineReducers({
   authentication,
   mealSchedule,
-  schedule,
+  schedules,
   profile,
-  apiError
+  apiError 
 });

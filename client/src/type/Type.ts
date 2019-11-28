@@ -10,6 +10,10 @@ export enum DayOfWeek {
   Sunday
 }
 
+export const ContributionType_TIFFIN = "tiffin";
+export const ContributionType_FATEHA = "fateha";
+export const ContributionType_ZABIHAT = "zabihat";
+
 export interface SubscriptionSchedule {
   optedSchedule: {
     MONDAY: string | null;
@@ -59,7 +63,7 @@ export interface AppState {
   authentication: Authentication;
   mealSchedule: SubscriptionSchedule;
   profile: Profile;
-  schedule: Schedule[];
+  schedules: Schedule[];
   apiError: APIError;
 }
 
@@ -92,4 +96,23 @@ export interface Schedule {
   menu: Menu | null;
   noMeal: boolean;
   noMealReason: string;
+  contributors : Contributor [] | [] ;
+  instructionsForSubscriber ?: LabelValue [] | []; 
 }
+
+export interface Contributor {
+  contributionDate: string;
+  contributionType: string;
+  contributorAllowedToChooseMenu: boolean;
+  messageFromContributor: LabelValue [] | [];
+  user?: Profile; 
+}
+
+export interface LabelValue {
+   messageLabel:string;
+   messageValue:string;        
+}
+
+
+
+

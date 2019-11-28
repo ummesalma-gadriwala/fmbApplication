@@ -1,6 +1,5 @@
 package apps.kool.tms.api.repository;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,8 +27,8 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 
 	@Override
 	public SubscriptionSchedule saveSubscriptionSchedule(SubscriptionSchedule subscriptionSchedule) {
-		if(subscriptionSchedule != null && subscriptionSchedule.getOverrideSchedule()!=null){
-			subscriptionSchedule.getOverrideSchedule().forEach(overrideSchedule -> mongoTemplate.save(overrideSchedule));
+		if(subscriptionSchedule != null && subscriptionSchedule.getOverrideSchedules()!=null){
+			subscriptionSchedule.getOverrideSchedules().forEach(overrideSchedule -> mongoTemplate.save(overrideSchedule));
 		}
 		mongoTemplate.save(subscriptionSchedule);
 		return subscriptionSchedule;
@@ -51,8 +50,8 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 	@Override
 	public OverrideSubscriptionSchedule updateOverrideSchedule(String subscriberId,OverrideSubscriptionSchedule overrideSubscriptionSchedule) {
 		SubscriptionSchedule subscriptionSchedule = getSubscriptionScheduleBySubscriberId(subscriberId);
-	    if(subscriptionSchedule.getOverrideSchedule().contains(overrideSubscriptionSchedule)) {
-	    	subscriptionSchedule.getOverrideSchedule().stream().forEach(fetchedOverride -> {
+	    if(subscriptionSchedule.getOverrideSchedules().contains(overrideSubscriptionSchedule)) {
+	    	subscriptionSchedule.getOverrideSchedules().stream().forEach(fetchedOverride -> {
 	    		if(fetchedOverride.getOverrideEndDate().equals(overrideSubscriptionSchedule.getOverrideEndDate()) &&
 	    				fetchedOverride.getOverrideStartDate().equals(overrideSubscriptionSchedule.getOverrideStartDate())){
 	    			       fetchedOverride.setWeeklyOverrideSchedule(overrideSubscriptionSchedule.getWeeklyOverrideSchedule());
@@ -69,12 +68,12 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 		Date dateStartDate =new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
 		SubscriptionSchedule subscriptionSchedule = getSubscriptionScheduleBySubscriberId(subscriberId);
 		if(subscriptionSchedule!=null) {
-	    	Optional<OverrideSubscriptionSchedule> delOverrideSchedule = subscriptionSchedule.getOverrideSchedule().stream().filter(fetchedOverride -> 
+	    	Optional<OverrideSubscriptionSchedule> delOverrideSchedule = subscriptionSchedule.getOverrideSchedules().stream().filter(fetchedOverride -> 
 	    							 fetchedOverride.getOverrideStartDate().equals(dateStartDate)				
 				).findFirst();
 	    	if(delOverrideSchedule.isPresent()){
 	    		mongoTemplate.remove(new Query(Criteria.where("id").is(delOverrideSchedule.get().getId())), OverrideSubscriptionSchedule.class);
-	    		subscriptionSchedule.getOverrideSchedule().remove(delOverrideSchedule.get());
+	    		subscriptionSchedule.getOverrideSchedules().remove(delOverrideSchedule.get());
 	    		mongoTemplate.save(subscriptionSchedule);
 		    	return true;
 	    	}
@@ -97,12 +96,12 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 		SubscriptionSchedule subscriptionSchedule = getSubscriptionScheduleBySubscriberId(subscriptionId);
 		overrideSubscriptionSchedule.setSubscriptionScheduleId(subscriptionSchedule.getId().toString());
 		mongoTemplate.save(overrideSubscriptionSchedule);
-		if(subscriptionSchedule.getOverrideSchedule()==null) {
+		if(subscriptionSchedule.getOverrideSchedules()==null) {
 			List<OverrideSubscriptionSchedule> overrideList = new ArrayList<OverrideSubscriptionSchedule>();
 			overrideList.add(overrideSubscriptionSchedule);
-			subscriptionSchedule.setOverrideSchedule(overrideList);
+			subscriptionSchedule.setOverrideSchedules(overrideList);
 		} else {
-			subscriptionSchedule.getOverrideSchedule().add(overrideSubscriptionSchedule);
+			subscriptionSchedule.getOverrideSchedules().add(overrideSubscriptionSchedule);
 		}
 		
 		mongoTemplate.save(subscriptionSchedule);

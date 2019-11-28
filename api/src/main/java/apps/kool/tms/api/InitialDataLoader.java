@@ -1,7 +1,6 @@
 package apps.kool.tms.api;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import apps.kool.tms.api.agregate.Address;
 import apps.kool.tms.api.agregate.Previlege;
 import apps.kool.tms.api.agregate.Role;
 import apps.kool.tms.api.agregate.User;

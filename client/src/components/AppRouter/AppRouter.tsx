@@ -14,10 +14,7 @@ import MenuDetails from '../Menu/Subscriber/MenuDetails';
 
 import { AppState } from '../../type/Type';
 
-import {
-  doesUserBelongsToOperation,
-  isUserSubscriber
-} from '../../util/authorization';
+
 
 import './AppRouter.css';
 class AppRouter extends Component<any, any> {

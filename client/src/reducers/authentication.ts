@@ -1,6 +1,6 @@
 import { AUTH_USER, AUTH_ERROR } from './actionType';
 import { LOCAL_STORAGE_TOKEN} from '../util/constant';
-import { Authentication, Token } from '../type/Type';
+import { Authentication, Token  } from '../type/Type';
 import jwt from 'jsonwebtoken';
 
 function getEmptyToken() {

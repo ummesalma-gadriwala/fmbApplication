@@ -64,9 +64,9 @@ class SubscriptionInfo extends React.Component<any, any> {
   };
 
   handleMealCountChange(event: any) {
-    const target = event.target;
-    const value = target.value;
-    const name: string = target.name;
+    //const target = event.target;
+    //const value = target.value;
+    //const name : string = target.name;
     //const changedOverridePlan:IOverrideSchedule = Object.assign({}, this.state.newPlanOverride);
     //const changedKey = Object.keys(this.state.newPlanOverride.weeklyOverrideSchedule).find( key => key===name);
     //@ts-ignore

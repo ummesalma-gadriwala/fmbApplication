@@ -5,16 +5,11 @@ import lombok.NonNull;
 import lombok.experimental.FieldDefaults;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import apps.kool.tms.api.agregate.OverrideSubscriptionSchedule;
-import apps.kool.tms.api.agregate.SubscriptionSchedule;
 import apps.kool.tms.api.errorhandling.EntityNotFoundException;
 import apps.kool.tms.api.repository.UserRepository;
 import apps.kool.tms.api.reqres.AuthenticationCredentials;
@@ -26,7 +21,6 @@ import apps.kool.tms.api.utils.WorkFlowUtils;
 import static lombok.AccessLevel.PACKAGE;
 import static lombok.AccessLevel.PRIVATE;
 
-import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -64,10 +58,11 @@ final class AuthenticationController {
 			response.setToken(token.get()); 
 		else
 		    token.orElseThrow(() -> new EntityNotFoundException("invalid login and/or password")); 
-		
 		//This is temporary once Workflow engine is ready will move to WorkFlow engine.
 		if(WorkFlowUtils.hasSubscriberVerifiedInfo(users.findByUsername(credentials.getUsername()).get())){   
-		    response.setWorkFlowResponse(WorkFlowResponse.builder().goToRoute("/profile").build());
+		    response.setWorkFlowResponse(WorkFlowResponse.builder().goToRoute("/dashboard").build());
+		} else {
+			response.setWorkFlowResponse(WorkFlowResponse.builder().goToRoute("/profile").build());
 		}
 		return response ;
 	 }

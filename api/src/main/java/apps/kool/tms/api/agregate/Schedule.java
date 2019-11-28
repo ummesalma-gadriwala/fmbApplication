@@ -1,5 +1,7 @@
 package apps.kool.tms.api.agregate;
 
+import java.util.ArrayList;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -8,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
 import lombok.Data;
@@ -29,4 +30,8 @@ public class Schedule {
 	private String  noMealReason;
 	@DBRef
 	private Contributor[] contributors;
-}
+	private ArrayList<InstructionMessage> instructionsForSubscriber;
+	//private List<InstructionMessage> instructionsForOperations;
+	//private List<InstructionMessage> instructionsForCatrer;
+	
+ }

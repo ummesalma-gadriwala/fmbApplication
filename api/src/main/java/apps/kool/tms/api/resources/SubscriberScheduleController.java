@@ -56,11 +56,11 @@ public class SubscriberScheduleController {
 	ResponseEntity<Object> updateOverrideSchedue(@PathVariable String subscriptionId, @RequestBody OverrideSubscriptionSchedule overrideSubscriptionSchedule ) {
 		SubscriptionSchedule subscriptionSchedule = subscriberScheduleRepository.getSubscriptionScheduleBySubscriberId(subscriptionId);
 		overrideSubscriptionSchedule.setSubscriptionScheduleId(subscriptionSchedule.getId().toString());
-		subscriptionSchedule.getOverrideSchedule().add(overrideSubscriptionSchedule);		
+		subscriptionSchedule.getOverrideSchedules().add(overrideSubscriptionSchedule);		
 		subscriberScheduleRepository.updateSubscriptionSchedule(subscriptionSchedule);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 		.buildAndExpand(
-		   subscriptionSchedule.getOverrideSchedule().stream().filter(save -> save.getOverrideStartDate().equals(overrideSubscriptionSchedule.getOverrideStartDate())).findFirst().get().getId()		
+		   subscriptionSchedule.getOverrideSchedules().stream().filter(save -> save.getOverrideStartDate().equals(overrideSubscriptionSchedule.getOverrideStartDate())).findFirst().get().getId()		
 		 ).toUri();
 		return ResponseEntity.created(location).build()  ;
 	}
@@ -72,7 +72,7 @@ public class SubscriberScheduleController {
 		
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 		.buildAndExpand(
-		   subscriptionSchedule.getOverrideSchedule().stream().filter(save -> save.getOverrideStartDate().equals(overrideSubscriptionSchedule.getOverrideStartDate())).findFirst().get().getId()		
+		   subscriptionSchedule.getOverrideSchedules().stream().filter(save -> save.getOverrideStartDate().equals(overrideSubscriptionSchedule.getOverrideStartDate())).findFirst().get().getId()		
 		 ).toUri();
 		return ResponseEntity.created(location).build()  ;
 	}

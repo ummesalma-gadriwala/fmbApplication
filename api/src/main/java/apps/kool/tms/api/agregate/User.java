@@ -1,6 +1,7 @@
 package apps.kool.tms.api.agregate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,8 +25,7 @@ import java.util.List;
 @AllArgsConstructor
 public class User implements UserDetails {
   private static final long serialVersionUID = 2396654715019746670L;
-  
- 
+   
   @JsonIgnore
   private String id=null;
   private String username=null;

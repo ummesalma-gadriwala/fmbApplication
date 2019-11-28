@@ -1,12 +1,8 @@
 package apps.kool.tms.api.resources;
 
-import java.awt.event.ItemEvent;
-import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import apps.kool.tms.api.agregate.Menu;
 import apps.kool.tms.api.agregate.MenuItem;
@@ -24,7 +19,6 @@ import apps.kool.tms.api.repository.IMenuItemRepository;
 import apps.kool.tms.api.repository.IMenuRepository;
 import apps.kool.tms.api.repository.IScheduleRepository;
 import apps.kool.tms.api.reqres.AddMenuRequest;
-import lombok.NonNull;
 
 
 @RestController
@@ -63,6 +57,7 @@ public class MenuController {
 										.menu(menu)
 										.noMeal(menuRequest.isNoMeal())
 										.noMealReason(menuRequest.getNoMealReason())
+										.instructionsForSubscriber(menuRequest.getInstructionsForSubscriber())
 										.build();
 				} else
 				{
@@ -74,8 +69,6 @@ public class MenuController {
 			}
 			
 		});
-		 
-		 
 		return ResponseEntity.ok(true);
 	}
 	

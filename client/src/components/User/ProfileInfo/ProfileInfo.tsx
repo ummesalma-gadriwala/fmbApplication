@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-
-import requireAuth from '../../../requireAuth';
-import { connect } from 'react-redux';
 import * as profileAction from '../../../reducers/profileAction';
 import { AppState } from '../../../type/Type';
 import PersonIcon from '@material-ui/icons/Person';
 import Spinner from './../../Spinner/Spinner';
 import FormValidator from '../../../util/FormValidator';
+import requireAuth from '../../../requireAuth';
+import { connect } from 'react-redux';
 
 import {
   Paper,
@@ -177,7 +176,6 @@ class ProfileInfo extends Component<any, any> {
 
   render() {
     this.state && this.profileValidator.validate(this.state);
-    const classes: any = withStyles;
     return (
       <div>
         {this.state != null && (
@@ -390,6 +388,5 @@ const mapStateToProps = (state: AppState) => {
   });
 };
 
-export default requireAuth(
-  connect(mapStateToProps, profileAction)(ProfileInfo)
-);
+export default requireAuth(connect(mapStateToProps, profileAction)(ProfileInfo));
+

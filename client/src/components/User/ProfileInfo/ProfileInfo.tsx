@@ -388,5 +388,6 @@ const mapStateToProps = (state: AppState) => {
   });
 };
 
-export default requireAuth(connect(mapStateToProps, profileAction)(ProfileInfo));
-
+export default requireAuth(
+  connect(mapStateToProps, profileAction)(ProfileInfo)
+);

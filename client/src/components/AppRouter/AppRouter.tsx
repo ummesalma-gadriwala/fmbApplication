@@ -14,8 +14,6 @@ import MenuDetails from '../Menu/Subscriber/MenuDetails';
 
 import { AppState } from '../../type/Type';
 
-
-
 import './AppRouter.css';
 class AppRouter extends Component<any, any> {
   constructor(props: any) {

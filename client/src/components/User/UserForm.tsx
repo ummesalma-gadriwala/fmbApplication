@@ -17,20 +17,16 @@ export class UserForm extends Component {
   nextStep = () => {
     this.setState({
       step:
-        this.state.step === "ProfileInfo" ? this.steps.step2 :  this.steps.step3
+        this.state.step === 'ProfileInfo' ? this.steps.step2 : this.steps.step3
     });
   };
 
   // Go back to prev step
   prevStep = () => {
-    this.setState(
-      {
-        step:
-          this.state.step === "Dashboard"
-            ? this.steps.step2
-            : this.steps.step1
-      }
-    );
+    this.setState({
+      step:
+        this.state.step === 'Dashboard' ? this.steps.step2 : this.steps.step1
+    });
   };
 
   render() {

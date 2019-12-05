@@ -1,162 +1,263 @@
-import React, { PureComponent } from 'react';
+import 'date-fns';
+import React, { PureComponent, useState } from 'react';
 import { connect } from 'react-redux';
 import requireAuth from '../../../requireAuth';
 import { withStyles } from '@material-ui/core/styles';
-
 import {
   Schedule,
   AppState,
-  MenuItem,
-  OverrideSchedule
-} from '../../../type/Type';
+  MenuItem as FoodMenuItems,
+  OverrideSchedule,
+  LabelValue,
+  SubscriptionSchedule
+ } from '../../../type/Type';
 import * as scheduleAction from '../../../reducers/scheduleAction';
 import * as mealscheduleAction from '../../../reducers/mealscheduleAction';
-
 import Divider from '@material-ui/core/Divider/Divider';
-
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardActionArea from '@material-ui/core/CardActionArea';
+import FormControl    from '@material-ui/core/FormControl';
+import Button    from '@material-ui/core/Button';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
-
 import Paper from '@material-ui/core/Paper';
+import './MenuDetails.css';
+import { WEEKDAYS } from '../../../util/constant';
+import Spinner from '../../Spinner/Spinner';
+import { isMealCancellationEnabled } from '../menuSchedulingUtils'
 
-import './MenuSchedule.css';
+
 
 const dateFns = require('date-fns');
 
-class MenuDetails extends PureComponent<any, any> {
+interface MenuDetailsState {
+  numberOfOptedMealForSelectedDay : Number;
+  cancelOrReduceMealSchedule: OverrideSchedule;
+  hasScheduleChangedAlready: boolean;
+  isBusy: boolean;
+  currentDate: any;
+}
+
+class MenuDetails extends PureComponent<any, MenuDetailsState|any> {
+  
   constructor(props: any) {
     super(props);
     const {
       match: { params }
     } = this.props;
 
-    this.state = {
-      weekStartDate: dateFns.startOfWeek(new Date()),
-      activeWeekRelativeToCurrentWeek: 0,
-      currentDate: dateFns.parseISO(params.currentDate)
-    };
+    this.handleOnQunatityChange = this.handleOnQunatityChange.bind(this)
+    this.isScheduleChanged = this.isScheduleChanged.bind(this)
+    this.getMealCountForDay = this.getMealCountForDay.bind(this)
+    this.state = {currentDate: dateFns.parseISO(params.currentDate)};
 
-    //isSameWeek
-    //startOfWeek
+  }
+
+  isScheduleChanged = (optedScheduleCount:Number, updatedCount:Number ) => {
+    return optedScheduleCount !== updatedCount;
+  }
+  
+  getMealCountForDay = (schedule: Schedule|OverrideSchedule, selectedDayDate: any ) => {
+    return schedule[WEEKDAYS[ dateFns.getDay(this.state.currentDate)]]
+  }
+
+  handleOnQunatityChange = (event: any) => {
+    const target = event.target;
+    const value = target.value;
+    this.setState({ numberOfOptedMealForSelectedDay: value})
+    let updatedSchedule : OverrideSchedule = {... this.state.cancelOrReduceMealSchedule };
+    updatedSchedule.weeklyOverrideSchedule[WEEKDAYS[ dateFns.getDay(this.state.currentDate)]]=parseInt(value); 
+    this.setState( { cancelOrReduceMealSchedule: updatedSchedule })
   }
 
   componentDidMount() {
     //this.setState({isBusy : true});
-    console.log(this.state);
-    console.log(this.props);
-    console.log(this.props.schedule);
-    if (this.props.schedule && this.props.schedule.length == 0) {
-      this.props.getMonthsSchedule();
+    this.props.getMonthsSchedule()
+    this.props.getSubscriptionSchedule(this.props.subscriberId)
+  }
+
+  componentDidUpdate(prevProps: any, prevState: MenuDetailsState) {
+    if (this.props.schedule !== prevProps.schedule || 
+        this.props.mealSchedule !== prevProps.mealSchedule 
+       ) {
+      if(this.props.mealSchedule) {
+        const overrideSchedule = this.props.mealSchedule.overrideSchedules.filter(schedule => {
+                                                      return(dateFns.isWithinInterval(
+                                                          this.state.currentDate,
+                                                          {
+                                                           start: new Date(schedule.overrideStartDate.split("-")[0],(schedule.overrideStartDate.split("-")[1]-1),schedule.overrideStartDate.split("-")[2]),
+                                                           end: new Date(schedule.overrideEndDate.split("-")[0],(schedule.overrideEndDate.split("-")[1]-1),schedule.overrideEndDate.split("-")[2])
+                                                          }
+                                                        ))
+                                                      })[0] 
+        this.setState( { cancelOrReduceMealSchedule : {
+                          overrideStartDate: dateFns.parseISO(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })),
+                          overrideEndDate: dateFns.parseISO(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })),
+                          weeklyOverrideSchedule: {... overrideSchedule ? overrideSchedule.weeklyOverrideSchedule : this.props.mealSchedule.optedSchedule }
+                        },
+                        numberOfOptedMealForSelectedDay : overrideSchedule ? this.getMealCountForDay(overrideSchedule.weeklyOverrideSchedule, this.state.currentDate) 
+                                                                           : this.getMealCountForDay(this.props.mealSchedule.optedSchedule, this.state.currentDate),
+                        hasScheduleChangedAlready : overrideSchedule ? true : false                                                    
+
+        })
+      }
     }
-    this.props.getSubscriptionSchedule(this.props.subscriberId);
   }
 
   render() {
+    const updateMealPlanAndNavigate = () => {
+      const optedMealCount:Number = this.getMealCountForDay(this.props.mealSchedule.optedSchedule, this.state.currentDate)
+      const updatedMealCount:Number = this.state.cancelOrReduceMealSchedule && this.getMealCountForDay(this.state.cancelOrReduceMealSchedule.weeklyOverrideSchedule, this.state.currentDate) 
+      this.setState({ isBusy: true })
+      this.state.hasScheduleChangedAlready &&
+      this.props.deleteOverrideSchedule(
+        this.props.subscriberId,
+        dateFns.format(this.state.currentDate, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })
+      )
+      if (this.isScheduleChanged(optedMealCount,updatedMealCount)) {
+        return (this.props.addOverrideSchedule(
+          this.props.subscriberId,
+          this.state.cancelOrReduceMealSchedule,
+          this.props.history.goBack,
+          () => { 
+            this.setState({ isBusy: false });
+          }
+        ));
+      }  
+      this.props.history.goBack();
+    }
+
+    const buildQuantitySelector = ( optedQuantity:number ) => {
+      let menuItems : any[] = [];
+        if(!optedQuantity){
+          return;
+        }
+        for (var i = optedQuantity;  i >= 0; i--) {
+          this.state.numberOfOptedMealForSelectedDay === i
+          ? menuItems.push(<FormControlLabel
+                              value={ i.toString()}
+                              control={<Radio color="secondary" checked={this.state.numberOfOptedMealForSelectedDay === i}  />}
+                              label={ i === 0 ? `I want to cancel thali on ${dateFns.format(this.state.currentDate, 'dd-MMM-yyyy', { awareOfUnicodeTokens: true })}` : `I want ${ i } Thali on ${dateFns.format(this.state.currentDate, 'dd-MMM-yyyy', { awareOfUnicodeTokens: true })}`}
+                              key = {i}
+                              className = "MenuDetails-quantity-selector-radio-label"
+                            />)
+          : menuItems.push(<FormControlLabel
+                              value={ i.toString()}
+                              control={<Radio color="secondary"  />}
+                              label={i === 0 ? `I want to cancel thali on ${dateFns.format(this.state.currentDate, 'dd-MMM-yyyy', { awareOfUnicodeTokens: true })}` : `I want ${ i } Thali on ${dateFns.format(this.state.currentDate, 'dd-MMM-yyyy', { awareOfUnicodeTokens: true })}`}
+                              key = {i}
+                              className = "MenuDetails-quantity-selector-radio-label"
+                            />)
+        }
+      return menuItems;       
+    }
+ 
     const buildMenuItem = (
-      menuItems: MenuItem[] | null,
-      noMealReason: string
-    ) => {
+      menuItems: FoodMenuItems[] | null,
+      ) => {
       return (
         menuItems &&
-        menuItems.map((menuItem: MenuItem, index: number) => {
-          return <li key={index}> {menuItem.itemName}</li>;
-        })
-      );
-    };
-
-    const buildMenu = () => {
-      return (
-        this.props.schedule &&
-        this.props.schedule.length > 0 &&
-        this.props.schedule.map((day: Schedule, index: number) => {
+        menuItems.map((menuItem: FoodMenuItems, index: number) => {
           return (
-            day.dailyDate === this.state.currentDate && (
-              <div key={index} className="daily-menu-container">
-                <Card className={this.props.classes.card}>
-                  <CardActionArea
-                    onClick={() => console.log('Menu Card Touched')}
-                  >
-                    <Divider />
-                    <CardContent className={this.props.classes.cardcontent}>
-                      <ul>
-                        <Typography component="p">
-                          {buildMenuItem(
-                            day.menu && day.menu.items,
-                            day.noMealReason
-                          )}
-                        </Typography>
-                      </ul>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </div>
-            )
+            <span className="Dashboard-menu-items-each" key={index}>
+              {' '}
+              &#x2726; {menuItem.itemName}
+            </span>
           );
         })
       );
     };
 
-    const buildMealSchedule = () => {
+    const buildMessages = (messages: LabelValue[] | null) => {
       return (
-        this.props.mealSchedule &&
-        this.props.mealSchedule.overrideSchedules.length > 0 &&
-        this.props.mealSchedule.overrideSchedules.map(
-          (overrideSchedule: OverrideSchedule, index: number) => {
-            return (
-              dateFns.isWithinInterval(
-                this.state.currentDate,
-                {
-                  start: dateFns.parseISO(overrideSchedule.overrideStartDate),
-                  end: dateFns.parseISO(overrideSchedule.overrideEndDate)
-                },
-                { unit: 'day' }
-              ) && (
-                <div key={index} className="daily-menu-container">
-                  <Card className={this.props.classes.card}>
-                    <CardActionArea
-                      onClick={() => console.log('Menu Card Touched')}
-                    >
-                      <Divider />
-                      <CardContent className={this.props.classes.cardcontent}>
-                        <ul>
-                          <Typography component="p">Schedule</Typography>
-                        </ul>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </div>
-              )
-            );
-          }
-        )
+        messages &&
+        messages.map((message: LabelValue, index: number) => {
+          return (
+            <React.Fragment>
+              <span className="Dashboard-instructionForSubscriber-label">
+                <strong> {message.messageLabel}</strong>
+              </span>
+              <Divider />
+              <span className="Dashboard-instructionForSubscriber-value">
+                {' '}
+                {message.messageValue}
+              </span>
+            </React.Fragment>
+          );
+        })
       );
-    };
-
-    const navigatePreviousWeek = () => {
-      this.setState({
-        weekStartDate: dateFns.addWeeks(this.state.weekStartDate, -1)
-      });
-    };
-
-    const navigateNextWeek = () => {
-      this.setState({
-        weekStartDate: dateFns.addWeeks(this.state.weekStartDate, 1)
-      });
     };
 
     return (
       <div>
-        <Paper className="menu-schedule-week-navigator-container">
-          <h6>
-            {` Menu For ${dateFns.format(this.state.currentDate, 'd MMM', {
+        <Paper className="MenuDetails-header">
+          <strong>
+            {` Menu For ${ dateFns.format(this.state.currentDate, 'dd-MMM-yyy', {
               awareOfUnicodeTokens: true
             })}`}{' '}
-          </h6>
+          </strong>
         </Paper>
-        {buildMenu()}
-        {buildMealSchedule()}
+        <React.Fragment>
+          <div className="MenuDetails-container">
+            <div className="MenuDetails-card-container">
+              <Spinner active={this.state.isBusy}>
+                <Card className="Card-container">
+                  <CardContent>
+                    {this.props.selectedDateSchedule &&
+                    this.props.selectedDateSchedule.menu &&
+                      this.props.selectedDateSchedule.menu.items.length > 0 && (
+                        <React.Fragment>
+                          <div className="Dashboard-menu-container">
+                            <div className="Dashboard-menu-primary-container Dashboard-menu-container_items">
+                              <Typography>
+                                <strong>Menu</strong>
+                              </Typography>
+                              <Typography component="div">
+                                <div className="Dashboard-menu-items">
+                                  {buildMenuItem(
+                                    this.props.selectedDateSchedule.menu &&
+                                      this.props.selectedDateSchedule.menu.items
+                                  )}
+                                </div>
+                              </Typography>
+                            </div>
+                          </div>
+                          {isMealCancellationEnabled(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', {
+                              awareOfUnicodeTokens: true
+                            })) &&  
+                            <React.Fragment>
+                              <div className = "MenuDetails-quantity-selector-container">
+                                <RadioGroup aria-label="position" name="position" value={this.state.numberOfOptedMealForSelectedDay && this.state.numberOfOptedMealForSelectedDay.toString()} onChange={this.handleOnQunatityChange}>
+                                    {buildQuantitySelector(this.props.mealSchedule.optedSchedule[WEEKDAYS[ dateFns.getDay(this.state.currentDate)]])}
+                                </RadioGroup>
+                              </div>   
+                            </React.Fragment>
+                          }
+                        <React.Fragment>
+                        <div className = "MenuDetails-quantity-action-container">
+                          <FormControl margin="dense" >
+                              <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="secondary"
+                                onClick={()=> updateMealPlanAndNavigate()}
+                              >
+                                { "Save and Exit" }
+                              </Button>
+                            </FormControl>
+                            </div>  
+                        </React.Fragment> 
+                      </React.Fragment>
+                    )}
+                  </CardContent>
+                </Card>
+              </Spinner>
+            </div>
+            </div>
+         </React.Fragment>
       </div>
     );
   }
@@ -164,9 +265,13 @@ class MenuDetails extends PureComponent<any, any> {
 
 const mapStateToProps = (state: AppState) => {
   return Object.assign({}, state, {
-    schedule: state.schedules as Schedule[],
+    selectedDateSchedule: state.schedules.find(
+                schedule =>
+                  schedule.dailyDate === '2019-12-11'
+                  //dateFns.format(new Date(), 'yyyy-MM-dd', { awareOfUnicodeTokens: true })
+              ) as Schedule,
     subscriberId: state.authentication.decodedToken.subscriberId,
-    mealSchedule: state.mealSchedule
+    mealSchedule: state.mealSchedule as SubscriptionSchedule
   });
 };
 const styles = (theme: any) => ({
@@ -193,18 +298,6 @@ const styles = (theme: any) => ({
     marginTop: 5
   }
 
-  // extendedIcon: {
-  //   marginRight: theme.spacing.unit,
-  // },
 });
-// function mapDispatchToProps(dispatch:any) {
-//   return({
-//     addOverrrideSchedule: () => addOverrrideSchedule
-//   })
-// }
 
-export default requireAuth(
-  connect(mapStateToProps, { ...scheduleAction, ...mealscheduleAction })(
-    withStyles(styles)(MenuDetails)
-  )
-);
+export default requireAuth(connect(mapStateToProps, { ...scheduleAction, ...mealscheduleAction })(withStyles(styles)(MenuDetails)));

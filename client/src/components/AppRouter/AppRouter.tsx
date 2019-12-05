@@ -7,7 +7,6 @@ import Login from '../Login/Login';
 import Dashboard from '../Dashboard/Dashboard';
 import OperationDashboard from '../Dashboard/OperationDashboard';
 import MealSchedule from '../MealSchedule/MealSchedule';
-import UserProfile from '../User/ProfileInfo/ProfileInfo';
 import UserForm from '../User/UserForm';
 import MenuSchedule from '../Menu/Subscriber/MenuSchedule';
 import MenuDetails from '../Menu/Subscriber/MenuDetails';
@@ -37,6 +36,7 @@ class AppRouter extends Component<any, any> {
                 exact
                 path="/menu-schedule/details/:currentDate"
                 component={MenuDetails}
+
               />
               <Route exact path="/profile/" component={UserForm} />
               <Route

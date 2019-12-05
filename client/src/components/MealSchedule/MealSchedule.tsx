@@ -102,34 +102,6 @@ class MealSchedule extends Component<any, IMealScheduleState> {
         }
       }
     };
-    // const buildSchedule = () => {
-    //   return this.state.thaliSchedule && Object.keys(this.state.thaliSchedule).length > 0 ? Object.keys(this.state.thaliSchedule).map((day:any,index) => {
-    //     return (
-    //       <TableRow key={index}>
-    //         <TableCell component="th" scope="row">
-    //           {day}
-    //         </TableCell>
-    //         <TableCell align="right">
-    //           <Select
-    //             name={day}
-    //             //@ts-ignore
-    //             value={ this.state && this.state.newPlanOverride.weeklyOverrideSchedule[day] ? this.state.newPlanOverride.weeklyOverrideSchedule[day] : this.state.thaliSchedule[day]}
-    //             onChange={this.handleMealCountChange}
-    //             input={<Input id= {day} />}
-    //             MenuProps={MenuProps}
-    //           >
-    //             <MenuItem key="0" value="0">No Thali</MenuItem>
-    //             <MenuItem key="1" value="1">1 </MenuItem>
-    //             <MenuItem key="2" value="2">2 </MenuItem>
-    //             <MenuItem key="3" value="3">3 </MenuItem>
-    //             <MenuItem key="4" value="4">4 </MenuItem>
-    //           </Select>
-    //         </TableCell>
-    //      </TableRow>
-    //     );
-    //   })
-    //   : null;
-    // }
     const validateAndOverride = () => {
       this.setState({ isInValid: false });
       const isValidDate: boolean =
@@ -138,22 +110,6 @@ class MealSchedule extends Component<any, IMealScheduleState> {
           this.state.newPlanOverride.overrideStartDate
         ) < 0;
       this.setState({ isInValid: isValidDate });
-
-      //Overlapping
-
-      // this.props.mealSchedule.overrideSchedules.forEach((overrideSchedule:IOverrideSchedule )=> {
-      //   //@ts-ignore
-      //   console.log();
-      //   const overLappingDays = getOverlappingDaysInRanges(
-      //       { start: new Date(`${overrideSchedule.overrideStartDate}T12:00:00Z`), end: new Date(`${overrideSchedule.overrideEndDate}T12:00:01Z`)},
-      //       { start: this.state.newPlanOverride.overrideStartDate, end: this.state.newPlanOverride.overrideEndDate }
-      //   );
-      //  if(overLappingDays > 0) {
-      //   this.setState({ isInValid : true});
-      //   return;
-      //  }
-
-      // });
 
       if (!isValidDate) {
         this.setState({ isBusy: true });
@@ -245,19 +201,6 @@ class MealSchedule extends Component<any, IMealScheduleState> {
               </div>
             </MuiPickersUtilsProvider>
 
-            {/* <Paper className ="Margin-Container">
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Day of Week</TableCell>
-                          <TableCell align="right">Number of thalis</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {buildSchedule()}
-                      </TableBody>
-                    </Table>
-                  </Paper> */}
             <div className="Margin-Container">
               <Button
                 type="button"
@@ -282,11 +225,6 @@ const mapStateToProps = (state: AppState) => {
     mealSchedule: state.mealSchedule
   });
 };
-// function mapDispatchToProps(dispatch:any) {
-//   return({
-//     addOverrrideSchedule: () => addOverrrideSchedule
-//   })
-// }
 
 export default requireAuth(
   connect(mapStateToProps, mealscheduleAction)(MealSchedule)

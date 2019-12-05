@@ -4,23 +4,22 @@ import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
-import DeleteIcon from '@material-ui/icons/Delete';
 import CalendarTodayRoundedIcon from '@material-ui/icons/CalendarTodayRounded';
 import RestaurantMenuRoundedIcon from '@material-ui/icons/RestaurantMenuRounded';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
 import * as scheduleAction from '../../reducers/scheduleAction';
+import Spinner from '../Spinner/Spinner';
+
 import Divider from '@material-ui/core/Divider/Divider';
 import {
   AppState,
   Schedule,
   Contributor,
   MenuItem,
-  Profile,
   LabelValue,
   ContributionType_TIFFIN,
   ContributionType_FATEHA
@@ -32,15 +31,23 @@ import './Dashboard.css';
 const dateFns = require('date-fns');
 
 interface DashBoardState {
-  todaysSchedule: Schedule;
-  formattedTodaysDate: string;
-  tiffinContributor: Contributor;
-  fatehaContributor: Contributor;
+  todaysSchedule: Schedule | null;
+  formattedTodaysDate: string | null;
+  tiffinContributor: Contributor | null;
+  fatehaContributor: Contributor | null;
+  isBusy: boolean;
 }
 
 class Dashboard extends Component<any, DashBoardState> {
   constructor(props: any) {
     super(props);
+    this.state = {
+      isBusy: true,
+      todaysSchedule: null,
+      formattedTodaysDate: null,
+      tiffinContributor: null,   
+      fatehaContributor: null  
+    };
   }
 
   componentDidMount() {
@@ -59,6 +66,7 @@ class Dashboard extends Component<any, DashBoardState> {
         (prevState && prevState.todaysSchedule)
     ) {
       this.setState({
+        isBusy: false,
         todaysSchedule: this.props.schedule,
         tiffinContributor:
           this.props.schedule &&
@@ -122,200 +130,202 @@ class Dashboard extends Component<any, DashBoardState> {
     };
     return (
       <div>
-        {this.state && (
-          <React.Fragment>
-            <div className="Dashboard-container">
-              <div className="Dashboard-card-container">
-                <Card className="Card-container">
-                  <CardContent>
-                    <div className="Dashboard-date-display-container">
-                      <CalendarTodayRoundedIcon fontSize="default" />
-                      <span className="Dashboard-date-display">
-                        <strong>
-                          {dateFns.format(new Date(), 'dd-MMM-yyyy', {
-                            awareOfUnicodeTokens: true
-                          })}
-                        </strong>
-                      </span>
-                    </div>
-                    {!this.state.todaysSchedule && (
-                      <React.Fragment>
-                        <Typography variant="h5">
-                          <span className="Dashboard-no-details">
-                            No Details Available{' '}
-                          </span>
-                        </Typography>
-                      </React.Fragment>
-                    )}
-                    {this.state.todaysSchedule && (
-                      <React.Fragment>
-                        {this.state.todaysSchedule.noMeal && (
-                          <div className="Dashboard-nomeal-contianer">
-                            <Typography component="p">
-                              <strong>
-                                {' '}
-                                No Thali :{' '}
-                                {this.state.todaysSchedule.noMealReason}{' '}
-                              </strong>
-                            </Typography>
-                          </div>
-                        )}
-                        {this.state.tiffinContributor && (
-                          <div className="Dashboard-contributor-contianer">
-                            <Typography component="div">
-                              Aaj ni thaali ni khidmat
-                            </Typography>
-                            <Typography component="div">
-                              <span>
+        <Spinner active={this.state.isBusy}>
+          {this.state && (
+            <React.Fragment>
+              <div className="Dashboard-container">
+                <div className="Dashboard-card-container">
+                  <Card className="Card-container">
+                    <CardContent>
+                      <div className="Dashboard-date-display-container">
+                        <CalendarTodayRoundedIcon fontSize="small" />
+                        <span className="Dashboard-date-display">
+                          <strong>
+                            {dateFns.format(new Date(), 'dd-MMM-yyyy', {
+                              awareOfUnicodeTokens: true
+                            })}
+                          </strong>
+                        </span>
+                      </div>
+                      {!this.state.todaysSchedule && (
+                        <React.Fragment>
+                          <Typography variant="h5">
+                            <span className="Dashboard-no-details">
+                              No Details Available{' '}
+                            </span>
+                          </Typography>
+                        </React.Fragment>
+                      )}
+                      {this.state.todaysSchedule && (
+                        <React.Fragment>
+                          {this.state.todaysSchedule.noMeal && (
+                            <div className="Dashboard-nomeal-contianer">
+                              <Typography component="p">
                                 <strong>
-                                  {`${this.state.tiffinContributor &&
-                                    this.state.tiffinContributor.user &&
-                                    this.state.tiffinContributor.user
-                                      .firstName}     
-                                    ${this.state.tiffinContributor &&
+                                  {' '}
+                                  No Thali :{' '}
+                                  {this.state.todaysSchedule.noMealReason}{' '}
+                                </strong>
+                              </Typography>
+                            </div>
+                          )}
+                          {this.state.tiffinContributor && (
+                            <div className="Dashboard-contributor-contianer">
+                              <Typography component="div">
+                                Aaj ni thaali ni khidmat
+                              </Typography>
+                              <Typography component="div">
+                                <span>
+                                  <strong>
+                                    {`${this.state.tiffinContributor &&
                                       this.state.tiffinContributor.user &&
                                       this.state.tiffinContributor.user
-                                        .lastName}  
-                                    & family`}
-                                </strong>
-                              </span>
-                            </Typography>
-                          </div>
-                        )}
-                        {this.state.todaysSchedule.menu &&
-                          this.state.todaysSchedule.menu.items.length > 0 && (
-                            <React.Fragment>
-                              <div className="Dashboard-menu-container">
-                                <div className="Dashboard-menu-primary-container Dashboard-menu-container_items">
-                                  <Typography>
-                                    <strong>Menu</strong>
-                                  </Typography>
-                                  <Typography component="div">
-                                    <div className="Dashboard-menu-items">
-                                      {buildMenuItem(
-                                        this.state.todaysSchedule.menu &&
-                                          this.state.todaysSchedule.menu.items,
-                                        this.state.todaysSchedule.noMealReason
-                                      )}
-                                    </div>
-                                  </Typography>
-                                </div>
-                                {this.state.fatehaContributor &&
-                                  this.state.fatehaContributor
-                                    .messageFromContributor && (
-                                    <div className="Dashboard-menu-side-note Dashboard-menu-container_items">
-                                      <div className="Dashboard-menu-side-note_header">
-                                        <strong>
+                                        .firstName}     
+                                      ${this.state.tiffinContributor &&
+                                        this.state.tiffinContributor.user &&
+                                        this.state.tiffinContributor.user
+                                          .lastName}  
+                                      & family`}
+                                  </strong>
+                                </span>
+                              </Typography>
+                            </div>
+                          )}
+                          {this.state.todaysSchedule.menu &&
+                            this.state.todaysSchedule.menu.items.length > 0 && (
+                              <React.Fragment>
+                                <div className="Dashboard-menu-container">
+                                  <div className="Dashboard-menu-primary-container Dashboard-menu-container_items">
+                                    <Typography>
+                                      <strong>Menu</strong>
+                                    </Typography>
+                                    <Typography component="div">
+                                      <div className="Dashboard-menu-items">
+                                        {buildMenuItem(
+                                          this.state.todaysSchedule.menu &&
+                                            this.state.todaysSchedule.menu.items,
+                                          this.state.todaysSchedule.noMealReason
+                                        )}
+                                      </div>
+                                    </Typography>
+                                  </div>
+                                  {this.state.fatehaContributor &&
+                                    this.state.fatehaContributor
+                                      .messageFromContributor && (
+                                      <div className="Dashboard-menu-side-note Dashboard-menu-container_items">
+                                        <div className="Dashboard-menu-side-note_header">
+                                          <strong>
+                                            {
+                                              this.state.fatehaContributor.messageFromContributor.filter(
+                                                messageLabel =>
+                                                  messageLabel.messageLabel.toLowerCase() ===
+                                                  ContributionType_FATEHA.toLowerCase()
+                                              )[0].messageLabel
+                                            }
+                                          </strong>
+                                        </div>
+                                        <div className="Dashboard-menu-side-note_content">
                                           {
                                             this.state.fatehaContributor.messageFromContributor.filter(
                                               messageLabel =>
                                                 messageLabel.messageLabel.toLowerCase() ===
                                                 ContributionType_FATEHA.toLowerCase()
-                                            )[0].messageLabel
+                                            )[0].messageValue
                                           }
-                                        </strong>
+                                        </div>
                                       </div>
-                                      <div className="Dashboard-menu-side-note_content">
-                                        {
-                                          this.state.fatehaContributor.messageFromContributor.filter(
-                                            messageLabel =>
-                                              messageLabel.messageLabel.toLowerCase() ===
-                                              ContributionType_FATEHA.toLowerCase()
-                                          )[0].messageValue
-                                        }
-                                      </div>
-                                    </div>
-                                  )}
+                                    )}
+                                </div>
+                              </React.Fragment>
+                            )}
+                          {this.state.todaysSchedule && this.state.todaysSchedule
+                            .instructionsForSubscriber && (
+                            <React.Fragment>
+                              <h6>Announcements</h6>
+                              <div className="Dashboard-instructionForSubscriber-container">
+                                {buildMessages(
+                                  this.state.todaysSchedule
+                                    .instructionsForSubscriber
+                                )}
                               </div>
                             </React.Fragment>
                           )}
-                        {this.state.todaysSchedule
-                          .instructionsForSubscriber && (
-                          <React.Fragment>
-                            <h6>Announcements</h6>
-                            <div className="Dashboard-instructionForSubscriber-container">
-                              {buildMessages(
-                                this.state.todaysSchedule
-                                  .instructionsForSubscriber
-                              )}
-                            </div>
-                          </React.Fragment>
-                        )}
-                      </React.Fragment>
-                    )}
-                  </CardContent>
-                  {/* <CardActions>
-                  <Button size="small">Learn More</Button>
-                </CardActions> */}
-                </Card>
-              </div>
-              <div className="Dashboard-card-container">
-                <Card className="Card-container">
-                  <CardContent>
-                    <Typography color="textSecondary">
-                      Sector : Jamali
+                        </React.Fragment>
+                      )}
+                    </CardContent>
+                    {/* <CardActions>
+                    <Button size="small">Learn More</Button>
+                  </CardActions> */}
+                  </Card>
+                </div>
+                {/*<div className="Dashboard-card-container">
+                  <Card className="Card-container">
+                    <CardContent>
+                      <Typography color="textSecondary">
+                        Sector : Jamali
+                      </Typography>
+                       <Typography  color="textSecondary">
+                      Thali Pick up Address
                     </Typography>
-                    {/* <Typography  color="textSecondary">
-                    Thali Pick up Address
-                  </Typography>
-                  <Typography component="p">
-                    155 Argentia Rd, Mississauga, L1L2L3
-                    <br />
-                  </Typography> */}
-                  </CardContent>
-                  {/* <CardActions>
-                  <Button size="small">Learn More</Button>
-                </CardActions> */}
-                </Card>
-              </div>
-              <div className="Dashboard-button-row-container">
-                <div className="Dashboard-button-row">
-                  <div className="Dashboard-button-container">
-                    <Button
-                      component={MenuScheduleLink}
-                      variant="contained"
-                      color="secondary"
-                      className="Dashboard-button"
-                    >
-                      <span className="Dashboard-button-content-container">
-                        Menu
-                        <RestaurantMenuRoundedIcon />
-                      </span>
-                    </Button>
+                    <Typography component="p">
+                      155 Argentia Rd, Mississauga, L1L2L3
+                      <br />
+                    </Typography> 
+                    </CardContent>
+                     <CardActions>
+                    <Button size="small">Learn More</Button>
+                  </CardActions> 
+                  </Card>
+                </div>*/}
+                <div className="Dashboard-button-row-container">
+                  <div className="Dashboard-button-row">
+                    <div className="Dashboard-button-container">
+                      <Button
+                        component={MenuScheduleLink}
+                        variant="contained"
+                        color="secondary"
+                        className="Dashboard-button"
+                      >
+                        <span className="Dashboard-button-content-container">
+                          Menu
+                          <RestaurantMenuRoundedIcon />
+                        </span>
+                      </Button>
+                    </div>
+                    <div className="Dashboard-button-container">
+                      <Button
+                        component={MealScheduleLink}
+                        variant="contained"
+                        color="secondary"
+                        className="Dashboard-button"
+                      >
+                        <span className="Dashboard-button-content-container">
+                          <p>Going on Vacation</p>
+                          <CreateRoundedIcon />
+                        </span>
+                      </Button>
+                    </div>
                   </div>
-                  <div className="Dashboard-button-container">
-                    <Button
-                      component={MealScheduleLink}
-                      variant="contained"
-                      color="secondary"
-                      className="Dashboard-button"
-                    >
-                      <span className="Dashboard-button-content-container">
-                        <p>Going on Vacation</p>
-                        <CreateRoundedIcon />
-                      </span>
-                    </Button>
-                  </div>
-                </div>
-                <div className="Dashboard-button-row">
-                  <div className="Dashboard-button-container">
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="Dashboard-button"
-                    >
-                      <span className="Dashboard-button-content-container">
-                        Request Salwaat/Fateha
-                        <AddCircleOutlineIcon />
-                      </span>
-                    </Button>
+                  <div className="Dashboard-button-row">
+                    <div className="Dashboard-button-container">
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        className="Dashboard-button"
+                      >
+                        <span className="Dashboard-button-content-container">
+                          Request Salwaat/Fateha
+                          <AddCircleOutlineIcon />
+                        </span>
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div></div>
-          </React.Fragment>
-        )}
+              <div></div>
+            </React.Fragment>
+          )}
+        </Spinner>  
       </div>
     );
   }

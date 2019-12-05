@@ -9,7 +9,6 @@ export const getMonthsSchedule = (onErrorCallback: Function) => async (
   try {
     const response = await axios.get(GET_SCHEDULLE_MONTH_ENDPOINT);
     dispatch({ type: GET_SCHEDULE_MONTHLY, payload: response.data });
-    console.log('userResponse---->', store.getState());
   } catch (e) {
     onErrorCallback && onErrorCallback();
     dispatch({ type: AUTH_ERROR, payload: 'Cannot Fetch Schedule' });

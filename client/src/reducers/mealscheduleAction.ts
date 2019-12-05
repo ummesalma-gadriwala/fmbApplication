@@ -60,11 +60,8 @@ export const addOverrideSchedule = (
   onErrorCallback: Function
 ) => async (dispatch: Function) => {
   try {
-    const addOverrideSchedule: OverrideSchedule = Object.assign(
-      {},
-      overrideSchedule
-    );
-
+    const addOverrideSchedule: OverrideSchedule = {...overrideSchedule};
+    
     overrideSchedule.overrideStartDate = dateFns.format(
       overrideSchedule.overrideStartDate,
       'yyyy-MM-dd',

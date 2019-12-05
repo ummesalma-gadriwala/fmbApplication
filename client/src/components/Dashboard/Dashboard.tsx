@@ -217,7 +217,7 @@ class Dashboard extends Component<any, DashBoardState> {
                                           <strong>
                                             {
                                               this.state.fatehaContributor.messageFromContributor.filter(
-                                                messageLabel =>
+                                                messageLabel => messageLabel && 
                                                   messageLabel.messageLabel.toLowerCase() ===
                                                   ContributionType_FATEHA.toLowerCase()
                                               )[0].messageLabel
@@ -227,7 +227,7 @@ class Dashboard extends Component<any, DashBoardState> {
                                         <div className="Dashboard-menu-side-note_content">
                                           {
                                             this.state.fatehaContributor.messageFromContributor.filter(
-                                              messageLabel =>
+                                              messageLabel => messageLabel &&
                                                 messageLabel.messageLabel.toLowerCase() ===
                                                 ContributionType_FATEHA.toLowerCase()
                                             )[0].messageValue

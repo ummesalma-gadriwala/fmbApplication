@@ -42,7 +42,7 @@ class Dashboard extends Component<any, DashBoardState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      isBusy: true,
+      isBusy: false,
       todaysSchedule: null,
       formattedTodaysDate: null,
       tiffinContributor: null,   
@@ -130,7 +130,7 @@ class Dashboard extends Component<any, DashBoardState> {
     };
     return (
       <div>
-        <Spinner active={this.state.false}>
+        <Spinner active={this.state.isBusy}>
           {this.state && (
             <React.Fragment>
               <div className="Dashboard-container">

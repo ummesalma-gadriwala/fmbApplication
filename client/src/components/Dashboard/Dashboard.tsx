@@ -116,12 +116,12 @@ class Dashboard extends Component<any, DashBoardState> {
           return (
             <React.Fragment>
               <span className="Dashboard-instructionForSubscriber-label">
-                <strong> {message.messageLabel}</strong>
+                <strong> {message && message.messageLabel}</strong>
               </span>
               <Divider />
               <span className="Dashboard-instructionForSubscriber-value">
                 {' '}
-                {message.messageValue}
+                {message && message.messageValue}
               </span>
             </React.Fragment>
           );
@@ -130,7 +130,7 @@ class Dashboard extends Component<any, DashBoardState> {
     };
     return (
       <div>
-        <Spinner active={this.state.isBusy}>
+        <Spinner active={this.state.false}>
           {this.state && (
             <React.Fragment>
               <div className="Dashboard-container">

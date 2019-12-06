@@ -35,14 +35,12 @@ interface DashBoardState {
   formattedTodaysDate: string | null;
   tiffinContributor: Contributor | null;
   fatehaContributor: Contributor | null;
-  isBusy: boolean;
 }
 
 class Dashboard extends Component<any, DashBoardState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      isBusy: false,
       todaysSchedule: null,
       formattedTodaysDate: null,
       tiffinContributor: null,   
@@ -51,7 +49,7 @@ class Dashboard extends Component<any, DashBoardState> {
   }
 
   componentDidMount() {
-    this.props.getMonthsSchedule();
+   this.props.getMonthsSchedule();
     this.setState({
       formattedTodaysDate: dateFns.format(new Date(), 'dd-MMM-yyyy', {
         awareOfUnicodeTokens: true
@@ -63,10 +61,10 @@ class Dashboard extends Component<any, DashBoardState> {
     if (
       this.props.schedule !== prevProps.schedule ||
       (this.state && this.state.todaysSchedule) !==
-        (prevState && prevState.todaysSchedule)
+        (prevState && prevState.todaysSchedule) ||
+      this.props.isBusyCommunicating !== prevProps.isBusyCommunicating  
     ) {
       this.setState({
-        isBusy: false,
         todaysSchedule: this.props.schedule,
         tiffinContributor:
           this.props.schedule &&
@@ -130,7 +128,7 @@ class Dashboard extends Component<any, DashBoardState> {
     };
     return (
       <div>
-        <Spinner active={this.state.isBusy}>
+        <Spinner active={this.props.isBusyCommunicating}>
           {this.state && (
             <React.Fragment>
               <div className="Dashboard-container">
@@ -337,8 +335,10 @@ const mapStateToProps = (state: AppState) => {
       schedule =>
         schedule.dailyDate ===
         dateFns.format(new Date(), 'yyyy-MM-dd', { awareOfUnicodeTokens: true })
-    ) as Schedule
-  });
+    ) as Schedule,
+    isBusyCommunicating: state.isBusyCommunicating
+  }
+  );
 };
 
 export default requireAuth(connect(mapStateToProps, scheduleAction)(Dashboard));

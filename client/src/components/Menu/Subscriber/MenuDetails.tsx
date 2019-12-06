@@ -73,7 +73,6 @@ class MenuDetails extends PureComponent<any, MenuDetailsState|any> {
   }
 
   componentDidMount() {
-    //this.setState({isBusy : true});
     this.props.getMonthsSchedule()
     this.props.getSubscriptionSchedule(this.props.subscriberId)
   }
@@ -245,7 +244,8 @@ class MenuDetails extends PureComponent<any, MenuDetailsState|any> {
                                 color="secondary"
                                 onClick={()=> updateMealPlanAndNavigate()}
                               >
-                                { "Save and Exit" }
+                                { isMealCancellationEnabled(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', {awareOfUnicodeTokens: true})
+                                                           ) ?"Save" : "Back" }
                               </Button>
                             </FormControl>
                             </div>  
@@ -263,12 +263,11 @@ class MenuDetails extends PureComponent<any, MenuDetailsState|any> {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: AppState, ownProps:any) => {
   return Object.assign({}, state, {
     selectedDateSchedule: state.schedules.find(
                 schedule =>
-                  schedule.dailyDate === '2019-12-11'
-                  //dateFns.format(new Date(), 'yyyy-MM-dd', { awareOfUnicodeTokens: true })
+                  schedule.dailyDate === (ownProps && ownProps.match.params.currentDate)
               ) as Schedule,
     subscriberId: state.authentication.decodedToken.subscriberId,
     mealSchedule: state.mealSchedule as SubscriptionSchedule

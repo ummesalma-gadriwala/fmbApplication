@@ -155,9 +155,6 @@ class ProfileInfo extends Component<any, any> {
         streetNumber: this.props.profile.primaryAddress.streetNumber
           ? this.props.profile.primaryAddress.streetNumber
           : '',
-        unitNumber: this.props.profile.primaryAddress.unitNumber
-          ? this.props.profile.primaryAddress.unitNumber
-          : '',
         postalCode: this.props.profile.primaryAddress.postalCode
           ? this.props.profile.primaryAddress.postalCode
           : '',
@@ -291,7 +288,6 @@ class ProfileInfo extends Component<any, any> {
                     <FormControl
                       margin="normal"
                       className="col-xs-6 col-sm-2  col-lg-2"
-                      required
                     >
                       <InputLabel htmlFor="unitNumber">Unit No</InputLabel>
                       <Input

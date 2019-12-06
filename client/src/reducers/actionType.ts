@@ -2,6 +2,9 @@ export const AUTH_USER = '/fmb/action/AUTH_USER';
 export const AUTH_ERROR = '/fmb/action/AUTH_ERROR';
 export const API_USER_ERROR = '/fmb/action/API_USER_ERROR';
 export const API_SERVER_ERROR = '/fmb/action/API_SERVER_ERROR';
+export const API_COMMUNICATION_INPROGRESS = '/fmb/action/API_COMMUNICATION_INPROGRESS';
+export const API_COMMUNICATION_DONE = '/fmb/action/API_COMMUNICATION_DONE';
+
 export const GET_SUBSCRIBER_SCHEDULE = '/fmb/action/GET_SUBSCRIBER_SCHEDULE';
 export const EDIT_SUBSCRIBER_SCHEDULE = '/fmb/action/EDIT_SUBSCRIBER_SCHEDULE';
 export const ADD_SUBSCRIBER_OVERRIDESCHEDULE =

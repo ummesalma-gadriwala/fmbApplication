@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import apps.kool.tms.api.reqres.APIResponse;
+import apps.kool.tms.api.utils.SectorName;
 import apps.kool.tms.api.utils.WorkFlowStatus;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class SubscriptionSchedule extends APIResponse {
     private @Id  ObjectId id;
 	private String subscriberId; //hof
 	private Map <DayOfWeek, Integer > optedSchedule;
+	private SectorName zone;
 	@DBRef
 	private List<OverrideSubscriptionSchedule> overrideSchedules;
 	private WorkFlowStatus status;

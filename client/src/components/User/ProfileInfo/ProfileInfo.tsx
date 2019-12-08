@@ -19,7 +19,6 @@ import {
   FormHelperText,
   Button
 } from '@material-ui/core';
-import withStyles from './../../Common/materialUIWithStyle';
 import './ProfileInfo.css';
 
 class ProfileInfo extends Component<any, any> {
@@ -74,14 +73,24 @@ class ProfileInfo extends Component<any, any> {
       }
     ]);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputChangeAllowNoSpace = this.handleInputChangeAllowNoSpace.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleInputChange(event: any) {
-    console.log(event.target);
     const target = event.target;
     const value = target.value;
     const name = target.name;
+    this.setState({
+      [name]: value
+    });
+  }
+
+  handleInputChangeAllowNoSpace(event: any) {
+    const target = event.target;
+    const value = target.value.replace(/\s/g, '');
+    const name = target.name;
+        
     this.setState({
       [name]: value
     });
@@ -141,8 +150,8 @@ class ProfileInfo extends Component<any, any> {
 
   componentDidUpdate(prevProps: any) {
     if (
-      this.props.profile != prevProps.profile &&
-      this.props.profile.primaryAdress == null
+      this.props.profile !== prevProps.profile &&
+      this.props.profile.primaryAdress === null
     ) {
       this.setState({
         firstName: this.props.profile.firstName,
@@ -329,9 +338,12 @@ class ProfileInfo extends Component<any, any> {
                         id="postalCode"
                         name="postalCode"
                         placeholder="Please enter your postal code"
-                        value={this.state.postalCode}
-                        onChange={this.handleInputChange}
+                        value={this.state.postalCode 
+                                      ?  this.state.postalCode.replace(/\s/g, '')
+                                       : this.state.postalCode }
+                        onChange={ this.handleInputChangeAllowNoSpace }
                         error={this.state.validation.postalCode.isInvalid}
+                        
                       />
                       <FormHelperText>
                         {this.state.validation.postalCode.message}

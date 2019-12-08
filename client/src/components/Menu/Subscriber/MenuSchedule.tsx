@@ -36,7 +36,7 @@ class MenuSchedule extends PureComponent<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      weekStartDate: dateFns.isWeekend(new Date()) ? dateFns.addWeeks(new Date(), 1) : dateFns.startOfWeek(new Date()),
+      weekStartDate:  dateFns.startOfWeek(new Date()),
       activeWeekRelativeToCurrentWeek: 0,
       isBusy: true
     };
@@ -51,10 +51,11 @@ class MenuSchedule extends PureComponent<any, any> {
   render() {
     const buildMenuItem = (
       menuItems: MenuItem[] | null,
+      noMeal:boolean,
       noMealReason: string
     ) => {
-      if(noMealReason) {
-        return <li > { noMealReason}</li>
+      if(noMeal && noMealReason) {
+        return <li > { `No Thali : ${noMealReason}`}</li>
       }
       return (
         menuItems &&
@@ -92,11 +93,13 @@ class MenuSchedule extends PureComponent<any, any> {
               <div key={index} className="daily-menu-container">
                 <Card className={this.props.classes.card}>
                   <CardActionArea
-                    onClick={() =>
-                      this.props.history.push(
-                        `/menu-schedule/details/${day.dailyDate}`
-                      )
-                    }>
+                      onClick={() =>
+                        this.props.history.push(
+                          `/menu-schedule/details/${day.dailyDate}`
+                        )
+                      }
+                      disabled = { day.noMeal }
+                    >
                     <CardHeader
                       title={
                         dateFns.format(
@@ -114,6 +117,7 @@ class MenuSchedule extends PureComponent<any, any> {
                           <Typography component="p">
                             {buildMenuItem(
                               day.menu && day.menu.items,
+                              day.noMeal,
                               day.noMealReason
                             )}
                           </Typography>
@@ -182,7 +186,10 @@ class MenuSchedule extends PureComponent<any, any> {
           <Fab
             onClick={() => navigateNextWeek()}
             className={this.props.classes.fab}
-            disabled = { dateFns.isSameWeek(new Date(),this.state.weekStartDate) && (!dateFns.isFriday(new Date()) && !dateFns.isWeekend(new Date()) ) }
+            disabled = { dateFns.isSameWeek(new Date(),this.state.weekStartDate)  
+                                        ? dateFns.isSameWeek(new Date(),this.state.weekStartDate) && (!dateFns.isFriday(new Date()) && !dateFns.isSaturday(new Date()) ) 
+                                        :  dateFns.isSameWeek(new Date(),this.state.weekStartDate) }
+
           >
            <NavigateNextIcon />
           </Fab>
@@ -212,7 +219,7 @@ const styles = (theme: any) => ({
   },
   media: {
     height: 0,
-    paddingTop: '56.25%' // 16:9
+    //paddingTop: '56.25%' // 16:9
   },
   actions: {
     display: 'flex',

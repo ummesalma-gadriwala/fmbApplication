@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Navigator from '../Navigator/Navigator';
 import { connect } from 'react-redux';
 
@@ -10,19 +10,19 @@ import MealSchedule from '../MealSchedule/MealSchedule';
 import UserForm from '../User/UserForm';
 import MenuSchedule from '../Menu/Subscriber/MenuSchedule';
 import MenuDetails from '../Menu/Subscriber/MenuDetails';
+import GlobalErrorHandler from '../../components/ErrorHandler/GlobalErrorHandler';
+
 
 import { AppState } from '../../type/Type';
 
 import './AppRouter.css';
 class AppRouter extends Component<any, any> {
-  constructor(props: any) {
-    super(props);
-  }
   render() {
     return (
       <div className="App-container">
         <Router>
           <div>
+            <GlobalErrorHandler/> 
             <div>
               <Route
                 path="/"

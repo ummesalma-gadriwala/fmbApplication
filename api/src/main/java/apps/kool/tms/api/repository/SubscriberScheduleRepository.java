@@ -103,10 +103,19 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 		} else {
 			subscriptionSchedule.getOverrideSchedules().add(overrideSubscriptionSchedule);
 		}
-		
 		mongoTemplate.save(subscriptionSchedule);
 		
 		return getSubscriptionScheduleBySubscriberId(subscriptionId);
+	}
+
+	@Override
+	public List<OverrideSubscriptionSchedule> getOverrideScheduledForDate(String selectedDate) throws Exception {
+		Date dateSelectedDate =new SimpleDateFormat("yyyy-MM-dd").parse(selectedDate);
+		Query query = new Query();
+		query.addCriteria(Criteria.where("overrideStartDate").lte(dateSelectedDate));
+		query.addCriteria(Criteria.where("overrideEndDate").gte(dateSelectedDate));
+		List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = mongoTemplate.find(query, OverrideSubscriptionSchedule.class);
+		return overrideSubscriptionSchedules;
 	}
 
 }

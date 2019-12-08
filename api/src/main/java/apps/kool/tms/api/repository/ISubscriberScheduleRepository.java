@@ -22,6 +22,8 @@ public interface ISubscriberScheduleRepository {
    
    boolean deleteOverrideSchedule(String subscriberId, String startDate) throws Exception ;
    
+   List<OverrideSubscriptionSchedule> getOverrideScheduledForDate(String selectedDate) throws Exception;
+   
    
    
    

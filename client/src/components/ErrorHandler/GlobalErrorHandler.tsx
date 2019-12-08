@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 import { connect } from 'react-redux';
 import { SERVER_ERROR, USER_ERROR } from '../../util/constant';
+import { RESET_ERROR } from '../../reducers/actionType';
 
 class GlobalErrorHandler extends Component<any, any> {
   constructor(props: any) {
@@ -9,11 +11,23 @@ class GlobalErrorHandler extends Component<any, any> {
     this.state = { hasError: false, errorMessage: '', infoMessage: '' };
   }
 
+  componentWillMount() {
+     this.props.history.listen((location, action) => {
+       this.props.dispatch({type: RESET_ERROR, payload:{}})
+    });
+  }
   componentDidCatch(error: any, info: any) {
     // Display fallback UI
     this.setState({ hasError: true });
     // You can also log the error to an error reporting service
     //logErrorToMyService(error, info);
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.history.pathname !== prevProps.history.pathname) {
+      console.log('componentDidUpdate')
+      this.setState({ hasError: false });    
+    }
   }
 
   render() {
@@ -28,7 +42,7 @@ class GlobalErrorHandler extends Component<any, any> {
             Please retry later currently system is down.
           </Alert>
         )}
-        {this.props.apiError === USER_ERROR && (
+        { this.props.apiError === USER_ERROR && (
           <Alert color="warning">
             {this.props.errorMessage && this.props.errorMessage}
             {!this.props.errorMessage &&
@@ -47,4 +61,4 @@ const mapStateToProps = (state: any) => {
     errorMessage: state.apiError.message
   };
 };
-export default connect(mapStateToProps, null)(GlobalErrorHandler);
+export default connect(mapStateToProps, null)(withRouter(GlobalErrorHandler));

@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 
 import CalendarTodayRoundedIcon from '@material-ui/icons/CalendarTodayRounded';
 import RestaurantMenuRoundedIcon from '@material-ui/icons/RestaurantMenuRounded';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
 import * as scheduleAction from '../../reducers/scheduleAction';
 import Spinner from '../Spinner/Spinner';
@@ -145,11 +144,11 @@ class Dashboard extends Component<any, DashBoardState> {
                           </strong>
                         </span>
                       </div>
-                      {!this.state.todaysSchedule && (
+                      {!this.state.todaysSchedule  && (
                         <React.Fragment>
                           <Typography variant="h5">
                             <span className="Dashboard-no-details">
-                              No Details Available{' '}
+                              No Thali Today{' '}
                             </span>
                           </Typography>
                         </React.Fragment>
@@ -300,20 +299,6 @@ class Dashboard extends Component<any, DashBoardState> {
                         <span className="Dashboard-button-content-container">
                           <p>Going on Vacation</p>
                           <CreateRoundedIcon />
-                        </span>
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="Dashboard-button-row">
-                    <div className="Dashboard-button-container">
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        className="Dashboard-button"
-                      >
-                        <span className="Dashboard-button-content-container">
-                          Request Salwaat/Fateha
-                          <AddCircleOutlineIcon />
                         </span>
                       </Button>
                     </div>

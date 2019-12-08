@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import HomeTwoToneIcon from '@material-ui/icons/HomeRounded';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import OperationIcon from '@material-ui/icons/CenterFocusStrongTwoTone';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutlineTwoTone';
@@ -51,7 +51,7 @@ class Navigator extends Component<any, any> {
               color="inherit"
               aria-label="Open Dashboard"
             >
-              <DashboardIcon />
+            <HomeTwoToneIcon/>
             </IconButton>
             {doesUserBelongsToOperation(this.props.roles) && (
               <IconButton

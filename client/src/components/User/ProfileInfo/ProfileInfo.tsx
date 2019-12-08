@@ -151,7 +151,7 @@ class ProfileInfo extends Component<any, any> {
   componentDidUpdate(prevProps: any) {
     if (
       this.props.profile !== prevProps.profile &&
-      this.props.profile.primaryAdress === null
+      this.props.profile.primaryAdress == null
     ) {
       this.setState({
         firstName: this.props.profile.firstName,

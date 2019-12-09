@@ -45,11 +45,7 @@ class AppRouter extends Component<any, any> {
                 component={OperationDashboard}
               />
             </div>
-            <div>
-              for testing cache 
-            </div>  
-
-            <Navigator />
+          <Navigator />
           </div>
         </Router>
       </div>

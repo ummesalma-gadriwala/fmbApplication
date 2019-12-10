@@ -44,7 +44,7 @@ class AppRouter extends Component<any, any> {
                 path="/operation/dashboard/"
                 component={OperationDashboard}
               />
-            </div>
+           </div>
           <Navigator />
           </div>
         </Router>

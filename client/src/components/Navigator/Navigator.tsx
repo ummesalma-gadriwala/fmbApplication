@@ -8,6 +8,7 @@ import HomeTwoToneIcon from '@material-ui/icons/HomeRounded';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import OperationIcon from '@material-ui/icons/CenterFocusStrongTwoTone';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutlineTwoTone';
+import RefreshTwoToneIcon from '@material-ui/icons/RefreshTwoTone';
 import { withStyles } from '@material-ui/core/styles';
 import './Navigator';
 
@@ -28,6 +29,19 @@ const styles = (theme: any) => ({
 class Navigator extends Component<any, any> {
   constructor(props: any) {
     super(props);
+    this.forceSWupdate = this.forceSWupdate.bind(this)
+  }
+
+
+  forceSWupdate () {
+    window.location.reload(true)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+          registration.update();
+        }
+      })
+    }
   }
 
   render() {
@@ -73,7 +87,18 @@ class Navigator extends Component<any, any> {
               <PersonOutlineIcon />
             </IconButton>
             <IconButton color="inherit" aria-label="Show Notifications">
+               
               <NotificationsIcon />
+            </IconButton>
+            <IconButton 
+               color="inherit" 
+               aria-label="Refresh To get Updates"
+               onClick = {() => this.forceSWupdate()}
+               component={DashBoardLink}
+              
+            >
+               
+              <RefreshTwoToneIcon />
             </IconButton>
           </Toolbar>
         </AppBar>

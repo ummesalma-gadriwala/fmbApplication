@@ -5,6 +5,7 @@ import mealSchedule from './mealSchedule';
 import profile from './profile';
 import { schedules } from './schedule';
 import { isBusyCommunicating} from './busyCommuncating'
+import {serviceWorkerUpdated } from './serviceWorker'
 
 export default combineReducers({
   authentication,
@@ -12,5 +13,6 @@ export default combineReducers({
   schedules,
   profile,
   apiError,
-  isBusyCommunicating
+  isBusyCommunicating,
+  serviceWorkerUpdated
 });

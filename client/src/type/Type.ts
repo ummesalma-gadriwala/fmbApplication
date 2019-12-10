@@ -66,6 +66,7 @@ export interface AppState {
   schedules: Schedule[];
   apiError: APIError;
   isBusyCommunicating: boolean; 
+  serviceWorkerUpdated: boolean;
 }
 
 export interface Profile {

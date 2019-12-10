@@ -19,3 +19,5 @@ export const DELETE_SUBSCRIBER_OVERRIDESCHEDULE =
 export const FETCH_USER_PROFILE = '/fmb/action/FETCH_USER_PROFILE';
 export const UPDATE_USER_PROFILE = '/fmb/action/UPDATE_USER_PROFILE';
 export const GET_SCHEDULE_MONTHLY = '/fmb/action/GET_SCHEDULE_MONTHLY';
+
+export const UPDATE_SERVICEWORKER = '/fmb/action/UPDATE_SERVICEWORKER';

@@ -94,8 +94,8 @@ export const addOverrideSchedule = (
           response.data.workFlowResponse.goToRoute
       );
   } catch (err) {
-    console.log(err.response.status);
     onErrorCallback && onErrorCallback();
+    console.log('err------>', err)
     if (err.response.status === 410) {
       dispatch({
         type: API_USER_ERROR,
@@ -131,7 +131,6 @@ export const deleteOverrideSchedule = (
           response.data.workFlowResponse.goToRoute
       );
   } catch (err) {
-    console.log(err.response.status);
     onErrorCallback && onErrorCallback();
     if (err.response.status === 410) {
       dispatch({ type: API_USER_ERROR, payload: 'Cannot Delete ' });

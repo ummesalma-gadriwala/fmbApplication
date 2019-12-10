@@ -13,8 +13,8 @@
 
 .MenuDetails-quantity-selector-container {
   display: flex;
-  justify-content: center;
-  margin-left:15px;
+  
+  margin-left:10px;
 }
 
 .MenuDetails-quantity-selector-radio{

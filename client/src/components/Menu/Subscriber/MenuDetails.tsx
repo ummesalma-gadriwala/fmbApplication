@@ -72,36 +72,42 @@ class MenuDetails extends PureComponent<any, MenuDetailsState|any> {
     this.setState( { cancelOrReduceMealSchedule: updatedSchedule })
   }
 
+  initiateState() {
+    if (this.props.mealSchedule) {
+      const overrideSchedule = this.props.mealSchedule.overrideSchedules.filter(schedule => {
+        return (dateFns.isWithinInterval(this.state.currentDate, {
+          start: new Date(schedule.overrideStartDate.split("-")[0], (schedule.overrideStartDate.split("-")[1] - 1), schedule.overrideStartDate.split("-")[2]),
+          end: new Date(schedule.overrideEndDate.split("-")[0], (schedule.overrideEndDate.split("-")[1] - 1), schedule.overrideEndDate.split("-")[2])
+        }));
+      })[0];
+      this.setState({
+      cancelOrReduceMealSchedule: {
+        overrideStartDate: dateFns.parseISO(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })),
+        overrideEndDate: dateFns.parseISO(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })),
+        weeklyOverrideSchedule: { ...overrideSchedule ? overrideSchedule.weeklyOverrideSchedule : this.props.mealSchedule.optedSchedule }
+      },
+        numberOfOptedMealForSelectedDay: overrideSchedule ? this.getMealCountForDay(overrideSchedule.weeklyOverrideSchedule, this.state.currentDate)
+          : this.getMealCountForDay(this.props.mealSchedule.optedSchedule, this.state.currentDate),
+        hasScheduleChangedAlready: overrideSchedule ? true : false
+      });
+    }
+  }
+
   componentDidMount() {
-    this.props.getMonthsSchedule()
-    this.props.getSubscriptionSchedule(this.props.subscriberId)
+    if (this.props.mealSchedule.optedSchedule.MONDAY === null ) {
+      this.props.getSubscriptionSchedule(this.props.subscriberId)
+    }
+    if( this.props.schedules && this.props.schedules.length === 0){
+      this.props.getMonthsSchedule()
+    }
+    this.initiateState();
   }
 
   componentDidUpdate(prevProps: any, prevState: MenuDetailsState) {
     if (this.props.schedule !== prevProps.schedule || 
         this.props.mealSchedule !== prevProps.mealSchedule 
        ) {
-      if(this.props.mealSchedule) {
-        const overrideSchedule = this.props.mealSchedule.overrideSchedules.filter(schedule => {
-                                                      return(dateFns.isWithinInterval(
-                                                          this.state.currentDate,
-                                                          {
-                                                           start: new Date(schedule.overrideStartDate.split("-")[0],(schedule.overrideStartDate.split("-")[1]-1),schedule.overrideStartDate.split("-")[2]),
-                                                           end: new Date(schedule.overrideEndDate.split("-")[0],(schedule.overrideEndDate.split("-")[1]-1),schedule.overrideEndDate.split("-")[2])
-                                                          }
-                                                        ))
-                                                      })[0] 
-        this.setState( { cancelOrReduceMealSchedule : {
-                          overrideStartDate: dateFns.parseISO(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })),
-                          overrideEndDate: dateFns.parseISO(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })),
-                          weeklyOverrideSchedule: {... overrideSchedule ? overrideSchedule.weeklyOverrideSchedule : this.props.mealSchedule.optedSchedule }
-                        },
-                        numberOfOptedMealForSelectedDay : overrideSchedule ? this.getMealCountForDay(overrideSchedule.weeklyOverrideSchedule, this.state.currentDate) 
-                                                                           : this.getMealCountForDay(this.props.mealSchedule.optedSchedule, this.state.currentDate),
-                        hasScheduleChangedAlready : overrideSchedule ? true : false                                                    
-
-        })
-      }
+       this.initiateState();
     }
   }
 

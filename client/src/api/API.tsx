@@ -14,4 +14,6 @@ export const USER_PROFILE_ENDPOINT = (username: string | null) =>
   }`;
 export const GET_SCHEDULLE_MONTH_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}schedule/month`;
 
+export const GET_MEAL_COUNT_SECTORWISE_DAILY_ENDPOINT = (selectedDate:string ) => `${process.env.REACT_APP_API_ENDPOINT}admin/sector/meal/count/${selectedDate}`;
+
 //export default let logConfig = () =>  console.log ( `'TOKEN_API_ENPOINT': ${TOKEN_API_ENPOINT}`  );

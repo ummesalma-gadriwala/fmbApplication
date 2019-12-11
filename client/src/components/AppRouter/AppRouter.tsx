@@ -10,6 +10,7 @@ import MealSchedule from '../MealSchedule/MealSchedule';
 import UserForm from '../User/UserForm';
 import MenuSchedule from '../Menu/Subscriber/MenuSchedule';
 import MenuDetails from '../Menu/Subscriber/MenuDetails';
+import DailyMealCountReport from '../Operations/Reports/DailyMealCountReport';
 import GlobalErrorHandler from '../../components/ErrorHandler/GlobalErrorHandler';
 
 
@@ -43,6 +44,11 @@ class AppRouter extends Component<any, any> {
                 exact
                 path="/operation/dashboard/"
                 component={OperationDashboard}
+              />
+              <Route
+                exact
+                path="/operation/meal-count-report/"
+                component={DailyMealCountReport}
               />
            </div>
           <Navigator />

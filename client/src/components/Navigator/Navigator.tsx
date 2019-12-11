@@ -67,18 +67,7 @@ class Navigator extends Component<any, any> {
             >
             <HomeTwoToneIcon/>
             </IconButton>
-            {doesUserBelongsToOperation(this.props.roles) && (
-              <IconButton
-                component={OperationDashBoardLink}
-                color="inherit"
-                aria-label="Show Notifications"
-              >
-                <OperationIcon
-                  color="inherit"
-                  aria-label="Open Operation Dashboard"
-                />
-              </IconButton>
-            )}
+            
             <IconButton
               component={UserProfileLink}
               color="inherit"
@@ -100,6 +89,18 @@ class Navigator extends Component<any, any> {
                
               <RefreshTwoToneIcon />
             </IconButton>
+            {doesUserBelongsToOperation(this.props.roles) && (
+              <IconButton
+                component={OperationDashBoardLink}
+                color="inherit"
+                aria-label="Show Notifications"
+              >
+                <OperationIcon
+                  color="inherit"
+                  aria-label="Open Operation Dashboard"
+                />
+              </IconButton>
+            )}
           </Toolbar>
         </AppBar>
       </div>

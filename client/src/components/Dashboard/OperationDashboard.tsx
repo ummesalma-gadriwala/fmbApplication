@@ -8,7 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CalendarTodayRoundedIcon from '@material-ui/icons/CalendarTodayRounded';
 import RestaurantMenuRoundedIcon from '@material-ui/icons/RestaurantMenuRounded';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
+import TableChartTwoToneIcon from '@material-ui/icons/TableChartTwoTone';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
 
@@ -19,7 +19,7 @@ class OperationDashboard extends Component<any, any> {
 
   render() {
     const ThaliCountReportLink = (props: any) => (
-      <Link to="/operation/tahli-count-report" {...props} />
+      <Link to="/operation/meal-count-report" {...props} />
     );
     return (
       <div>
@@ -37,7 +37,7 @@ class OperationDashboard extends Component<any, any> {
           </div>
           <div className="Dashboard-button-row-container">
             <div className="Dashboard-button-row">
-              <div className="Dashboard-button-container">
+              {/* <div className="Dashboard-button-container">
                 <Button
                   variant="contained"
                   color="primary"
@@ -48,7 +48,7 @@ class OperationDashboard extends Component<any, any> {
                     <RestaurantMenuRoundedIcon />
                   </span>
                 </Button>
-              </div>
+              </div> */}
               <div className="Dashboard-button-container">
                 <Button
                   component={ThaliCountReportLink}
@@ -58,13 +58,13 @@ class OperationDashboard extends Component<any, any> {
                 >
                   <span className="Dashboard-button-content-container">
                     <p>Thali Count Report</p>
-                    <CreateRoundedIcon />
+                    <TableChartTwoToneIcon />
                   </span>
                 </Button>
               </div>
             </div>
             <div className="Dashboard-button-row">
-              <div className="Dashboard-button-container">
+              {/* <div className="Dashboard-button-container">
                 <Button
                   variant="contained"
                   color="secondary"
@@ -75,7 +75,7 @@ class OperationDashboard extends Component<any, any> {
                     <AddCircleOutlineIcon />
                   </span>
                 </Button>
-              </div>
+              </div> */}
               {/* <div className="Dashboard-button-container">
               <Button variant="contained" color="secondary" className="Dashboard-button" >
                 <span className="Dashboard-button-content-container">  

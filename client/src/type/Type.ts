@@ -67,6 +67,7 @@ export interface AppState {
   apiError: APIError;
   isBusyCommunicating: boolean; 
   serviceWorkerUpdated: boolean;
+  operations:Operations | null;
 }
 
 export interface Profile {
@@ -114,3 +115,19 @@ export interface LabelValue {
   messageLabel: string;
   messageValue: string;
 }
+
+export interface Operations {
+   reportDailyThaliCount:SectorCountSelectedDate; 
+  
+}
+
+export interface SectorCountSelectedDate {
+  selectedDate : string | null;
+  sectorCounts : SectorCount[];
+}
+
+export interface SectorCount {
+  sectorName : string;
+  counnt : number;
+}
+

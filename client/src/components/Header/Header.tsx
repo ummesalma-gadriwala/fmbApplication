@@ -12,12 +12,12 @@ class Header extends Component<any, any> {
   render() {
     return (
       <div className="Header-container">
-        <div className="Header-imgwrap">
+        {/* <div className="Header-imgwrap">
           <img src={aeflogo} alt="Logo" />
         </div>
         <div className="Header-imgwrap">
           <img src={fmblogo} alt="Logo" />
-        </div>
+        </div> */}
       </div>
     );
   }

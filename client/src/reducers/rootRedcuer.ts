@@ -6,6 +6,7 @@ import profile from './profile';
 import { schedules } from './schedule';
 import { isBusyCommunicating} from './busyCommuncating'
 import {serviceWorkerUpdated } from './serviceWorker'
+import { reportDailyThaliCount } from './adminReport'
 
 export default combineReducers({
   authentication,
@@ -14,5 +15,6 @@ export default combineReducers({
   profile,
   apiError,
   isBusyCommunicating,
-  serviceWorkerUpdated
+  serviceWorkerUpdated,
+  operations :  reportDailyThaliCount 
 });

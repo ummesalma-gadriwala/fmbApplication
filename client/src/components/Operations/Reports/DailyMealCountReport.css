@@ -1,0 +1,10 @@
+.daily-meal-count-report-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.daily-meal-count-no-report-container {
+  padding: 20px;
+  text-align: center;
+}

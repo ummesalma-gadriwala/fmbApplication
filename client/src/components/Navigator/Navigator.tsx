@@ -53,13 +53,13 @@ class Navigator extends Component<any, any> {
     );
 
     return this.props.authenticated ? (
-      <div>
+      <div >
         <AppBar
           position="fixed"
           color="primary"
           className={this.props.classes.appBar}
         >
-          <Toolbar>
+          <Toolbar className="appbar-container">
             <IconButton
               component={DashBoardLink}
               color="inherit"
@@ -75,10 +75,10 @@ class Navigator extends Component<any, any> {
             >
               <PersonOutlineIcon />
             </IconButton>
-            <IconButton color="inherit" aria-label="Show Notifications">
+            {/* <IconButton color="inherit" aria-label="Show Notifications">
                
               <NotificationsIcon />
-            </IconButton>
+            </IconButton> */}
             <IconButton 
                color="inherit" 
                aria-label="Refresh To get Updates"

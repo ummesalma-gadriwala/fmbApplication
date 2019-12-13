@@ -390,10 +390,10 @@ class ProfileInfo extends Component<any, any> {
 }
 
 const mapStateToProps = (state: AppState) => {
-  return Object.assign({}, state, {
+   return {
     username: state.authentication.decodedToken.username,
     profile: state.profile
-  });
+  };
 };
 
 export default requireAuth(

@@ -202,11 +202,11 @@ class MenuSchedule extends PureComponent<any, any> {
 }
 
 const mapStateToProps = (state: AppState) => {
-  return Object.assign({}, state, {
+  return  {
     subscriberId: state.authentication.decodedToken.subscriberId,
-    schedule: state.schedules as Schedule[]
-    
-  });
+    schedule: state.schedules as Schedule[],
+    mealSchedule:  state.mealSchedule
+  };
 };
 const styles = (theme: any) => ({
   fab: {

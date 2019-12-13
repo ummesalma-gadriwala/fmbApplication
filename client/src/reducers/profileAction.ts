@@ -2,7 +2,9 @@ import axios from 'axios';
 import {
   FETCH_USER_PROFILE,
   AUTH_ERROR,
-  UPDATE_USER_PROFILE
+  UPDATE_USER_PROFILE,
+  API_COMMUNICATION_DONE, 
+  API_COMMUNICATION_INPROGRESS
 } from './actionType';
 import { TOKEN_API_ENPOINT, USER_PROFILE_ENDPOINT } from '../api/API';
 import { Profile } from '../type/Type';
@@ -12,8 +14,10 @@ export const getUserProfile = (
   onErrorCallback: Function
 ) => async (dispatch: Function) => {
   try {
+    dispatch({type: API_COMMUNICATION_INPROGRESS})
     const response = await axios.get(USER_PROFILE_ENDPOINT(username));
     dispatch({ type: FETCH_USER_PROFILE, payload: response.data });
+    dispatch({type: API_COMMUNICATION_DONE})
   } catch (e) {
     onErrorCallback && onErrorCallback();
     dispatch({ type: AUTH_ERROR, payload: 'Cannot Fetch User Profile' });

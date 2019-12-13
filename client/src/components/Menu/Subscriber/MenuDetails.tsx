@@ -270,14 +270,14 @@ class MenuDetails extends PureComponent<any, MenuDetailsState|any> {
 }
 
 const mapStateToProps = (state: AppState, ownProps:any) => {
-  return Object.assign({}, state, {
+  return  {
     selectedDateSchedule: state.schedules.find(
                 schedule =>
                   schedule.dailyDate === (ownProps && ownProps.match.params.currentDate)
               ) as Schedule,
     subscriberId: state.authentication.decodedToken.subscriberId,
     mealSchedule: state.mealSchedule as SubscriptionSchedule
-  });
+  };
 };
 const styles = (theme: any) => ({
   fab: {

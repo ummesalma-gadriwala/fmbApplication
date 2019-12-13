@@ -1,12 +1,14 @@
 import axios from 'axios';
 import {
   OPERATIONS_GET_SECTORWISE_MEAL_COUNT,
-  API_SERVER_ERROR
+  API_SERVER_ERROR,
+  API_COMMUNICATION_DONE, 
+  API_COMMUNICATION_INPROGRESS
 } from './actionType';
 import {
   GET_MEAL_COUNT_SECTORWISE_DAILY_ENDPOINT
 } from '../api/API';
-import { SectorCount, SectorCountSelectedDate} from '../type/Type';
+import { SectorCount} from '../type/Type';
 
 const dateFns = require('date-fns');
 
@@ -16,6 +18,7 @@ export const getMealCountBySectorForSelectedDate = (
   onErrorCallback: Function | null
 ) => async (dispatch: Function) => {
   try {
+    dispatch({type: API_COMMUNICATION_INPROGRESS})
     const response = await axios.get(GET_MEAL_COUNT_SECTORWISE_DAILY_ENDPOINT(selectedDate));
     if (response && response.data) {
       const sectorCounts: SectorCount [] = response.data;
@@ -24,7 +27,9 @@ export const getMealCountBySectorForSelectedDate = (
         payload: {reportDailyThaliCount: { selectedDate, sectorCounts }} 
       });
     }
+    dispatch({type: API_COMMUNICATION_DONE})
   } catch (err) {
+    dispatch({type: API_COMMUNICATION_DONE})
     console.log(err);
     onErrorCallback && onErrorCallback();
     dispatch({ type: API_SERVER_ERROR });

@@ -315,15 +315,14 @@ class Dashboard extends Component<any, DashBoardState> {
 }
 
 const mapStateToProps = (state: AppState) => {
-  return Object.assign({}, state, {
+  return  {
     schedule: state.schedules.find(
       schedule =>
         schedule.dailyDate ===
         dateFns.format(new Date(), 'yyyy-MM-dd', { awareOfUnicodeTokens: true })
     ) as Schedule,
     isBusyCommunicating: state.isBusyCommunicating
-  }
-  );
+  };
 };
 
 export default requireAuth(connect(mapStateToProps, scheduleAction)(Dashboard));

@@ -2,3 +2,9 @@
   top:auto;
   bottom:0;
 }
+
+.appbar-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+}

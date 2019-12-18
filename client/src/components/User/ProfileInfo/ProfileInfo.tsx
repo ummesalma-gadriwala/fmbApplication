@@ -185,7 +185,7 @@ class ProfileInfo extends Component<any, any> {
     return (
       <div>
         {this.state != null && (
-          <Spinner active={this.state.isInProgres}>
+          <Spinner active={this.props.isBusyCommunicating}>
             <div className="container-main row">
               <Paper className="UserProfile-paper col-sm-12  col-lg-5">
                 <CssBaseline />

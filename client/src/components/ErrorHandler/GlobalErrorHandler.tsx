@@ -25,7 +25,6 @@ class GlobalErrorHandler extends Component<any, any> {
 
   componentDidUpdate(prevProps) {
     if(this.props.history.pathname !== prevProps.history.pathname) {
-      console.log('componentDidUpdate')
       this.setState({ hasError: false });    
     }
   }

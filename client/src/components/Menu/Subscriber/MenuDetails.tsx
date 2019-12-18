@@ -1,5 +1,5 @@
 import 'date-fns';
-import React, { PureComponent, useState } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import requireAuth from '../../../requireAuth';
 import { withStyles } from '@material-ui/core/styles';
@@ -175,26 +175,6 @@ class MenuDetails extends PureComponent<any, MenuDetailsState|any> {
       );
     };
 
-    const buildMessages = (messages: LabelValue[] | null) => {
-      return (
-        messages &&
-        messages.map((message: LabelValue, index: number) => {
-          return (
-            <React.Fragment>
-              <span className="Dashboard-instructionForSubscriber-label">
-                <strong> {message.messageLabel}</strong>
-              </span>
-              <Divider />
-              <span className="Dashboard-instructionForSubscriber-value">
-                {' '}
-                {message.messageValue}
-              </span>
-            </React.Fragment>
-          );
-        })
-      );
-    };
-
     return (
       <div>
         <Paper className="MenuDetails-header">
@@ -241,20 +221,20 @@ class MenuDetails extends PureComponent<any, MenuDetailsState|any> {
                             </React.Fragment>
                           }
                         <React.Fragment>
-                        <div className = "MenuDetails-quantity-action-container">
-                          <FormControl margin="dense" >
-                              <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="secondary"
-                                onClick={()=> updateMealPlanAndNavigate()}
-                              >
-                                { isMealCancellationEnabled(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', {awareOfUnicodeTokens: true})
-                                                           ) ?"Save" : "Back" }
-                              </Button>
-                            </FormControl>
-                            </div>  
+                          <div className = "MenuDetails-quantity-action-container">
+                            <FormControl margin="dense" >
+                                <Button
+                                  type="submit"
+                                  fullWidth
+                                  variant="contained"
+                                  color="secondary"
+                                  onClick={()=> updateMealPlanAndNavigate()}
+                                >
+                                  { isMealCancellationEnabled(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', {awareOfUnicodeTokens: true})
+                                                            ) ?"Save" : "Back" }
+                                </Button>
+                              </FormControl>
+                          </div>  
                         </React.Fragment> 
                       </React.Fragment>
                     )}

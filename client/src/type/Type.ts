@@ -101,6 +101,7 @@ export interface Schedule {
   noMealReason: string;
   contributors: Contributor[] | [];
   instructionsForSubscriber?: LabelValue[] | [];
+  review: Review | null;
 }
 
 export interface Contributor {
@@ -129,5 +130,13 @@ export interface SectorCountSelectedDate {
 export interface SectorCount {
   sectorName : string;
   counnt : number;
+}
+
+export interface Review {
+  id: Object| null;
+  scheduleDate: string;
+  username:string;
+  subscriberId: string;
+  questionAnswer: LabelValue [];
 }
 

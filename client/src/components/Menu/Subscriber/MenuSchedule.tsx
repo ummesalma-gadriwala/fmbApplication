@@ -29,7 +29,6 @@ import Paper from '@material-ui/core/Paper';
  
 
 import './MenuSchedule.css';
-import { OverflowYProperty } from 'csstype';
 const dateFns = require('date-fns');
 
 class MenuSchedule extends PureComponent<any, any> {
@@ -45,7 +44,36 @@ class MenuSchedule extends PureComponent<any, any> {
   componentDidMount() {
     this.props.getMonthsSchedule();
     this.props.getSubscriptionSchedule(this.props.subscriberId);
+    this.props.getReviewForUserByDateRange( this.props.subscriberId,
+      dateFns.format(
+        this.state.weekStartDate,
+        'yyyy-MM-dd',
+        { awareOfUnicodeTokens: true }
+      ), 
+      dateFns.format(
+        dateFns.addDays(this.state.weekStartDate,7),
+        'yyyy-MM-dd',
+        { awareOfUnicodeTokens: true }
+      ),
+    )
     this.setState({isBusy: false})
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.weekStartDate !== prevState.weekStartDate) {
+      this.props.getReviewForUserByDateRange( this.props.subscriberId,
+                                              dateFns.format(
+                                                this.state.weekStartDate,
+                                                'yyyy-MM-dd',
+                                                { awareOfUnicodeTokens: true }
+                                              ), 
+                                              dateFns.format(
+                                                dateFns.addDays(this.state.weekStartDate,7),
+                                                'yyyy-MM-dd',
+                                                { awareOfUnicodeTokens: true }
+                                              ),
+                                            )
+    }
   }
 
   render() {
@@ -73,13 +101,15 @@ class MenuSchedule extends PureComponent<any, any> {
    
     const isReviewEnabled = (reviewDate:string) => {
       return !dateFns.isFuture(dateFns.parseISO(reviewDate)) &&
-             !isMealCancelledOnDate(reviewDate)&&   
+             !isMealCancelledOnDate(reviewDate)&&  
+             dateFns.getHours(new Date()) > 19 && 
               dateFns.differenceInDays(
                     dateFns.parseISO(reviewDate),
                     dateFns.addDays(new Date() , -5) )
                       <=  5
     }
 
+    
     const buildMenu = () => {
       return (
         this.props.schedule &&
@@ -94,8 +124,9 @@ class MenuSchedule extends PureComponent<any, any> {
                 <Card className={this.props.classes.card}>
                   <CardActionArea
                       onClick={() =>
-                        this.props.history.push(
-                          `/menu-schedule/details/${day.dailyDate}`
+                        this.props.history.push( isReviewEnabled(day.dailyDate) || day.review
+                         ? `/menu-schedule/review/${day.dailyDate}`
+                         : `/menu-schedule/details/${day.dailyDate}`
                         )
                       }
                       disabled = { day.noMeal }
@@ -124,11 +155,12 @@ class MenuSchedule extends PureComponent<any, any> {
                         </ul>
                         { !day.noMeal &&
                           <div className="MenuSchedule-action-contianer">
-                          {/* { isReviewEnabled(day.dailyDate) && 
+                          { isReviewEnabled(day.dailyDate) && !day.review && 
                             <div className="MenuSchedule-action-review-cancel">
                               <span><strong> Review</strong> </span>
                               <span> <RateReviewOutlined/></span>
-                            </div> */}
+                            </div> 
+                          }
                              
                           { !isMealCancelledOnDate(day.dailyDate ) && isMealCancellationEnabled(day.dailyDate) && 
                             !isReviewEnabled(day.dailyDate) && 
@@ -188,7 +220,7 @@ class MenuSchedule extends PureComponent<any, any> {
             className={this.props.classes.fab}
             disabled = { dateFns.isSameWeek(new Date(),this.state.weekStartDate)  
                                         ? dateFns.isSameWeek(new Date(),this.state.weekStartDate) && (!dateFns.isFriday(new Date()) && !dateFns.isSaturday(new Date()) ) 
-                                        :  dateFns.isSameWeek(new Date(),this.state.weekStartDate) }
+                                        : dateFns.isSameWeek(new Date(),this.state.weekStartDate) }
 
           >
            <NavigateNextIcon />

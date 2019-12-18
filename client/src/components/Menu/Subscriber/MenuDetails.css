@@ -34,3 +34,7 @@
 .MenuDetails-quantity-selector-radio-label span:nth-child(2){
   font-weight: 600;
 }
+
+.Review-validation-error {
+  margin-bottom: 10px;
+}

@@ -17,6 +17,7 @@ import GlobalErrorHandler from '../../components/ErrorHandler/GlobalErrorHandler
 import { AppState } from '../../type/Type';
 
 import './AppRouter.css';
+import ReviewDetails from '../Menu/Subscriber/ReviewDetails';
 class AppRouter extends Component<any, any> {
   render() {
     return (
@@ -37,6 +38,12 @@ class AppRouter extends Component<any, any> {
                 exact
                 path="/menu-schedule/details/:currentDate"
                 component={MenuDetails}
+
+              />
+              <Route
+                exact
+                path="/menu-schedule/review/:currentDate"
+                component={ReviewDetails}
 
               />
               <Route exact path="/profile/" component={UserForm} />

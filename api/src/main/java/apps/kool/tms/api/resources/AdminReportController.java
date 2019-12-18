@@ -3,9 +3,11 @@ package apps.kool.tms.api.resources;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +56,9 @@ public class AdminReportController {
 			}
 		 });
 		
-		return ResponseEntity.ok(reportData);
+				
+		return ResponseEntity.ok(reportData.entrySet().stream().sorted(Map.Entry.<SectorName, Integer>comparingByValue().reversed())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new)));
 	}
 		
 		

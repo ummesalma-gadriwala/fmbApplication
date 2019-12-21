@@ -100,13 +100,15 @@ class MenuSchedule extends PureComponent<any, any> {
     }
    
     const isReviewEnabled = (reviewDate:string) => {
-      return !dateFns.isFuture(dateFns.parseISO(reviewDate)) &&
+      return dateFns.isToday(dateFns.parseISO(reviewDate)) 
+             ? dateFns.getHours(new Date()) > 19
+             : !dateFns.isFuture(dateFns.parseISO(reviewDate)) &&
              !isMealCancelledOnDate(reviewDate)&&  
-             dateFns.getHours(new Date()) > 19 && 
-              dateFns.differenceInDays(
+             dateFns.differenceInDays(
                     dateFns.parseISO(reviewDate),
                     dateFns.addDays(new Date() , -5) )
                       <=  5
+                       
     }
 
     

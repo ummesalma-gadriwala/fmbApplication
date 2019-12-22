@@ -28,6 +28,10 @@ import FormLabel    from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField';
 import FormControl    from '@material-ui/core/FormControl';
 import { Alert } from 'reactstrap';
+import Rating from '@material-ui/lab/Rating';
+import Box from '@material-ui/core/Box';
+
+
 import './MenuDetails.css';
 const dateFns = require('date-fns');
 
@@ -224,83 +228,44 @@ class ReviewDetails extends Component<any, any> {
                          { this.state && this.state.questionAnswer &&  
                           
                           <div className="review-option-container">
-                            <FormLabel required>
-                              <strong>Overall Thali experience</strong>
-                            </FormLabel>
-                          
-                            <RadioGroup  
-                                aria-label="position" 
-                                name="position" 
-                                value={this.state.questionAnswer && this.state.questionAnswer.overallMealExperience} 
-                                onChange={(event : any)=>  handleQuestionChanges('overallMealExperience', event.target.value)  }
-                                row
+                            <Box>
+                              <Typography component="legend" ><strong>Overall Thali experience</strong></Typography>
+                              <Rating
+                                name="overallMealExperience"
+                                value={ this.state.questionAnswer && getAnswerForQuestion(this.state.questionAnswer , 'overallMealExperience') }
+                                onChange={(event, newValue) => {
+                                  handleQuestionChanges('overallMealExperience', newValue)
+                                }}
+                                disabled = { this.state.isReviewProvided }
                                 
-                            >
-                              <FormControlLabel
-                                  value={"satisfied"}
-                                  control={<Radio color="secondary" checked={this.state.questionAnswer.find( question => question.messageLabel === 'overallMealExperience').messageValue  === "satisfied"}  />}
-                                  label={ "Satisfied"}
-                                  disabled = { this.state.isReviewProvided }
                               />
-                              <FormControlLabel
-                                  value={"unsatisfied" }
-                                  control={<Radio color="secondary" checked={this.state.questionAnswer.find( question => question.messageLabel === 'overallMealExperience').messageValue === "unsatisfied"}  />}
-                                  label={ "UnSatisfied"}
-                                  disabled = { this.state.isReviewProvided }
-                              />
-                            </RadioGroup>
-                                               
-                            <FormLabel required>
-                              <strong>Food Quality</strong>
-                            </FormLabel>
-                            
-                            <RadioGroup  
-                                aria-label="position" 
-                                name="position" 
-                                value={this.state.questionAnswer && this.state.questionAnswer.foodQuality} 
-                                onChange={(event : any)=>  handleQuestionChanges('foodQuality', event.target.value)  }
-                                row
-                            >
-                               
-                              <FormControlLabel
-                                  value={"satisfied" }
-                                  control={<Radio color="secondary" checked={this.state.questionAnswer.find( question => question.messageLabel === 'foodQuality').messageValue === "satisfied"}  />}
-                                  label={ "Satisfied"}
-                                  disabled = { this.state.isReviewProvided }
-                              />
-                              <FormControlLabel
-                                  value={ "unsatisfied" }
-                                  control={<Radio color="secondary" checked={this.state.questionAnswer.find( question => question.messageLabel === 'foodQuality').messageValue  === "unsatisfied"}  />}
-                                  label={ "UnSatisfied"}
-                                  disabled = { this.state.isReviewProvided }
-                              />
+                            </Box>
+
+                            <Box>
+                              <Typography component="legend" ><strong>Food Quality</strong></Typography>
+                              <Rating
+                                name="foodQuality"
+                                value={ this.state.questionAnswer && getAnswerForQuestion(this.state.questionAnswer , 'foodQuality') }
+                                onChange={(event, newValue) => {
+                                  handleQuestionChanges('foodQuality', newValue)
+                                }}
+                                disabled = { this.state.isReviewProvided }
                                 
-                            </RadioGroup>
-                            <FormLabel required>
-                                <strong>Food Quantity</strong>
-                            </FormLabel>
-                            
-                            <RadioGroup  
-                                aria-label="position" 
-                                name="position" 
-                                value={this.state.questionAnswer && this.state.questionAnswer.foodQuantity} 
-                                onChange={(event : any)=>  handleQuestionChanges('foodQuantity', event.target.value)  }
-                                row
-                            >
-                              <FormControlLabel
-                                  value={"satisfied" }
-                                  control={<Radio color="secondary" checked={this.state.questionAnswer.find( question => question.messageLabel === 'foodQuantity').messageValue === "satisfied"}  />}
-                                  label={ "Satisfied" }
-                                  disabled = { this.state.isReviewProvided }
                               />
-                              <FormControlLabel
-                                  value={ "unsatisfied" }
-                                  control={<Radio color="secondary" checked={this.state.questionAnswer.find( question => question.messageLabel === 'foodQuantity').messageValue === "unsatisfied"}  />}
-                                  label={ "UnSatisfied"}
-                                  disabled = { this.state.isReviewProvided }
-                              />
+                            </Box>
+                                                   
+                            <Box>
+                              <Typography component="legend" ><strong>Food Quanity</strong></Typography>
+                              <Rating
+                                name="foodQuantity"
+                                value={ this.state.questionAnswer && getAnswerForQuestion(this.state.questionAnswer , 'foodQuantity') }
+                                onChange={(event, newValue) => {
+                                  handleQuestionChanges('foodQuantity', newValue)
+                                }}
+                                disabled = { this.state.isReviewProvided }
                                 
-                            </RadioGroup>
+                              />
+                            </Box>
 
                             <TextField
                               id="outlined-multiline-static"

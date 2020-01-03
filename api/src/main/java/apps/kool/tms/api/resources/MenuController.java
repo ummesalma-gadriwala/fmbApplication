@@ -19,6 +19,7 @@ import apps.kool.tms.api.repository.IMenuItemRepository;
 import apps.kool.tms.api.repository.IMenuRepository;
 import apps.kool.tms.api.repository.IScheduleRepository;
 import apps.kool.tms.api.reqres.AddMenuRequest;
+import apps.kool.tms.api.utils.ScheduleUtils;
 
 
 @RestController
@@ -38,39 +39,11 @@ public class MenuController {
 	@RequestMapping( value = "/schedule",  method = RequestMethod.POST)
 	ResponseEntity<Boolean> add(@RequestBody ArrayList<AddMenuRequest> menuRequestList ) throws ParseException {
 	    
-		menuRequestList.forEach(menuRequest -> {
-			//Add Menu Items
-			ArrayList<MenuItem> menuItems = menuItemRepository.addMeuItems(menuRequest.getMenuItems());
-			//Add Menu
-			Menu menu ; 
-			menu = menuRepository.findMenuByItems(menuItems);
-			if(menu == null) {
-				menu= Menu.builder().items(menuItems).build();
-				menuRepository.saveMenu(menu);
-			}
-			//Add Menu to Schedule
-			try {
-				Schedule schedule = scheduleRepository.findByDailyDate(new SimpleDateFormat("yyyy-MM-dd").parse(menuRequest.getMenuDate()));
-				if(schedule == null) {
-					schedule = Schedule.builder()
-										.dailyDate(new SimpleDateFormat("yyyy-MM-dd").parse(menuRequest.getMenuDate()))
-										.menu(menu)
-										.noMeal(menuRequest.isNoMeal())
-										.noMealReason(menuRequest.getNoMealReason())
-										.instructionsForSubscriber(menuRequest.getInstructionsForSubscriber())
-										.build();
-				} else
-				{
-					schedule.setMenu(menu);
-				}
-				scheduleRepository.save(schedule);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			
-		});
+		ScheduleUtils.addMenuToSchedule(menuRequestList, menuItemRepository, menuRepository, scheduleRepository);
 		return ResponseEntity.ok(true);
 	}
+
+	
 	
 	
 }

@@ -36,6 +36,7 @@ import java.util.Arrays;
 class SecurityConfig extends WebSecurityConfigurerAdapter {
   private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
     new AntPathRequestMatcher("/user/token/**"),
+    new AntPathRequestMatcher("/admin/schedule/**"),
     new AntPathRequestMatcher("/error/**")
   );
   private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);

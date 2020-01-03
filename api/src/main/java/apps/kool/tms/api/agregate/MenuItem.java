@@ -1,5 +1,6 @@
 package apps.kool.tms.api.agregate;
 
+import lombok.Builder;
 import lombok.Data;
 
 import org.bson.types.ObjectId;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Document
+@Builder
 public class MenuItem {
 	
 	@JsonIgnore
@@ -21,4 +23,7 @@ public class MenuItem {
 	private double costPerThali;
 	
 	private MenuItemType menuItemType; 
+	
+	private String quantity;
+	
 }

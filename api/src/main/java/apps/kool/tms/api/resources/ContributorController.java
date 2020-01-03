@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import apps.kool.tms.api.agregate.Contributor;
 import apps.kool.tms.api.agregate.Schedule;
 import apps.kool.tms.api.agregate.User;
+import apps.kool.tms.api.errorhandling.EntityNotFoundException;
 import apps.kool.tms.api.repository.IContributorRepository;
 import apps.kool.tms.api.repository.IScheduleRepository;
 import apps.kool.tms.api.repository.UserRepository;
 import apps.kool.tms.api.reqres.AddContributorRequest;
+import apps.kool.tms.api.utils.ScheduleUtils;
 import lombok.NonNull;
 
 
@@ -43,52 +45,10 @@ public class ContributorController {
 	//@PreAuthorize("hasRole('FMB_ROLE_OPERATIONS')")
 	@RequestMapping( value = "/schedule",  method = RequestMethod.POST)
 	ResponseEntity<Boolean> add(@RequestBody AddContributorRequest contributorRequest ) throws ParseException {
-		if(contributorRequest != null ) {
-			User user =  users.findBySubscriberId(contributorRequest.getSubscriberId()).stream().filter(filteredUser -> Objects.equals(contributorRequest.getSubscriberId(),filteredUser.getUsername())).findFirst().get();
-	    	
-	    	if(user != null){
-	    		Contributor contributor = Contributor.builder()
-						 .contributionDate(new SimpleDateFormat("yyyy-MM-dd").parse(contributorRequest.getContributionDate()))
-						 .contributionType(contributorRequest.getContributionType())
-						 .messageFromContributor(contributorRequest.getMessageFromContributor())
-						 .isContributorAllowedToChooseMenu(contributorRequest.isContributorAllowedToChooseMenu())
-						 .user(user)
-						 .build();
-	    		contributorRepository.save(contributor);
-			   	//Add Contributor to Schedule
-				try {
-					Schedule schedule = scheduleRepository.findByDailyDate(new SimpleDateFormat("yyyy-MM-dd").parse(contributorRequest.getContributionDate()));
-					if(schedule == null) {
-						schedule = Schedule.builder()
-											.dailyDate(new SimpleDateFormat("yyyy-MM-dd").parse(contributorRequest.getContributionDate()))
-											.contributors(new Contributor[]{contributor} )
-											.build();
-					} else {
-						if(schedule.getContributors() == null){
-							schedule.setContributors(new Contributor[]{contributor} );
-						} else {
-							List<Contributor> contributorList = new ArrayList<Contributor>(Arrays.asList(schedule.getContributors()));
-							contributorList.add(contributor);
-							Contributor[] contributors = new Contributor [contributorList.size()];
-							int count =0 ;
-							for (Contributor contributor2 : contributorList) {
-								contributors[count] = contributor2;
-								count++;
-							}
-							schedule.setContributors(contributors);
-						}					
-					}
-					scheduleRepository.save(schedule);
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				return ResponseEntity.ok(true);
-	    	} else {
-	    		// throw 404 user not find
-	    	}
-	    	
-	    }
+		ScheduleUtils.addOrUpdateContributor(contributorRequest,users,scheduleRepository, contributorRepository);
 	    return ResponseEntity.ok(false);
 	}
+
+	
 
 }

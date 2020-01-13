@@ -49,9 +49,12 @@ public class ScheduleUtils {
 										.noMealReason(menuRequest.getNoMealReason())
 										.instructionsForSubscriber(menuRequest.getInstructionsForSubscriber())
 										.build();
-				} else
-				{
+				} else {
 					schedule.setMenu(menu);
+					schedule.setNoMeal(menuRequest.isNoMeal());
+					schedule.setNoMealReason(menuRequest.getNoMealReason());
+					schedule.setInstructionsForSubscriber(menuRequest.getInstructionsForSubscriber());
+					
 				}
 				scheduleRepository.save(schedule);
 			} catch (ParseException e) {

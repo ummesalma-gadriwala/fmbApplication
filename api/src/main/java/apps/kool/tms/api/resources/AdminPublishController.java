@@ -62,11 +62,9 @@ public class AdminPublishController {
 		schedulePublishDataMap = objectMapper.readValue(schedulePublishData,  new TypeReference<List<Map<String, String>>>(){});
 		ArrayList<AddMenuRequest> menuRequests = new ArrayList<AddMenuRequest>();
 		ArrayList<AddContributorRequest> contriutorRequests = new ArrayList<AddContributorRequest>();
-	
 		 
-		schedulePublishDataMap.stream().forEach(schedule ->{
+		schedulePublishDataMap.stream().forEach(schedule -> {
 			menuRequests.add(buildMenuSchedule(schedule));
-			
 			if(schedule.get("NoThaali").equals("No")) {	
 				AddContributorRequest tiffinContributor = AddContributorRequest.builder()
 						                                                       .contributionType(ContributionType.tiffin)

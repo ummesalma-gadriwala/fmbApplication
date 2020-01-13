@@ -9,6 +9,11 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {updateServiceworker } from '../src/reducers/serviceWorker'
+import createHistory from 'history/createBrowserHistory';
+import httpService from './api/axiosInterceptor';
+
+const history = createHistory();
+httpService.setupInterceptors(store, history);
 
 ReactDOM.render(
   <Provider store={store}>

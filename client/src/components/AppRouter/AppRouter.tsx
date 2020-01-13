@@ -57,6 +57,11 @@ class AppRouter extends Component<any, any> {
                 path="/operation/meal-count-report/"
                 component={DailyMealCountReport}
               />
+               <Route
+                exact
+                path="/logout"
+                component={Login}
+              />
            </div>
           <Navigator />
           </div>

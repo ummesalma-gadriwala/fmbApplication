@@ -188,7 +188,7 @@ class Dashboard extends Component<any, DashBoardState> {
                               </Typography>
                             </div>
                           )}
-                          {this.state.todaysSchedule.menu &&
+                          {this.state.todaysSchedule && this.state.todaysSchedule.menu &&
                             this.state.todaysSchedule.menu.items.length > 0 && (
                               <React.Fragment>
                                 <div className="Dashboard-menu-container">

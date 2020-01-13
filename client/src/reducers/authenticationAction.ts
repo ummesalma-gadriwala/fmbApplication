@@ -44,10 +44,8 @@ export const signin = (
   }
 };
 
-export const signout = () => {
+export const signout = () => async (dispatch: Function) => {
   localStorage.removeItem('token');
-  return {
-    type: AUTH_USER,
-    payload: ''
-  };
+  dispatch({type: AUTH_USER, payload: ''  });
+
 };

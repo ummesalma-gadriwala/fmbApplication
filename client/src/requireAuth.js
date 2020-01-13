@@ -7,7 +7,6 @@ export default ChildComponent => {
     componentDidMount() {
       this.shouldNavigateAway();
     }
-
     // Our component just got updated
     componentDidUpdate() {
       this.shouldNavigateAway();
@@ -15,7 +14,7 @@ export default ChildComponent => {
 
     shouldNavigateAway() {
       if (!this.props.authenticated) {
-        this.props.history.push('/');
+        this.props.history.push('/logout');
       }
     }
 

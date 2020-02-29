@@ -18,7 +18,7 @@ steps:
 - script: |
     cd client
     npm install
-    npm run build
+    npm run build env.production
   displayName: 'npm install and build'
 - task: CopyFiles@2
   inputs:

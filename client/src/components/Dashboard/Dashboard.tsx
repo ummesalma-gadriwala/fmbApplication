@@ -235,8 +235,7 @@ class Dashboard extends Component<any, DashBoardState> {
                                 </div>
                               </React.Fragment>
                             )}
-                          {this.state.todaysSchedule && this.state.todaysSchedule
-                            .instructionsForSubscriber && (
+                          {this.state.todaysSchedule && this.state.todaysSchedule.instructionsForSubscriber && (
                             <React.Fragment>
                               <h6>Announcements</h6>
                               <div className="Dashboard-instructionForSubscriber-container">

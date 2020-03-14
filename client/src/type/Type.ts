@@ -129,7 +129,10 @@ export interface SectorCountSelectedDate {
 
 export interface SectorCount {
   sectorName : string;
-  counnt : number;
+  tiffinCount : number;
+  cancellationScheduleCount:number;
+  additionScheduleCount:number;
+  noRiceTiffinCount: number;
 }
 
 export interface Review {

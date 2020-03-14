@@ -61,7 +61,9 @@ class DailyMealCountReport extends React.Component<any, any> {
   }
 
   render() {
-      let totalCount : Number = 0;
+      let totalCount : number = 0;
+      let totalRiceCount: number = 0;
+      let totalNoRiceCount: number = 0;
       return (
         <div className= "daily-meal-count-report-container">
           <h5>Sector Wise Thali Count Report</h5>
@@ -69,21 +71,20 @@ class DailyMealCountReport extends React.Component<any, any> {
           <div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DatePicker
-                  name={'selectedDate'}
-                  margin="normal"
-                  value={ this.state ? this.state.selectedDate : new Date()}
-                  onChange={value => {
-                    const selectedDate = dateFns.format(value,'yyyy-MM-dd',{ awareOfUnicodeTokens: true })
-                    const scheduleForSelectedDate = this.getScheduleForSelectedDate(selectedDate)
-                    this.setState({selectedDate:value, noMeal: scheduleForSelectedDate && scheduleForSelectedDate.noMeal })
-                    if(scheduleForSelectedDate) {
-                      !scheduleForSelectedDate.noMeal && this.props.getMealCountBySectorForSelectedDate(selectedDate)
-                    } else {
-                      this.props.getMealCountBySectorForSelectedDate(selectedDate)
-                    }
-                     
-                  }}                                      
-                />
+                name={'selectedDate'}
+                margin="normal"
+                value={ this.state ? this.state.selectedDate : new Date()}
+                onChange={value => {
+                  const selectedDate = dateFns.format(value,'yyyy-MM-dd',{ awareOfUnicodeTokens: true })
+                  const scheduleForSelectedDate = this.getScheduleForSelectedDate(selectedDate)
+                  this.setState({selectedDate:value, noMeal: scheduleForSelectedDate && scheduleForSelectedDate.noMeal })
+                  if(scheduleForSelectedDate) {
+                    !scheduleForSelectedDate.noMeal && this.props.getMealCountBySectorForSelectedDate(selectedDate)
+                  } else {
+                    this.props.getMealCountBySectorForSelectedDate(selectedDate)
+                  }
+               }}                                      
+            />
           </MuiPickersUtilsProvider>
           </div>
           <Divider />
@@ -96,7 +97,6 @@ class DailyMealCountReport extends React.Component<any, any> {
                      ? <div className="daily-meal-count-no-report-container">
                        <h6> Report Not Available!!</h6>
                       </div>   
-                   
                     : <Table>
                         <TableHead>
                           <TableRow>
@@ -104,14 +104,24 @@ class DailyMealCountReport extends React.Component<any, any> {
                               <strong>Sector Name</strong>
                             </StyledTableCell>
                             <StyledTableCell>
-                            <strong>Count</strong>
+                              <strong>Rice Count</strong>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                              <strong>No Rice Count</strong>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                              <strong>Total Count</strong>
                             </StyledTableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {Object.keys(this.props.reportDailyThaliCount.sectorCounts).map(
                             (key: any, index: any) => {
-                              totalCount = totalCount +  this.props.reportDailyThaliCount.sectorCounts[key]
+                              totalCount = totalCount +  this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount
+                              totalRiceCount = totalRiceCount + (this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - 
+                                                                  this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount)
+                              totalNoRiceCount = totalNoRiceCount +   this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount
+
                               return (
                                 <StyledTableRow key={index}>
                                   <StyledTableCell
@@ -121,7 +131,16 @@ class DailyMealCountReport extends React.Component<any, any> {
                                     { key }
                                   </StyledTableCell>
                                   <StyledTableCell>
-                                    { this.props.reportDailyThaliCount.sectorCounts[key] }
+                                    { 
+                                       this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - 
+                                       this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount 
+                                    }
+                                  </StyledTableCell>
+                                  <StyledTableCell>
+                                    { this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount }
+                                  </StyledTableCell>
+                                  <StyledTableCell>
+                                    { this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount }
                                   </StyledTableCell>
                                 </StyledTableRow>
                               );
@@ -132,6 +151,12 @@ class DailyMealCountReport extends React.Component<any, any> {
                           <StyledTableRow >
                           <StyledTableCell>
                                 <strong> Total Thali Count : </strong>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                                <strong>{ totalRiceCount }</strong>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                                <strong>{ totalNoRiceCount }</strong>
                             </StyledTableCell>
                             <StyledTableCell>
                                 <strong>{ totalCount }</strong>

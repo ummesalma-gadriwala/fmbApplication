@@ -4,6 +4,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,6 +38,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
   private static final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
     new AntPathRequestMatcher("/user/token/**"),
     new AntPathRequestMatcher("/admin/schedule/**"),
+    new AntPathRequestMatcher("/content/**", "GET"),
     new AntPathRequestMatcher("/error/**")
   );
   private static final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(PUBLIC_URLS);

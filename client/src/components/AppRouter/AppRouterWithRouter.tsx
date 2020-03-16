@@ -8,6 +8,7 @@ import MealSchedule from '../MealSchedule/MealSchedule';
 import UserForm from '../User/UserForm';
 import MenuSchedule from '../Menu/Subscriber/MenuSchedule';
 import MenuDetails from '../Menu/Subscriber/MenuDetails';
+import HelpContact from '../Contact/HelpContact';
 import GlobalErrorHandler from '../../components/ErrorHandler/GlobalErrorHandler';
 import { connect } from 'react-redux';
 
@@ -37,6 +38,7 @@ class AppRouterWithRouter extends Component<any, any> {
                 exact
                 component={this.props.auth ? Dashboard : Login}
               />
+              <Route exact path="/help-contact/" component={HelpContact} />
               <Route exact path="/dashboard/" component={Dashboard} />
               <Route exact path="/meal-schedule/" component={MealSchedule} />
               <Route exact path="/menu-schedule/" component={MenuSchedule} />

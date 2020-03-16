@@ -68,6 +68,7 @@ export interface AppState {
   isBusyCommunicating: boolean; 
   serviceWorkerUpdated: boolean;
   operations:Operations | null;
+  content : Content | null;
 }
 
 export interface Profile {
@@ -141,5 +142,10 @@ export interface Review {
   username:string;
   subscriberId: string;
   questionAnswer: LabelValue [];
+}
+
+
+export interface Content {
+  helpContacts : LabelValue[];
 }
 

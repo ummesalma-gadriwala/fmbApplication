@@ -1,0 +1,9 @@
+.HelpContacts-container {
+  margin-bottom: 8px;
+}
+
+.HelpContacts-details {
+  display: flex;
+  flex-direction: column;
+  
+}

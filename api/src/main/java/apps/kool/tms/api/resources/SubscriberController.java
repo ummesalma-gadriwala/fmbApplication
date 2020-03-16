@@ -1,6 +1,5 @@
 package apps.kool.tms.api.resources;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +48,24 @@ public class SubscriberController {
     	
     }
 	
-    
-
+	@RequestMapping(value="/add", method= RequestMethod.POST)
+    public SubcriberResponse addSubscriberProfile(@RequestBody User profile) {
+		SubcriberResponse response = new SubcriberResponse();
+		if(profile !=null && profile.getUsername() != null && profile.getPrimaryAddress() != null) {
+			User user = User.builder().username(profile.getUsername())
+					                  .primaryAddress(profile.getPrimaryAddress())
+					                  .firstName(profile.getFirstName())
+					                  .lastName(profile.getLastName())
+					                  .mobileNumber(profile.getMobileNumber())
+					                  .email(profile.getEmail())
+					                  .hasSubscriberVerifiedInfo(true)
+					                  .build();
+					                  
+			userRepository.save(user);
+			response.setUser(user);
+			return response;
+		}
+		throw  new EntityNotFoundException("addSubscriberProfile");
+    	
+    }
 }

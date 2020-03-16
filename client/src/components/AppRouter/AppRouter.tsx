@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Navigator from '../Navigator/Navigator';
 import { connect } from 'react-redux';
-
+import Header from '../Header/Header';
 import Login from '../Login/Login';
 import Dashboard from '../Dashboard/Dashboard';
 import OperationDashboard from '../Dashboard/OperationDashboard';
@@ -11,6 +11,8 @@ import UserForm from '../User/UserForm';
 import MenuSchedule from '../Menu/Subscriber/MenuSchedule';
 import MenuDetails from '../Menu/Subscriber/MenuDetails';
 import DailyMealCountReport from '../Operations/Reports/DailyMealCountReport';
+import HelpContact from '../Contact/HelpContact';
+
 import GlobalErrorHandler from '../../components/ErrorHandler/GlobalErrorHandler';
 
 
@@ -24,6 +26,7 @@ class AppRouter extends Component<any, any> {
       <div className="App-container">
         <Router>
           <div>
+           <Header />
             <GlobalErrorHandler/> 
             <div>
               <Route
@@ -31,6 +34,7 @@ class AppRouter extends Component<any, any> {
                 exact
                 component={this.props.auth ? Dashboard : Login}
               />
+              <Route exact path="/help-contact/" component={HelpContact} />
               <Route exact path="/dashboard/" component={Dashboard} />
               <Route exact path="/meal-schedule/" component={MealSchedule} />
               <Route exact path="/menu-schedule/" component={MenuSchedule} />

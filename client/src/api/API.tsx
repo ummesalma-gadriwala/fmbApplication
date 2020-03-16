@@ -25,3 +25,5 @@ export const GET_REVIEWS_BY_SCHEDULEDATE =  ( selectedDate:string ) => `${proces
 //export default let logConfig = () =>  console.log ( `'TOKEN_API_ENPOINT': ${TOKEN_API_ENPOINT}`  );
 
 export const GET_REVIEW_BY_USERID_FOR_DATERANGE =  (username:string, fromDate:string, toDate:string ) => `${process.env.REACT_APP_API_ENDPOINT}review/${username}/${fromDate}/${toDate} `;
+
+export const GET_CONTACTINFO_CONTENT =  () => `${process.env.REACT_APP_API_ENDPOINT}content/contactInfo`;

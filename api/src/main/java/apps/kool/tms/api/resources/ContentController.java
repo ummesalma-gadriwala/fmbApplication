@@ -33,7 +33,7 @@ public class ContentController {
 	    
 	    InstructionMessage contactInfo2 = new InstructionMessage();
 	    contactInfo2.setMessageLabel("App Related Issue");
-	    contactInfo2.setMessageValue("Bhai Muffaddal Motiwala | (365)-998-5253");
+	    contactInfo2.setMessageValue("Bhai Muffaddal Poonawala | (365)-998-5253");
 	    contacts.add(contactInfo2);
 	    
 

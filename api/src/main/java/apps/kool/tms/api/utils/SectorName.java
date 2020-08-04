@@ -11,5 +11,6 @@ public enum SectorName {
     Jamali,
     Husami,
     Saifi,
-    Badri
+    Badri,
+    Waterloo
 }

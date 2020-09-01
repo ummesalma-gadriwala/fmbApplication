@@ -102,7 +102,7 @@
   position: relative;
   min-width: 65%;
   margin-top: 10px;
-  max-height: 90px;
+  min-height: 90px;
 
 }
 .Dashboard-menu-side-note_header {
@@ -114,6 +114,12 @@
   font-size: 0.90rem;
   padding: 10px;
   text-align: center;
+}
+
+.Dashboard-menu-side-note_content-left {
+  font-size: 0.90rem;
+  padding: 10px;
+  
 }
 
 .Dashboard-menu-items {

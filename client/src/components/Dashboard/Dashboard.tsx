@@ -206,30 +206,24 @@ class Dashboard extends Component<any, DashBoardState> {
                                       </div>
                                     </Typography>
                                   </div>
-                                  {this.state.fatehaContributor &&
-                                    this.state.fatehaContributor
-                                      .messageFromContributor && (
-                                      <div className="Dashboard-menu-side-note Dashboard-menu-container_items">
-                                        <div className="Dashboard-menu-side-note_content-left">
-                                          <span>
-                                            <strong>Sagla Mumineen ne Aqa Maula Syedna Aaliqdar Mufaddal Saifuddin TUS taraf si Faiz ul Mawaid Burhaniyah ni thali nu niyaz Mubarak aney Mohanna Karjo</strong>
-                                          </span>  
-                                        </div>
-                                        <div className="Dashboard-menu-side-note_content-left">
-                                          <span>
-                                            <strong>Salwaat</strong>
-                                            <ul>
-                                              <li>Panjatan Pak (AS)</li>
-                                              <li>Syedna Hatim Bin Ibrahim (RA)</li>
-                                              <li>Syedna Taher Saifuddin (RA)</li>
-                                              <li>Syedna Mohammed Burhanuddin (RA)</li>
-                                            </ul>  
-                                          </span>  
-                                        </div>
-                                      </div>
-                                    )}
-                                  
-                                  
+                                  <div className="Dashboard-menu-side-note Dashboard-menu-container_items">
+                                    <div className="Dashboard-menu-side-note_content-left">
+                                      <span>
+                                        <strong>Sagla Mumineen ne Aqa Maula Syedna Aaliqdar Mufaddal Saifuddin TUS taraf si Faiz ul Mawaid Burhaniyah ni thali nu niyaz Mubarak aney Mohanna Karjo</strong>
+                                      </span>  
+                                    </div>
+                                    <div className="Dashboard-menu-side-note_content-left">
+                                      <span>
+                                        <strong>Salwaat</strong>
+                                        <ul>
+                                          <li>Panjatan Pak (AS)</li>
+                                          <li>Syedna Hatim Bin Ibrahim (RA)</li>
+                                          <li>Syedna Taher Saifuddin (RA)</li>
+                                          <li>Syedna Mohammed Burhanuddin (RA)</li>
+                                        </ul>  
+                                      </span>  
+                                    </div>
+                                  </div>
                                   {this.state.fatehaContributor &&
                                     this.state.fatehaContributor
                                       .messageFromContributor && (

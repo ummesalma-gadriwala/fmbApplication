@@ -223,6 +223,11 @@ class Dashboard extends Component<any, DashBoardState> {
                                         </ul>  
                                       </span>  
                                     </div>
+                                    <div className="Dashboard-menu-side-note_content-left">
+                                      <span>
+                                        <strong>Aaj na Salwaat ni khidmat Bunayatul Ediz Zahabi -Mississauga</strong>
+                                      </span>  
+                                    </div>
                                   </div>
                                   {this.state.fatehaContributor &&
                                     this.state.fatehaContributor

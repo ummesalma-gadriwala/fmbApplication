@@ -110,6 +110,9 @@ class DailyMealCountReport extends React.Component<any, any> {
                               <strong>No Rice Count</strong>
                             </StyledTableCell>
                             <StyledTableCell>
+                              <strong>Cancellation Count</strong>
+                            </StyledTableCell>
+                            <StyledTableCell>
                               <strong>Total Count</strong>
                             </StyledTableCell>
                           </TableRow>
@@ -117,11 +120,10 @@ class DailyMealCountReport extends React.Component<any, any> {
                         <TableBody>
                           {Object.keys(this.props.reportDailyThaliCount.sectorCounts).map(
                             (key: any, index: any) => {
-                              totalCount = totalCount +  this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount
+                              totalCount = totalCount + ( this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount)
                               totalRiceCount = totalRiceCount + (this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - 
                                                                   this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount)
                               totalNoRiceCount = totalNoRiceCount +   this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount
-
                               return (
                                 <StyledTableRow key={index}>
                                   <StyledTableCell
@@ -132,15 +134,18 @@ class DailyMealCountReport extends React.Component<any, any> {
                                   </StyledTableCell>
                                   <StyledTableCell>
                                     { 
-                                       this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - 
-                                       this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount 
+                                       (this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - 
+                                       this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount) 
                                     }
                                   </StyledTableCell>
                                   <StyledTableCell>
                                     { this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount }
                                   </StyledTableCell>
                                   <StyledTableCell>
-                                    { this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount }
+                                    { this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount }
+                                  </StyledTableCell>
+                                  <StyledTableCell>
+                                    { (this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount)  }
                                   </StyledTableCell>
                                 </StyledTableRow>
                               );
@@ -157,6 +162,9 @@ class DailyMealCountReport extends React.Component<any, any> {
                             </StyledTableCell>
                             <StyledTableCell>
                                 <strong>{ totalNoRiceCount }</strong>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                                <strong>{ totalCount }</strong>
                             </StyledTableCell>
                             <StyledTableCell>
                                 <strong>{ totalCount }</strong>

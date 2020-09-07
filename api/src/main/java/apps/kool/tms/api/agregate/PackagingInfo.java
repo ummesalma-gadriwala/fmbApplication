@@ -10,4 +10,6 @@ public class PackagingInfo {
      private int cancellationScheduleCount;
      private int additionScheduleCount;
      private int noRiceTiffinCount; 
+     private int noRiceCancellationCount;
+     private int noRiceAdditionCount;
 }

@@ -42,14 +42,14 @@ public class AdminReportController {
 		
 		if(subscriptionSchedules == null || subscriptionSchedules.isEmpty())
 			return ResponseEntity.ok(reportData);
-		
 		subscriptionSchedules.forEach(subscriptionSchedule -> {
-			
 			int tiffinCount = 0;
 			int noRiceCount = 0;
 			int cancelCount = 0;
+			int noRiceCancellationCount =0 ;
+			int noRiceAdditionCount = 0;
 			int additionCount = 0;
-						
+		
 			if(subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek()) != null) {
 				
 				tiffinCount =  subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek());
@@ -76,8 +76,14 @@ public class AdminReportController {
 						}
 						boolean isTiffinCancelled = tiffinCount > overrideCount;
 						if(isTiffinCancelled ) {
-				    		cancelCount = tiffinCount - overrideCount;
-				    	} else {
+							if(noRiceCount > 0 ){
+								noRiceCancellationCount = tiffinCount - overrideCount;
+							}
+							cancelCount = tiffinCount - overrideCount;
+						} else {
+							if(noRiceCount > 0) {
+								noRiceAdditionCount = overrideCount - tiffinCount; 
+							}
 				    		additionCount = overrideCount - tiffinCount; 
 				    	}
 				    	
@@ -85,7 +91,7 @@ public class AdminReportController {
 			    }
 							
 				PackagingInfo packagingInfo = reportData.get(subscriptionSchedule.getZone());
-				packagingInfo = updatePackagingInfo(packagingInfo, tiffinCount, noRiceCount, cancelCount, additionCount);
+				packagingInfo = updatePackagingInfo(packagingInfo, tiffinCount, noRiceCount, noRiceCancellationCount, cancelCount, additionCount, noRiceAdditionCount);
 				reportData.put(subscriptionSchedule.getZone(), packagingInfo);
 			}
 		 });
@@ -95,7 +101,7 @@ public class AdminReportController {
 	}
 	
 	
-	private static PackagingInfo updatePackagingInfo (PackagingInfo packagingInfo, int tiffinCount, int noRiceCount, int cancelCount, int additionCount) {
+	private static PackagingInfo updatePackagingInfo (PackagingInfo packagingInfo, int tiffinCount, int noRiceCount, int noRiceCancellationCount, int cancelCount, int additionCount, int noRiceAdditionCount) {
 		if(packagingInfo == null){
 			packagingInfo =  PackagingInfo.builder().build();
 		}
@@ -103,6 +109,8 @@ public class AdminReportController {
 		packagingInfo.setNoRiceTiffinCount(packagingInfo.getNoRiceTiffinCount()+noRiceCount);
 		packagingInfo.setCancellationScheduleCount(packagingInfo.getCancellationScheduleCount()+cancelCount);
 		packagingInfo.setAdditionScheduleCount(packagingInfo.getAdditionScheduleCount()+additionCount);
+		packagingInfo.setNoRiceCancellationCount(packagingInfo.getNoRiceCancellationCount()+noRiceCancellationCount);
+		packagingInfo.setNoRiceAdditionCount(packagingInfo.getNoRiceAdditionCount()+ noRiceAdditionCount);
 		return packagingInfo;
 	}
 		

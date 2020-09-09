@@ -116,8 +116,11 @@ class MenuDetails extends PureComponent<any, MenuDetailsState|any> {
       const optedMealCount:Number = this.getMealCountForDay(this.props.mealSchedule.optedSchedule, this.state.currentDate)
       const updatedMealCount:Number = this.state.cancelOrReduceMealSchedule && this.getMealCountForDay(this.state.cancelOrReduceMealSchedule.weeklyOverrideSchedule, this.state.currentDate) 
       this.setState({ isBusy: true })
-      this.state.hasScheduleChangedAlready &&
-      this.props.deleteOverrideSchedule(
+      if(!isMealCancellationEnabled(dateFns.format(this.state.currentDate, 'yyyy-MM-dd', {awareOfUnicodeTokens: true}))){
+        this.props.history.goBack();
+        return
+      }
+      this.state.hasScheduleChangedAlready    && this.props.deleteOverrideSchedule(
         this.props.subscriberId,
         dateFns.format(this.state.currentDate, 'yyyy-MM-dd', { awareOfUnicodeTokens: true })
       )

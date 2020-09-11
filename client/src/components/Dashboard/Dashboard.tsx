@@ -220,7 +220,6 @@ class Dashboard extends Component<any, DashBoardState> {
                                           <li>Syedna Hatim Bin Ibrahim (RA)</li>
                                           <li>Syedna Taher Saifuddin (RA)</li>
                                           <li>Syedna Mohammed Burhanuddin (RA)</li>
-                                          <li>Syedi Hasanfeer Saheb</li>
                                         </ul>  
                                       </span>  
                                     </div>

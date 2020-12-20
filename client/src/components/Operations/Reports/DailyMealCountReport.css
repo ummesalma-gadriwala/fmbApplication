@@ -8,3 +8,22 @@
   padding: 20px;
   text-align: center;
 }
+
+.daily-meal-count-report-expand-more{
+  display: flex;
+  justify-content: space-around;
+}
+
+.daily-meal-count-report-count-details-container{
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.80rem;
+  font-weight: 400;
+}
+
+.daily-meal-count-report-count-details-container-col{
+  flex:1
+}
+.daily-meal-count-report-count-details-container-col-name{
+  flex:2
+}

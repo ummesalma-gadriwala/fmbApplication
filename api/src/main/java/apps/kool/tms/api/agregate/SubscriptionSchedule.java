@@ -26,4 +26,5 @@ public class SubscriptionSchedule extends APIResponse {
 	@DBRef
 	private List<OverrideSubscriptionSchedule> overrideSchedules;
 	private WorkFlowStatus status;
+	private User user;
 }

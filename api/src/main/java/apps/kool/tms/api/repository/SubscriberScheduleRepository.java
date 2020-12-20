@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import apps.kool.tms.api.agregate.OverrideSubscriptionSchedule;
 import apps.kool.tms.api.agregate.SubscriptionSchedule;
+import apps.kool.tms.api.agregate.User;
 
 @Repository
 public class SubscriberScheduleRepository implements ISubscriberScheduleRepository {
@@ -36,7 +37,14 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 
 	@Override
 	public List<SubscriptionSchedule> getAllSubscriptionSchedule() {
-		return mongoTemplate.findAll(SubscriptionSchedule.class);
+		List<SubscriptionSchedule> subscriptionSchedules = mongoTemplate.findAll(SubscriptionSchedule.class);
+		subscriptionSchedules.forEach(subscriptionSchedule -> {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("username").is(subscriptionSchedule.getSubscriberId()));
+			User user = mongoTemplate.findOne(query, User.class);
+			subscriptionSchedule.setUser(user);
+		});
+		return subscriptionSchedules;	
 	}
 
 	@Override

@@ -23,19 +23,6 @@ public interface ISubscriberScheduleRepository {
    boolean deleteOverrideSchedule(String subscriberId, String startDate) throws Exception ;
    
    List<OverrideSubscriptionSchedule> getOverrideScheduledForDate(String selectedDate) throws Exception;
+  
    
-   
-   
-   
-//   List<Person> getAllPersonPaginated(
-//      int pageNumber, int pageSize);
-//   Person findOneByName(String name);
-//   List<Person> findByName(String name);
-//   List<Person> findByBirthDateAfter(Date date);
-//   List<Person> findByAgeRange(int lowerBound, int upperBound);
-//   List<Person> findByFavoriteBooks(String favoriteBook);
-//   void updateMultiplePersonAge();
-//   Person updateOnePerson(Person person);
-     //void dupdaeletePerson(Person person);
-
 }

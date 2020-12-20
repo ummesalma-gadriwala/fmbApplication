@@ -1,5 +1,7 @@
 package apps.kool.tms.api.agregate;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,4 +14,5 @@ public class PackagingInfo {
      private int noRiceTiffinCount; 
      private int noRiceCancellationCount;
      private int noRiceAdditionCount;
+     private List<MealOverridedReportInfo> overrideDetails;
 }

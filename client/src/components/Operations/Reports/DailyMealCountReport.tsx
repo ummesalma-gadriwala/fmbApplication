@@ -15,10 +15,13 @@ import TableFooter from '@material-ui/core/TableFooter';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import Spinner  from '../../Spinner/Spinner';
 
 
 import './DailyMealCountReport.css';
+import { Collapse, IconButton } from '@material-ui/core';
 const dateFns = require('date-fns');
 
 const StyledTableCell = withStyles(theme => ({
@@ -30,6 +33,7 @@ const StyledTableCell = withStyles(theme => ({
     fontSize: 14,
     fontWeight: "bold"
   },
+  
 }))(TableCell);
 
 const StyledTableRow = withStyles(theme => ({
@@ -39,6 +43,18 @@ const StyledTableRow = withStyles(theme => ({
     },
   },
 }))(TableRow);
+
+const StyledIconButton =  withStyles(theme => ({
+  root: {
+    display: 'inline-block',
+    paddingTop:0,
+    paddingBottom:0,
+    minHeight: 0,
+    minWidth: 0,   
+  },
+}))(IconButton);
+
+
 class DailyMealCountReport extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -64,6 +80,58 @@ class DailyMealCountReport extends React.Component<any, any> {
       let totalCount : number = 0;
       let totalRiceCount: number = 0;
       let totalNoRiceCount: number = 0;
+      // const expandClasses = classNames(this.props.classes.expand, {
+      //   [this.props.classes.expandOpen]: this.state.expanded
+      // });
+      
+      const handleExpandClick = () => {
+        this.setState({expanded: !this.state.expanded})
+      }
+
+      const buildCountDetails = (countDetails) => {
+        countDetails && countDetails.sort((a,b) => (a.mealCountOverrideType > b.mealCountOverrideType) ? 1 : ((b.mealCountOverrideType > a.mealCountOverrideType) ? -1 : 0)); 
+        return (
+          countDetails &&
+          countDetails.map((countDetail: any, index: number) => {
+            return (
+             <React.Fragment> 
+             { !(countDetail.count === 0 && countDetail.mealCountOverrideType === 'REGULAR') &&
+              <div className = "daily-meal-count-report-count-details-container">
+                <span className ="daily-meal-count-report-count-details-container-col-name">
+                  {countDetail  && countDetail.firstName? `${countDetail.firstName} ${countDetail.lastName}` :  countDetail.subscriberId}
+                </span>
+                <span className ="daily-meal-count-report-count-details-container-col">
+                  {countDetail && countDetail.mealCountOverrideType}
+                </span>
+                <span className ="daily-meal-count-report-count-details-container-col">
+                  {countDetail && countDetail.count}
+                </span>
+                <Divider />
+              </div>
+             }
+             </React.Fragment>
+            );
+          })
+        );
+      };
+      
+  
+      const details = (countDetails) => {
+        return(
+          this.state && this.state.expanded ? (
+            <StyledTableRow>
+              <StyledTableCell colSpan={4}>
+                <Collapse in={this.state.expanded} unmountOnExit={true}>
+                  { buildCountDetails(countDetails) }
+                </Collapse>
+              </StyledTableCell>
+            </StyledTableRow>
+          ) 
+          : null
+        );
+      }
+
+
       return (
         <div className= "daily-meal-count-report-container">
           <h5>Sector Wise Thali Count Report</h5>
@@ -112,6 +180,7 @@ class DailyMealCountReport extends React.Component<any, any> {
                             <StyledTableCell align="right">
                               <strong>Total Count</strong>
                             </StyledTableCell>
+                            
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -120,33 +189,46 @@ class DailyMealCountReport extends React.Component<any, any> {
                               totalCount = totalCount + (this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount + this.props.reportDailyThaliCount.sectorCounts[key].additionScheduleCount)
                               
                               totalRiceCount = totalRiceCount + ((this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount) -
-                                                                 (this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceCancellationCount)+
-                                                                 (this.props.reportDailyThaliCount.sectorCounts[key].additionScheduleCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceAdditionCount))
+                                                                (this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceCancellationCount)+
+                                                                (this.props.reportDailyThaliCount.sectorCounts[key].additionScheduleCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceAdditionCount))
 
                               totalNoRiceCount = totalNoRiceCount +   (this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceCancellationCount + this.props.reportDailyThaliCount.sectorCounts[key].noRiceAdditionCount)
                               return (
-                                <StyledTableRow key={index}>
-                                  <StyledTableCell
-                                    component="th"
-                                    scope="row"
-                                  >
-                                    { key }
-                                  </StyledTableCell>
-                                  <StyledTableCell align="right">
-                                    { 
-                                       ((this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount) -
-                                       (this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceCancellationCount)+
-                                       (this.props.reportDailyThaliCount.sectorCounts[key].additionScheduleCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceAdditionCount))
-                                    }
-                                  </StyledTableCell>
-                                  <StyledTableCell align="right">
-                                    { (this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceCancellationCount + this.props.reportDailyThaliCount.sectorCounts[key].noRiceAdditionCount)  }
-                                  </StyledTableCell>
-                                  <StyledTableCell align="right">
-                                    { (this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount + this.props.reportDailyThaliCount.sectorCounts[key].additionScheduleCount)  }
-                                  </StyledTableCell>
-                                </StyledTableRow>
-                              );
+                                <React.Fragment>
+                                  <StyledTableRow key={index}>
+                                    <StyledTableCell
+                                      component="th"
+                                      scope="row"
+                                    >
+                                      { key }
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">
+                                      { 
+                                        ((this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount) -
+                                        (this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceCancellationCount)+
+                                        (this.props.reportDailyThaliCount.sectorCounts[key].additionScheduleCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceAdditionCount))
+                                      }
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">
+                                      { (this.props.reportDailyThaliCount.sectorCounts[key].noRiceTiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].noRiceCancellationCount + this.props.reportDailyThaliCount.sectorCounts[key].noRiceAdditionCount)  }
+                                    </StyledTableCell>
+                                    <StyledTableCell align="right">
+                                      <div className= "daily-meal-count-report-expand-more">
+                                        <span>
+                                        { (this.props.reportDailyThaliCount.sectorCounts[key].tiffinCount - this.props.reportDailyThaliCount.sectorCounts[key].cancellationScheduleCount + this.props.reportDailyThaliCount.sectorCounts[key].additionScheduleCount)  }
+                                        </span>
+                                        <StyledIconButton
+                                          onClick={handleExpandClick}
+                                          aria-label="Show more">
+                                          <ExpandMoreIcon />
+                                        </StyledIconButton>
+                                      </div> 
+                                    </StyledTableCell>
+                                        
+                                  </StyledTableRow>
+                                  {details(this.props.reportDailyThaliCount.sectorCounts[key].overrideDetails)}
+                                </React.Fragment>
+                             );
                             }
                           )}
                         </TableBody>

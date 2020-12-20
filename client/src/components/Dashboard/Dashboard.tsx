@@ -255,12 +255,14 @@ class Dashboard extends Component<any, DashBoardState> {
                             )}
                           {this.state.todaysSchedule && this.state.todaysSchedule.instructionsForSubscriber && this.state.todaysSchedule.instructionsForSubscriber.length>0  && this.state.todaysSchedule.instructionsForSubscriber[0].messageValue.length>0  && (
                             <React.Fragment>
-                              <h6>Announcements</h6>
+                              <h6>Message</h6>
                               <div className="Dashboard-instructionForSubscriber-container">
-                                {buildMessages(
+                                <strong>
+                                  {buildMessages(
                                   this.state.todaysSchedule
                                     .instructionsForSubscriber
-                                )}
+                                  )}
+                                </strong>
                               </div>
                             </React.Fragment>
                           )}

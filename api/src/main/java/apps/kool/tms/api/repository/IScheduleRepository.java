@@ -12,4 +12,6 @@ public interface IScheduleRepository  {
 	 void save (Schedule schedule);
 	 
 	 List<Schedule> findByDailyDateBetween(java.util.Date dailyDateGT, java.util.Date dailyDateLT);
+	 
+	
 }

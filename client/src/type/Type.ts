@@ -25,6 +25,10 @@ export interface SubscriptionSchedule {
     SUNDAY?: string | null;
   };
   overrideSchedules?: Array<OverrideSchedule> | null;
+  zone: string;
+  user?: Profile | null;
+  subscriberId?: string | null;
+  status?: string | null;
 }
 
 export interface OverrideSchedule {
@@ -68,6 +72,7 @@ export interface AppState {
   isBusyCommunicating: boolean; 
   serviceWorkerUpdated: boolean;
   operations:Operations | null;
+  crmOperation:CRMOperations | null;
   content : Content | null;
 }
 
@@ -123,6 +128,12 @@ export interface Operations {
   
 }
 
+
+export interface CRMOperations {
+  subscribers:SubscriptionSchedule[];
+  selectedSubscriber: SubscriptionSchedule 
+}
+
 export interface SectorCountSelectedDate {
   selectedDate : string | null;
   sectorCounts : SectorCount[];
@@ -147,5 +158,6 @@ export interface Review {
 
 export interface Content {
   helpContacts : LabelValue[];
+  sectors: LabelValue[];
 }
 

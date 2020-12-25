@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import apps.kool.tms.api.agregate.InstructionMessage;
+import apps.kool.tms.api.utils.SectorName;
 
 @RestController
 @RequestMapping("/content")
@@ -44,6 +45,19 @@ public class ContentController {
 	
 		return ResponseEntity.ok(contacts);
 	}
+	
+	@RequestMapping(value="/sectors", method= RequestMethod.GET)
+	public ResponseEntity<List<InstructionMessage>> getSectorNames() {
+	   ArrayList<InstructionMessage> sectors = new ArrayList<InstructionMessage>();
+	   for (SectorName sectorName : SectorName.values()) { 
+	    	InstructionMessage sector = new InstructionMessage();
+	    	sector.setMessageLabel(sectorName.name());
+	    	sector.setMessageValue(sectorName.name());
+	    	sectors.add(sector);
+        }
+	 	return ResponseEntity.ok(sectors);
+	}
+
 
 
 

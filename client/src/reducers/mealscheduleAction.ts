@@ -5,7 +5,8 @@ import {
   GET_SUBSCRIBER_OVERRIDESCHEDULE,
   DELETE_SUBSCRIBER_OVERRIDESCHEDULE,
   API_SERVER_ERROR,
-  API_USER_ERROR
+  API_USER_ERROR,
+  CRM_OPERATIONS_CHANGE_MEAL_COUNT
 } from './actionType';
 import {
   GET_THALI_SCHEDULE_ENDPOINT,
@@ -54,11 +55,10 @@ export const getSubscriptionSchedule = (
 export const addOverrideSchedule = (
   subscriberId: string,
   overrideSchedule: OverrideSchedule,
-  workFlowProcessor: Function,
-  onErrorCallback: Function
+  workFlowProcessor: Function | null,
+  onErrorCallback: Function | null
 ) => async (dispatch: Function) => {
   try {
-    const addOverrideSchedule: OverrideSchedule = {...overrideSchedule};
     
     overrideSchedule.overrideStartDate = dateFns.format(
       overrideSchedule.overrideStartDate,
@@ -70,10 +70,6 @@ export const addOverrideSchedule = (
       'yyyy-MM-dd',
       { awareOfUnicodeTokens: true }
     );
-    //@ts-ignore
-    //addOverrideSchedule.overrideStartDate = `${addOverrideSchedule.overrideStartDate.getFullYear()}-${addOverrideSchedule.overrideStartDate.getMonth()+1}-${addOverrideSchedule.overrideStartDate.getDate()}`;
-    //@ts-ignore
-    //addOverrideSchedule.overrideEndDate= `${addOverrideSchedule.overrideEndDate.getFullYear()}-${ addOverrideSchedule.overrideEndDate.getMonth()+1}-${addOverrideSchedule.overrideEndDate.getDate()}`;
     const response = await axios.post(
       UPDATE_THALI_SCHEDULE_ENDPOINT(subscriberId),
       overrideSchedule
@@ -84,6 +80,10 @@ export const addOverrideSchedule = (
         type: ADD_SUBSCRIBER_OVERRIDESCHEDULE,
         payload: overrideSchedule
       });
+      dispatch({
+        type: CRM_OPERATIONS_CHANGE_MEAL_COUNT,
+        payload: {subscriberId, overrideSchedule }
+      })
       //getSubscriptionSchedule(subscriberId, null, null);
     }
     workFlowProcessor &&
@@ -119,29 +119,18 @@ export const deleteOverrideSchedule = (
       //const subscriptionSchedule: ISubscriptionSchedule = response.data;
       dispatch({
         type: DELETE_SUBSCRIBER_OVERRIDESCHEDULE,
-        payload: startDate
+        payload: { startDate, subscriberId}
       });
       //getSubscriptionSchedule(subscriberId, null, null);
+      workFlowProcessor && workFlowProcessor();
     }
-    workFlowProcessor &&
-      workFlowProcessor(
-        response.data.workFlowResponse &&
-          response.data.workFlowResponse.goToRoute
-      );
+    
   } catch (err) {
     onErrorCallback && onErrorCallback();
     if (err.response.status === 410) {
-      dispatch({ type: API_USER_ERROR, payload: 'Cannot Delete ' });
+      dispatch({ type: API_USER_ERROR, payload: 'Cannot Update Meal Schedule' });
     } else {
       dispatch({ type: API_SERVER_ERROR });
     }
   }
 };
-
-// export const signout = () => {
-//   localStorage.removeItem('token');
-//   return {
-//     type: AUTH_USER,
-//     payload: ''
-//   };
-// };

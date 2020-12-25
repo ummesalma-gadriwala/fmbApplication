@@ -5,7 +5,7 @@ export const GET_THALI_SCHEDULE_ENDPOINT = (subscriberId: string) =>
   `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule/${subscriberId}`;
 export const DELETE_THALI_SCHEDULE_ENDPOINT = (
   subscriberId: string,
-  startDate: string
+  startDate: string|Date
 ) =>
   `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule/override/${subscriberId}/${startDate}`;
 export const USER_PROFILE_ENDPOINT = (username: string | null) =>
@@ -27,3 +27,7 @@ export const GET_REVIEWS_BY_SCHEDULEDATE =  ( selectedDate:string ) => `${proces
 export const GET_REVIEW_BY_USERID_FOR_DATERANGE =  (username:string, fromDate:string, toDate:string ) => `${process.env.REACT_APP_API_ENDPOINT}review/${username}/${fromDate}/${toDate} `;
 
 export const GET_CONTACTINFO_CONTENT =  () => `${process.env.REACT_APP_API_ENDPOINT}content/contactInfo`;
+
+export const GET_ALL_SUBSCRIBERINFO =  () => `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule/getAll`;
+
+export const GET_SECTORS_CONTENT =  () => `${process.env.REACT_APP_API_ENDPOINT}content/sectors`;

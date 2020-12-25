@@ -25,6 +25,10 @@ public class SubscriptionSchedule extends APIResponse {
 	private SectorName zone;
 	@DBRef
 	private List<OverrideSubscriptionSchedule> overrideSchedules;
+	@DBRef
+	private TiffinPersonalization personalization; 
+	
 	private WorkFlowStatus status;
+	
 	private User user;
 }

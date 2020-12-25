@@ -6,12 +6,14 @@ import Header from '../Header/Header';
 import Login from '../Login/Login';
 import Dashboard from '../Dashboard/Dashboard';
 import OperationDashboard from '../Dashboard/OperationDashboard';
+import CRMDashboard from '../Dashboard/CRMDashboard';
 import MealSchedule from '../MealSchedule/MealSchedule';
 import UserForm from '../User/UserForm';
 import MenuSchedule from '../Menu/Subscriber/MenuSchedule';
 import MenuDetails from '../Menu/Subscriber/MenuDetails';
 import DailyMealCountReport from '../Operations/Reports/DailyMealCountReport';
 import HelpContact from '../Contact/HelpContact';
+
 
 import GlobalErrorHandler from '../../components/ErrorHandler/GlobalErrorHandler';
 
@@ -20,6 +22,7 @@ import { AppState } from '../../type/Type';
 
 import './AppRouter.css';
 import ReviewDetails from '../Menu/Subscriber/ReviewDetails';
+import AddTiffin from '../Operations/CRM/AddTiffin';
 class AppRouter extends Component<any, any> {
   render() {
     return (
@@ -55,6 +58,16 @@ class AppRouter extends Component<any, any> {
                 exact
                 path="/operation/dashboard/"
                 component={OperationDashboard}
+              />
+               <Route
+                exact
+                path="/operation/crm-dashboard/"
+                component={CRMDashboard}
+              />
+              <Route
+                exact
+                path="/operation/crm/add-tiffin"
+                component={AddTiffin}
               />
               <Route
                 exact

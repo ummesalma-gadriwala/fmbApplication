@@ -35,7 +35,7 @@ class ListOverrideMealSchedule extends Component<any, any> {
             <div>
               <h6 className="Margin-Container">
                 {' '}
-                Current Cancellation Schedules{' '}
+                Current Cancellation/Addition Schedules{' '}
               </h6>
 
               <Paper>
@@ -43,7 +43,6 @@ class ListOverrideMealSchedule extends Component<any, any> {
                   <TableHead>
                     <TableRow>
                       <TableCell className={this.props.classes.root}>
-                        {' '}
                         From Date
                       </TableCell>
                       <TableCell className={this.props.classes.root}>

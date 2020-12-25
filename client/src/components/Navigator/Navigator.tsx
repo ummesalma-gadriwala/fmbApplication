@@ -9,6 +9,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import OperationIcon from '@material-ui/icons/CenterFocusStrongTwoTone';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutlineTwoTone';
 import RefreshTwoToneIcon from '@material-ui/icons/RefreshTwoTone';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import { withStyles } from '@material-ui/core/styles';
 import './Navigator';
 
@@ -16,6 +17,7 @@ import { AppState } from '../../type/Type';
 
 import {
   doesUserBelongsToOperation,
+  doesUserBelongsToCRMOperation,
   isUserSubscriber
 } from '../../util/authorization';
 
@@ -50,6 +52,10 @@ class Navigator extends Component<any, any> {
 
     const OperationDashBoardLink = (props: any) => (
       <Link to="/operation/dashboard" {...props} />
+    );
+
+    const CRMDashBoardLink = (props: any) => (
+      <Link to="/operation/crm-dashboard" {...props} />
     );
 
     return this.props.authenticated ? (
@@ -90,16 +96,32 @@ class Navigator extends Component<any, any> {
               <RefreshTwoToneIcon />
             </IconButton>
             {doesUserBelongsToOperation(this.props.roles) && (
-              <IconButton
-                component={OperationDashBoardLink}
-                color="inherit"
-                aria-label="Show Notifications"
-              >
-                <OperationIcon
+              <div>
+                <IconButton
+                  component={OperationDashBoardLink}
                   color="inherit"
-                  aria-label="Open Operation Dashboard"
-                />
-              </IconButton>
+                  aria-label="Show Notifications"
+                >
+                  <OperationIcon
+                    color="inherit"
+                    aria-label="Open Operation Dashboard"
+                  />
+                </IconButton>
+              </div>
+              )}
+              {doesUserBelongsToCRMOperation(this.props.roles) && (
+              <div>  
+                <IconButton
+                  component={CRMDashBoardLink}
+                  color="inherit"
+                  aria-label="Customer Relations"
+                >
+                  <AssignmentIcon
+                    color="inherit"
+                    aria-label="Customer Relations"
+                  />
+                </IconButton>
+              </div>
             )}
           </Toolbar>
         </AppBar>

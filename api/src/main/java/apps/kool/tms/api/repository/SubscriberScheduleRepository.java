@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
@@ -45,6 +47,14 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 			subscriptionSchedule.setUser(user);
 		});
 		return subscriptionSchedules;	
+//		 LookupOperation lookupOperation = LookupOperation.newLookup()
+//               .from("user")
+//                 .localField("subscriberId")
+//                 .foreignField("username")
+//                 .as("user");
+//		Aggregation aggregation = Aggregation.newAggregation(lookupOperation);
+//		
+//		return mongoTemplate.aggregate(aggregation,"subscriptionSchedule", SubscriptionSchedule.class).getMappedResults();
 	}
 
 	@Override

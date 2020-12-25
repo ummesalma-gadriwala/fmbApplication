@@ -1,0 +1,8 @@
+.SectorSubscriberList-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.SectorSubscriber-Sector-container {
+  margin-bottom: 16px;
+}

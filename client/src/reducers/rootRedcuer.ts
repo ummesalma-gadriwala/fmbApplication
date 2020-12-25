@@ -7,6 +7,7 @@ import { schedules } from './schedule';
 import { isBusyCommunicating} from './busyCommuncating'
 import {serviceWorkerUpdated } from './serviceWorker'
 import { reportDailyThaliCount } from './adminReport'
+import  crmOperation  from './crmOperation';
 import content  from './content';
 
 export default combineReducers({
@@ -18,5 +19,6 @@ export default combineReducers({
   isBusyCommunicating,
   serviceWorkerUpdated,
   operations :  reportDailyThaliCount,
-  content 
+  content,
+  crmOperation 
 });

@@ -1,5 +1,8 @@
 package apps.kool.tms.api.resources;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +16,7 @@ import apps.kool.tms.api.errorhandling.EntityNotFoundException;
 import apps.kool.tms.api.repository.UserRepository;
 import apps.kool.tms.api.reqres.SubcriberResponse;
 import apps.kool.tms.api.reqres.WorkFlowResponse;
+import apps.kool.tms.api.utils.SectorName;
 
 @RestController
 @RequestMapping("/subscriber")
@@ -67,5 +71,11 @@ public class SubscriberController {
 		}
 		throw  new EntityNotFoundException("addSubscriberProfile");
     	
+    }
+	
+	@RequestMapping(value="/subscriber/sector", method= RequestMethod.GET)
+    public ResponseEntity<Map<SectorName,List<SubcriberResponse>>> geSubscriberListSectorWise() {
+		
+    	return ResponseEntity.ok(null);
     }
 }

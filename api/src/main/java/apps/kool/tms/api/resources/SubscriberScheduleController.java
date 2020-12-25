@@ -81,6 +81,12 @@ public class SubscriberScheduleController {
 	ResponseEntity<Boolean> deleteOverrideSchedue(@PathVariable String subscriptionId,@PathVariable String startDate ) throws Exception {
 		boolean isDeleted = subscriberScheduleRepository.deleteOverrideSchedule(subscriptionId, startDate);
 		return ResponseEntity.ok(isDeleted);
-	}	 
+	}
+	
+	 @RequestMapping(method = RequestMethod.GET, value = "/getAll" )
+	 ResponseEntity<List<SubscriptionSchedule>> getAllSubscriptionSchedule() {
+	    return ResponseEntity.ok(subscriberScheduleRepository.getAllSubscriptionSchedule()) ;
+	 }
+	 
 
 }

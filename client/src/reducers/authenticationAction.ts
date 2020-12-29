@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH_USER, AUTH_ERROR } from './actionType';
+import { AUTH_USER, AUTH_ERROR, LOG_OUT } from './actionType';
 import { TOKEN_API_ENPOINT, USER_PROFILE_ENDPOINT } from '../api/API';
 import { LOCAL_STORAGE_TOKEN } from '../util/constant';
 import { createToken } from '../api/axiosInterceptor';
@@ -44,8 +44,9 @@ export const signin = (
   }
 };
 
-export const signout = () => async (dispatch: Function) => {
-  localStorage.removeItem('token');
-  dispatch({type: AUTH_USER, payload: ''  });
+export const signout = (workFlowProcessor: Function, onErrorCallback: Function| null) => async (dispatch: Function) => {
+  localStorage.removeItem(LOCAL_STORAGE_TOKEN);
+  workFlowProcessor && workFlowProcessor();
+  dispatch({ type: LOG_OUT,  payload: null });
 
 };

@@ -6,12 +6,14 @@ import {
   DELETE_SUBSCRIBER_OVERRIDESCHEDULE,
   API_SERVER_ERROR,
   API_USER_ERROR,
-  CRM_OPERATIONS_CHANGE_MEAL_COUNT
+  CRM_OPERATIONS_CHANGE_MEAL_COUNT,
+  CRM_OPERATIONS_UPDATE_SUBSCRIPTION_SCHEDULE
 } from './actionType';
 import {
   GET_THALI_SCHEDULE_ENDPOINT,
   UPDATE_THALI_SCHEDULE_ENDPOINT,
-  DELETE_THALI_SCHEDULE_ENDPOINT
+  DELETE_THALI_SCHEDULE_ENDPOINT,
+  UPDATE_SUBSCRIBER_SCHEUDULE
 } from '../api/API';
 import { SubscriptionSchedule, OverrideSchedule } from '../type/Type';
 const dateFns = require('date-fns');
@@ -134,3 +136,33 @@ export const deleteOverrideSchedule = (
     }
   }
 };
+
+
+export const updateSubscriptionSchedule = (
+  subscriptionSchedule: SubscriptionSchedule,
+  workFlowProcessor: Function | null,
+  onErrorCallback: Function | null
+) => async (dispatch: Function) => {
+  try {
+    const response = await axios.patch(UPDATE_SUBSCRIBER_SCHEUDULE(),subscriptionSchedule);
+    if (response && response.status === 201) {
+      dispatch({
+        type: CRM_OPERATIONS_UPDATE_SUBSCRIPTION_SCHEDULE,
+        payload: {subscriptionSchedule}
+      })
+    }
+    workFlowProcessor &&  workFlowProcessor();
+  } catch (err) {
+    onErrorCallback && onErrorCallback();
+    console.log('err------>', err)
+    if (err.response.status === 410) {
+      dispatch({
+        type: API_USER_ERROR,
+        payload: 'Updated Schedule already exists'
+      });
+    } else {
+      dispatch({ type: API_SERVER_ERROR });
+    }
+  }
+};
+

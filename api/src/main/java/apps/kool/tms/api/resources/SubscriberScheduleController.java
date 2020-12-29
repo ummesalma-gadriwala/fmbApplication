@@ -83,9 +83,17 @@ public class SubscriberScheduleController {
 		return ResponseEntity.ok(isDeleted);
 	}
 	
-	 @RequestMapping(method = RequestMethod.GET, value = "/getAll" )
-	 ResponseEntity<List<SubscriptionSchedule>> getAllSubscriptionSchedule() {
-	    return ResponseEntity.ok(subscriberScheduleRepository.getAllSubscriptionSchedule()) ;
+	@RequestMapping(method = RequestMethod.GET, value = "/getAll" )
+	ResponseEntity<List<SubscriptionSchedule>> getAllSubscriptionSchedule() {
+	   return ResponseEntity.ok(subscriberScheduleRepository.getAllSubscriptionSchedule()) ;
+	}
+	 
+	@RequestMapping(method = RequestMethod.PATCH)
+	ResponseEntity<Object> updateSchedule(@RequestBody SubscriptionSchedule subscriptionSchedule ) {
+		subscriberScheduleRepository.updateSubscriptionSchedule(subscriptionSchedule);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(subscriptionSchedule.getSubscriberId()).toUri();
+		return ResponseEntity.created(location).build()  ;
 	 }
 	 
 

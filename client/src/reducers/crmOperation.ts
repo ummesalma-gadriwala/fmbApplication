@@ -1,4 +1,4 @@
-import { CRM_OPERATIONS_CHANGE_MEAL_COUNT, CRM_OPERATIONS_GET_SUBSCRIBERS, DELETE_SUBSCRIBER_OVERRIDESCHEDULE } from './actionType';
+import { CRM_OPERATIONS_CHANGE_MEAL_COUNT, CRM_OPERATIONS_GET_SUBSCRIBERS, CRM_OPERATIONS_UPDATE_SUBSCRIPTION_SCHEDULE, DELETE_SUBSCRIBER_OVERRIDESCHEDULE } from './actionType';
 import { CRMOperations, OverrideSchedule, SubscriptionSchedule } from '../type/Type';
 import SubscriptionInfo from '../components/User/SubscriptionInfo/SubscriptionInfo';
 
@@ -27,6 +27,15 @@ export default function(state: CRMOperations = INITIAL_STATE, action: any) {
         }
         return subscriber;
       })
+    case CRM_OPERATIONS_UPDATE_SUBSCRIPTION_SCHEDULE:
+      let subscriptionSchedule = action.payload.subscriptionSchedule as SubscriptionSchedule ;
+      updatedSubscribers = state.subscribers.map( (subscriber:SubscriptionSchedule) => {
+        if(subscriber.subscriberId === subscriptionSchedule.subscriberId) {
+          subscriber = subscriptionSchedule
+        }
+        return subscriber;
+      })
+      
       
     return {...state, "subscribers":updatedSubscribers};
     default:

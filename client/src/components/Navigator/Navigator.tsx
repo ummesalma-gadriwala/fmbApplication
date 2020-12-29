@@ -10,7 +10,10 @@ import OperationIcon from '@material-ui/icons/CenterFocusStrongTwoTone';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutlineTwoTone';
 import RefreshTwoToneIcon from '@material-ui/icons/RefreshTwoTone';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import BlockIcon from '@material-ui/icons/Block';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
+
 import './Navigator';
 
 import { AppState } from '../../type/Type';
@@ -20,6 +23,8 @@ import {
   doesUserBelongsToCRMOperation,
   isUserSubscriber
 } from '../../util/authorization';
+import { signout } from '../../reducers/authenticationAction';
+import { workFlowRouteProcessor } from '../../util/workFlowProcessor';
 
 const styles = (theme: any) => ({
   appBar: {
@@ -46,9 +51,21 @@ class Navigator extends Component<any, any> {
     }
   }
 
+  
+
   render() {
     const DashBoardLink = (props: any) => <Link to="/dashboard" {...props} />;
     const UserProfileLink = (props: any) => <Link to="/profile" {...props} />;
+
+    const logOff = () => {
+             this.props.signout(  (workFlowRoute: string) => {
+              workFlowRouteProcessor(
+                this.props.history,
+                '/',
+                workFlowRoute
+              );
+            }, null );
+    }
 
     const OperationDashBoardLink = (props: any) => (
       <Link to="/operation/dashboard" {...props} />
@@ -121,6 +138,13 @@ class Navigator extends Component<any, any> {
                     aria-label="Customer Relations"
                   />
                 </IconButton>
+                <IconButton 
+                  color="inherit" 
+                  aria-label="Logoff Button"
+                  onClick = {() => logOff()}
+                >
+                  <BlockIcon />
+                </IconButton>
               </div>
             )}
           </Toolbar>
@@ -137,4 +161,4 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(Navigator));
+export default withRouter(connect(mapStateToProps, {signout})(withStyles(styles)(Navigator)));

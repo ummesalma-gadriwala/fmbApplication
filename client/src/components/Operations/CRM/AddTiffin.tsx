@@ -43,7 +43,7 @@ const AddTiffin = (props) => {
 
   const validateAndOverride = () => {
     setErrorState(undefined);
-    let isValidDate: boolean = dateFns.differenceInHours(overrideEndDate,overrideStartDate) > 0;
+    let isValidDate: boolean = dateFns.differenceInHours(overrideEndDate,overrideStartDate) >= 0;
     if(isValidDate && subscriber && subscriber.overrideSchedules && subscriber.overrideSchedules.length > 0) {
       const overlapDate = subscriber.overrideSchedules.find(overrideSchedule => dateFns.isWithinInterval(overrideStartDate, { start: new Date(overrideSchedule.overrideStartDate), end: new Date(overrideSchedule.overrideEndDate)}) 
                                         || dateFns.isWithinInterval(overrideEndDate, { start: new Date(overrideSchedule.overrideStartDate), end: new Date(overrideSchedule.overrideEndDate)}) 

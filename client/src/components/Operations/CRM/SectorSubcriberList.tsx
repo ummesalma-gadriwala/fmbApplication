@@ -4,7 +4,7 @@ import requireAuth from '../../../requireAuth';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import {getAllSubscriberInfo} from '../../../reducers/crmOperationAction';
 import {getSectorNames} from '../../../reducers/contentAction';
-import {deleteOverrideSchedule} from '../../../reducers/mealscheduleAction';
+import {deleteOverrideSchedule, updateSubscriptionSchedule} from '../../../reducers/mealscheduleAction';
 
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -24,13 +24,20 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { Link } from 'react-router-dom';
 import ListOverrideMealSchedule from '../../MealSchedule/ListOverrideMealSchedule';
+import { Input, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { workFlowRouteProcessor } from '../../../util/workFlowProcessor';
+import Spinner from '../../Spinner/Spinner';
 
-const SectorSubcriberList =  ({getAllSubscriberInfo , getSectorNames, deleteOverrideSchedule}) => {
+const SectorSubcriberList =  ({history,getAllSubscriberInfo , getSectorNames, deleteOverrideSchedule}) => {
   const [sector, setSector] = useState('');
   const [currentSubscriber, setCurrentSubscriber] = useState(null) as any;
-
+  const [newSubscriptionScheudle, setNewSubscriptionScheudle]  =  useState<SubscriptionSchedule | null>()  ;
+  const [isBusy, setIsBusy] = useState(false);
+  
   const subscriberList = useSelector((state:AppState) => state.crmOperation && state.crmOperation.subscribers);
   const sectors = useSelector((state:AppState) => state.content && state.content.sectors);
+
+  const dispatch = useDispatch();
     
   useEffect(() => {
     getAllSubscriberInfo();
@@ -54,7 +61,174 @@ const SectorSubcriberList =  ({getAllSubscriberInfo , getSectorNames, deleteOver
     )
   }
 
+
+
   const renderSubscriber = (subscriberList:Array<SubscriptionSchedule>|null, sectorName:string) => {
+    const buildSchedule = (susbcriber:SubscriptionSchedule) => {
+      const currentSubscriptionSchedule: SubscriptionSchedule = Object.assign(
+        {},
+        (newSubscriptionScheudle && newSubscriptionScheudle.subscriberId ===susbcriber.subscriberId ) ? newSubscriptionScheudle : susbcriber
+      );
+      const handleSubscriptionDayCountChange = (event) => {
+        const target = event.target;
+        const value = target.value;
+        const name: string = target.name;
+        const changedKey = Object.keys(currentSubscriptionSchedule.optedSchedule).find(key => key === name);
+        if(changedKey){
+          currentSubscriptionSchedule.optedSchedule[changedKey] = value;
+        }
+        setNewSubscriptionScheudle(currentSubscriptionSchedule)
+      }
+
+      const handleSubscriptionSectorChange = (event) => {
+        const target = event.target;
+        const value = target.value;
+        currentSubscriptionSchedule.zone = value;
+        setNewSubscriptionScheudle(currentSubscriptionSchedule);
+      }
+
+      const renderSectorsBySelectedSetor = (selectedSector: string) => {
+        return(
+           sectors && sectors.map( ( sector, index) => {
+          return <MenuItem value={sector.messageValue} key = {index} selected = { selectedSector === sector.messageValue ? true : false } > { sector.messageLabel }</MenuItem>
+          })
+        )
+      }
+
+      const changeSubscriptionSchedule = () => {
+        setIsBusy(true)
+        newSubscriptionScheudle && 
+                dispatch(updateSubscriptionSchedule(
+                              newSubscriptionScheudle,
+                            (workFlowRoute: string) => {
+                              workFlowRouteProcessor(
+                                history,
+                                '/operation/crm-dashboard',
+                                workFlowRoute
+                              );
+                            },
+                            () => setIsBusy(false)
+                          ));
+        setIsBusy(false);
+      }; 
+      const ITEM_HEIGHT = 48;
+      const ITEM_PADDING_TOP = 8;
+      const MenuProps = {
+        PaperProps: {
+          style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250
+          }
+        }
+      };
+
+      const buildScheduleBody = (susbcriber:SubscriptionSchedule) =>{
+          return susbcriber && susbcriber.optedSchedule &&
+          Object.keys(susbcriber.optedSchedule).length > 0
+          ? Object.keys(susbcriber.optedSchedule).map((day: any, index) => {
+            return (
+              <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                  {day}
+                </TableCell>
+                <TableCell align="right">
+                  <Select
+                    name={day}
+                    //@ts-ignore
+                    value={susbcriber.optedSchedule[day] || susbcriber.optedSchedule[day] === 0 ? susbcriber.optedSchedule[day]  : '' }
+                    onChange={(event)=> handleSubscriptionDayCountChange(event)}
+                    input={<Input id={day} />}
+                    MenuProps={MenuProps}
+                  >
+                    <MenuItem key="0" value="0">
+                      No Thali
+                    </MenuItem>
+                    <MenuItem key="1" value="1">
+                      1{' '}
+                    </MenuItem>
+                    <MenuItem key="2" value="2">
+                      2{' '}
+                    </MenuItem>
+                    <MenuItem key="3" value="3">
+                      3{' '}
+                    </MenuItem>
+                    <MenuItem key="4" value="4">
+                      4{' '}
+                    </MenuItem>
+                  </Select>
+                </TableCell>
+              </TableRow>
+            );
+          })
+        : null;
+      };
+
+      return(
+        <Spinner active={isBusy}>
+          
+          <div className = "SectorSubscriber-meal-schedule-container">
+            <h6>Thali Schedule Details</h6>
+            <Paper className="Margin-Container">
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Day of Week</TableCell>
+                    <TableCell align="right">Number of thalis</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>{buildScheduleBody(currentSubscriptionSchedule)}</TableBody>
+              </Table>
+            </Paper>
+            {/* <Paper className="Margin-Container">
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Rice Preference</TableCell>
+                    
+                  </TableRow>
+                </TableHead>
+                <TableBody></TableBody>
+              </Table>
+            </Paper> */}
+            <Paper className="Margin-Container">
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Sector</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>  
+                      <FormControl>
+                        <Select
+                          value={currentSubscriptionSchedule.zone}
+                          onChange={(event)=> handleSubscriptionSectorChange(event)}
+                          MenuProps={MenuProps}
+                          
+                        >
+                        {sectors && renderSectorsBySelectedSetor(currentSubscriptionSchedule.zone)}
+                        </Select>
+                      </FormControl>
+                    </TableCell>  
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Paper>
+            <Button 
+                variant="contained"
+                onClick={() => changeSubscriptionSchedule()}
+              > 
+                Change Thali Schedule/Sector/Preference
+              </Button>
+            
+            <Divider/>
+          </div>
+        </Spinner>
+      );
+        
+      
+    };
     return (
      subscriberList && subscriberList.filter( (susbcriber:SubscriptionSchedule) => susbcriber && susbcriber.user && susbcriber.zone === sectorName ).map((susbcriber, index) => {
       return (
@@ -64,19 +238,17 @@ const SectorSubcriberList =  ({getAllSubscriberInfo , getSectorNames, deleteOver
             aria-controls="panel1c-content"
             id="panel1c-header"
             onClick = { ()=> {
-                               console.log('subscriberId', susbcriber.subscriberId);
                                setCurrentSubscriber(susbcriber);
                           }
                       }
             >
            <div>
-              <Typography variant="button" display="block" >{ susbcriber &&  susbcriber.user &&`${susbcriber.user.firstName}  ${susbcriber.user.lastName}`  }</Typography>
+              <Typography variant="button" display="block" >{ susbcriber &&  susbcriber.user &&`${susbcriber.user.firstName}  ${susbcriber.user.lastName} (${susbcriber.subscriberId})`  }</Typography>
             </div>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <div>
              <div>
-              <Typography variant="button" display="block">{ susbcriber && ` ${susbcriber.subscriberId}`  }</Typography>
               <Typography variant="overline" display="block">{ susbcriber && susbcriber.user && `${susbcriber.user.primaryAddress.streetName}`  }</Typography>
               <Typography variant="overline" display="block">{ susbcriber &&
                             `${susbcriber.user && susbcriber.user.primaryAddress.city} - 
@@ -87,6 +259,9 @@ const SectorSubcriberList =  ({getAllSubscriberInfo , getSectorNames, deleteOver
               <Typography variant="overline" display="block">{ susbcriber && susbcriber.user && `${susbcriber.user.primaryAddress.postalCode}`  }</Typography>
              </div>
              <div>
+               { susbcriber && buildSchedule(susbcriber) }
+             </div>  
+             <div>
               <ListOverrideMealSchedule
                   overrideSchedules={susbcriber.overrideSchedules}
                   deleteOverrideScheduleFunc={deleteOverrideSchedule}
@@ -95,7 +270,7 @@ const SectorSubcriberList =  ({getAllSubscriberInfo , getSectorNames, deleteOver
              </div>    
             </div>
           </ExpansionPanelDetails>
-          <Divider />
+          <Divider/>
           <ExpansionPanelActions>
             <Button 
               variant="contained"
@@ -135,13 +310,5 @@ const SectorSubcriberList =  ({getAllSubscriberInfo , getSectorNames, deleteOver
     </div>  
   );
 }
-
-// const mapStateToProps = (state: AppState) => {
-//   console.log('mapstateToProps', state && state.crmOperation&& state.crmOperation.subscribers && state.crmOperation.subscribers.find(subscriber => subscriber.subscriberId === '60437431'))
-//   return ({
-//     sectors : state.content && state.content.sectors,
-//     //subscriberList: state.crmOperation && state.crmOperation.subscribers
-//   });
-// };
 
 export default requireAuth(connect(null, {getAllSubscriberInfo, getSectorNames, deleteOverrideSchedule})(SectorSubcriberList))

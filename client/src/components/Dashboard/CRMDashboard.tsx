@@ -6,8 +6,8 @@ import CardContent from '@material-ui/core/CardContent';
 import './Dashboard.css';
 import SectorSubcriberList from '../Operations/CRM/SectorSubcriberList';
 
-const CRMDashboard =  ({}) => {
- 
+const CRMDashboard =  (props) => {
+
   return(
     <div>
       <div className="Dashboard-container">
@@ -19,7 +19,7 @@ const CRMDashboard =  ({}) => {
           </Card>
         </div>
         <div className="Dashboard-card-container">
-          <SectorSubcriberList/>
+          <SectorSubcriberList history = {props.history}/>
         </div>
       </div>
     </div>

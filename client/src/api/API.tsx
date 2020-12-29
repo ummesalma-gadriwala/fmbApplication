@@ -31,3 +31,5 @@ export const GET_CONTACTINFO_CONTENT =  () => `${process.env.REACT_APP_API_ENDPO
 export const GET_ALL_SUBSCRIBERINFO =  () => `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule/getAll`;
 
 export const GET_SECTORS_CONTENT =  () => `${process.env.REACT_APP_API_ENDPOINT}content/sectors`;
+
+export const UPDATE_SUBSCRIBER_SCHEUDULE =  () => `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule`;

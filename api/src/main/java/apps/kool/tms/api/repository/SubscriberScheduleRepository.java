@@ -104,8 +104,17 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 
 	@Override
 	public SubscriptionSchedule updateSubscriptionSchedule(SubscriptionSchedule subscriptionSchedule) {
-		
-		return null;
+		Query query = new Query();
+	    query.addCriteria(Criteria.where("subscriberId").is(subscriptionSchedule.getSubscriberId()));
+	    SubscriptionSchedule subscriptionScheduleFromDB = mongoTemplate.findOne(query, SubscriptionSchedule.class);
+	    //modify and update with save()
+	    subscriptionScheduleFromDB.setPersonalization(subscriptionSchedule.getPersonalization());
+	    subscriptionScheduleFromDB.setZone(subscriptionSchedule.getZone());
+	    subscriptionScheduleFromDB.setOptedSchedule(subscriptionSchedule.getOptedSchedule());
+	    mongoTemplate.save(subscriptionScheduleFromDB);
+	    //get the updated object again
+	    SubscriptionSchedule subscriptionScheduleUpdated = mongoTemplate.findOne(query, SubscriptionSchedule.class);
+		return subscriptionScheduleUpdated;
 	}
 
 	@Override

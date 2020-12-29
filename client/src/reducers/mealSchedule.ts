@@ -3,7 +3,8 @@ import {
   ADD_SUBSCRIBER_OVERRIDESCHEDULE,
   GET_SUBSCRIBER_OVERRIDESCHEDULE,
   DELETE_SUBSCRIBER_OVERRIDESCHEDULE,
-  API_USER_ERROR
+  API_USER_ERROR,
+  CRM_OPERATIONS_UPDATE_SUBSCRIPTION_SCHEDULE
 } from './actionType';
 import { SubscriptionSchedule, OverrideSchedule } from '../type/Type';
 
@@ -46,6 +47,7 @@ export default function(state = INITIAL_STATE, action: any) {
           schedule.overrideStartDate != action.payload.startDate
       );
       return { ...state, overrideSchedules: [...delOverrideSchedules] };
+      
     case API_USER_ERROR:
       return { ...state, errorMessage: action.payload };
     default:

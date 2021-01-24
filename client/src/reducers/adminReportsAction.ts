@@ -30,7 +30,6 @@ export const getMealCountBySectorForSelectedDate = (
     dispatch({type: API_COMMUNICATION_DONE})
   } catch (err) {
     dispatch({type: API_COMMUNICATION_DONE})
-    console.log(err);
     onErrorCallback && onErrorCallback();
     dispatch({ type: API_SERVER_ERROR });
   }

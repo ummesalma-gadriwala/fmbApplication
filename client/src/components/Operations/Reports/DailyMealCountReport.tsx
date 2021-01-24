@@ -16,6 +16,8 @@ import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Badge from '@material-ui/core/Badge';
+
 
 import Spinner  from '../../Spinner/Spinner';
 
@@ -53,6 +55,15 @@ const StyledIconButton =  withStyles(theme => ({
     minWidth: 0,   
   },
 }))(IconButton);
+
+const StyledBadge = withStyles((theme) => ({
+  badge: {
+    right: -21,
+    top: 8,
+    height:18,
+    border: `2px solid ${theme.palette.background.paper}`,
+  },
+}))(Badge);
 
 
 class DailyMealCountReport extends React.Component<any, any> {
@@ -97,9 +108,19 @@ class DailyMealCountReport extends React.Component<any, any> {
              <React.Fragment> 
              { !(countDetail.count === 0 && countDetail.mealCountOverrideType === 'REGULAR') &&
               <div className = "daily-meal-count-report-count-details-container">
-                <span className ="daily-meal-count-report-count-details-container-col-name">
-                  {countDetail  && countDetail.firstName? `${countDetail.firstName} ${countDetail.lastName}` :  countDetail.subscriberId}
-                </span>
+                { !countDetail. noRice && 
+                    <span className ="daily-meal-count-report-count-details-container-col-name">
+                      
+                      {countDetail  && countDetail.firstName? `${countDetail.firstName} ${countDetail.lastName}` :  countDetail.subscriberId}
+                    </span>
+                }
+                { countDetail. noRice && 
+                    <span className ="daily-meal-count-report-count-details-container-col-name">
+                      <StyledBadge badgeContent={'NR'} color="secondary">
+                       {countDetail  && countDetail.firstName? `${countDetail.firstName} ${countDetail.lastName}` :  countDetail.subscriberId}
+                       </StyledBadge> 
+                    </span>
+                }
                 <span className ="daily-meal-count-report-count-details-container-col">
                   {countDetail && countDetail.mealCountOverrideType}
                 </span>

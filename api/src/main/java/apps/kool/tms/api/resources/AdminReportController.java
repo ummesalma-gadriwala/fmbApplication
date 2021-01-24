@@ -118,8 +118,7 @@ public class AdminReportController {
 				    	
 					} else {
 						//Add Regular Non Override to Report
-						
-						overrideReportInfo = MealOverridedReportInfo.builder()
+							overrideReportInfo = MealOverridedReportInfo.builder()
 					            .firstName(firstName)
 					            .count(tiffinCount) 
 					            .lastName(lastName)
@@ -129,11 +128,8 @@ public class AdminReportController {
 					            .build(); 
 				
 					}
-			    	
-			    	
-			    	
+			    	overrideReportInfo.setNoRice(noRiceCount > 0 ? true : false);
 			    }
-							
 				PackagingInfo packagingInfo = reportData.get(subscriptionSchedule.getZone());
 				packagingInfo = updatePackagingInfo(packagingInfo, tiffinCount, noRiceCount, noRiceCancellationCount, cancelCount, additionCount, noRiceAdditionCount, overrideReportInfo);
 				reportData.put(subscriptionSchedule.getZone(), packagingInfo);

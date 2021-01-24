@@ -14,5 +14,7 @@ public class MealOverridedReportInfo {
    private String lastName;
    private int count;
    private MealCountOverrideType mealCountOverrideType;
+   private boolean isNoRice;
+   
    
 }

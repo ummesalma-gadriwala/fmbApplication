@@ -36,36 +36,29 @@ const styles = (theme: any) => ({
 class Navigator extends Component<any, any> {
   constructor(props: any) {
     super(props);
-    this.forceSWupdate = this.forceSWupdate.bind(this)
+    this.forceSWupdate = this.forceSWupdate.bind(this);
   }
 
-
-  forceSWupdate () {
-    window.location.reload(true)
+  forceSWupdate() {
+    window.location.reload(true);
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function (registrations) {
-        for (let registration of registrations) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (const registration of registrations) {
           registration.update();
         }
-      })
+      });
     }
   }
-
-  
 
   render() {
     const DashBoardLink = (props: any) => <Link to="/dashboard" {...props} />;
     const UserProfileLink = (props: any) => <Link to="/profile" {...props} />;
 
     const logOff = () => {
-             this.props.signout(  (workFlowRoute: string) => {
-              workFlowRouteProcessor(
-                this.props.history,
-                '/',
-                workFlowRoute
-              );
-            }, null );
-    }
+      this.props.signout((workFlowRoute: string) => {
+        workFlowRouteProcessor(this.props.history, '/', workFlowRoute);
+      }, null);
+    };
 
     const OperationDashBoardLink = (props: any) => (
       <Link to="/operation/dashboard" {...props} />
@@ -76,7 +69,7 @@ class Navigator extends Component<any, any> {
     );
 
     return this.props.authenticated ? (
-      <div >
+      <div>
         <AppBar
           position="fixed"
           color="primary"
@@ -88,9 +81,9 @@ class Navigator extends Component<any, any> {
               color="inherit"
               aria-label="Open Dashboard"
             >
-            <HomeTwoToneIcon/>
+              <HomeTwoToneIcon />
             </IconButton>
-            
+
             <IconButton
               component={UserProfileLink}
               color="inherit"
@@ -102,14 +95,12 @@ class Navigator extends Component<any, any> {
                
               <NotificationsIcon />
             </IconButton> */}
-            <IconButton 
-               color="inherit" 
-               aria-label="Refresh To get Updates"
-               onClick = {() => this.forceSWupdate()}
-               component={DashBoardLink}
-              
+            <IconButton
+              color="inherit"
+              aria-label="Refresh To get Updates"
+              onClick={() => this.forceSWupdate()}
+              component={DashBoardLink}
             >
-               
               <RefreshTwoToneIcon />
             </IconButton>
             {doesUserBelongsToOperation(this.props.roles) && (
@@ -125,9 +116,9 @@ class Navigator extends Component<any, any> {
                   />
                 </IconButton>
               </div>
-              )}
-              {doesUserBelongsToCRMOperation(this.props.roles) && (
-              <div>  
+            )}
+            {doesUserBelongsToCRMOperation(this.props.roles) && (
+              <div>
                 <IconButton
                   component={CRMDashBoardLink}
                   color="inherit"
@@ -138,10 +129,10 @@ class Navigator extends Component<any, any> {
                     aria-label="Customer Relations"
                   />
                 </IconButton>
-                <IconButton 
-                  color="inherit" 
+                <IconButton
+                  color="inherit"
                   aria-label="Logoff Button"
-                  onClick = {() => logOff()}
+                  onClick={() => logOff()}
                 >
                   <BlockIcon />
                 </IconButton>
@@ -161,4 +152,6 @@ function mapStateToProps(state: AppState) {
   };
 }
 
-export default withRouter(connect(mapStateToProps, {signout})(withStyles(styles)(Navigator)));
+export default withRouter(
+  connect(mapStateToProps, { signout })(withStyles(styles)(Navigator))
+);

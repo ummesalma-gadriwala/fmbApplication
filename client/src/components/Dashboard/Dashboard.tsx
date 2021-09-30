@@ -42,13 +42,13 @@ class Dashboard extends Component<any, DashBoardState> {
     this.state = {
       todaysSchedule: null,
       formattedTodaysDate: null,
-      tiffinContributor: null,   
-      fatehaContributor: null  
+      tiffinContributor: null,
+      fatehaContributor: null
     };
   }
 
   componentDidMount() {
-   this.props.getMonthsSchedule();
+    this.props.getMonthsSchedule();
     this.setState({
       formattedTodaysDate: dateFns.format(new Date(), 'dd-MMM-yyyy', {
         awareOfUnicodeTokens: true
@@ -61,7 +61,7 @@ class Dashboard extends Component<any, DashBoardState> {
       this.props.schedule !== prevProps.schedule ||
       (this.state && this.state.todaysSchedule) !==
         (prevState && prevState.todaysSchedule) ||
-      this.props.isBusyCommunicating !== prevProps.isBusyCommunicating  
+      this.props.isBusyCommunicating !== prevProps.isBusyCommunicating
     ) {
       this.setState({
         todaysSchedule: this.props.schedule,
@@ -144,7 +144,7 @@ class Dashboard extends Component<any, DashBoardState> {
                           </strong>
                         </span>
                       </div>
-                      {!this.state.todaysSchedule  && (
+                      {!this.state.todaysSchedule && (
                         <React.Fragment>
                           <Typography variant="h5">
                             <span className="Dashboard-no-details">
@@ -188,29 +188,21 @@ class Dashboard extends Component<any, DashBoardState> {
                               </Typography>
                             </div>
                           )}
-                          {this.state.todaysSchedule && this.state.todaysSchedule.menu &&
+                          {this.state.todaysSchedule &&
+                            this.state.todaysSchedule.menu &&
                             this.state.todaysSchedule.menu.items.length > 0 && (
                               <React.Fragment>
                                 <div className="Dashboard-menu-container">
-                                  <div className="Dashboard-menu-primary-container Dashboard-menu-container_items">
-                                    <Typography>
-                                      <strong>Menu</strong>
-                                    </Typography>
-                                    <Typography component="div">
-                                      <div className="Dashboard-menu-items">
-                                        {buildMenuItem(
-                                          this.state.todaysSchedule.menu &&
-                                            this.state.todaysSchedule.menu.items,
-                                          this.state.todaysSchedule.noMealReason
-                                        )}
-                                      </div>
-                                    </Typography>
-                                  </div>
                                   <div className="Dashboard-menu-side-note Dashboard-menu-container_items">
                                     <div className="Dashboard-menu-side-note_content-left">
                                       <span>
-                                        <strong>Sagla Mumineen ne Aqa Maula Syedna Aaliqdar Mufaddal Saifuddin TUS taraf si Faiz ul Mawaid Burhaniyah ni thali nu niyaz Mubarak aney Mohanna Karjo</strong>
-                                      </span>  
+                                        <strong>
+                                          Sagla Mumineen ne Aqa Maula Syedna
+                                          Aaliqdar Mufaddal Saifuddin TUS taraf
+                                          si Faiz ul Mawaid Burhaniyah ni thali
+                                          nu niyaz Mubarak aney Mohanna Karjo
+                                        </strong>
+                                      </span>
                                     </div>
                                     <div className="Dashboard-menu-side-note_content-left">
                                       <span>
@@ -219,11 +211,29 @@ class Dashboard extends Component<any, DashBoardState> {
                                           <li>Panjatan Pak (AS)</li>
                                           <li>Syedna Hatim Bin Ibrahim (RA)</li>
                                           <li>Syedna Taher Saifuddin (RA)</li>
-                                          <li>Syedna Mohammed Burhanuddin (RA)</li>
-                                        </ul>  
-                                      </span>  
+                                          <li>
+                                            Syedna Mohammed Burhanuddin (RA)
+                                          </li>
+                                        </ul>
+                                      </span>
                                     </div>
                                   </div>
+                                  <div className="Dashboard-menu-primary-container Dashboard-menu-container_items">
+                                    <Typography>
+                                      <strong>Menu</strong>
+                                    </Typography>
+                                    <Typography component="div">
+                                      <div className="Dashboard-menu-items">
+                                        {buildMenuItem(
+                                          this.state.todaysSchedule.menu &&
+                                            this.state.todaysSchedule.menu
+                                              .items,
+                                          this.state.todaysSchedule.noMealReason
+                                        )}
+                                      </div>
+                                    </Typography>
+                                  </div>
+
                                   {this.state.fatehaContributor &&
                                     this.state.fatehaContributor
                                       .messageFromContributor && (
@@ -232,9 +242,10 @@ class Dashboard extends Component<any, DashBoardState> {
                                           <strong>
                                             {
                                               this.state.fatehaContributor.messageFromContributor.filter(
-                                                messageLabel => messageLabel && 
+                                                messageLabel =>
+                                                  messageLabel &&
                                                   messageLabel.messageLabel.toLowerCase() ===
-                                                  ContributionType_FATEHA.toLowerCase()
+                                                    ContributionType_FATEHA.toLowerCase()
                                               )[0].messageLabel
                                             }
                                           </strong>
@@ -242,9 +253,10 @@ class Dashboard extends Component<any, DashBoardState> {
                                         <div className="Dashboard-menu-side-note_content">
                                           {
                                             this.state.fatehaContributor.messageFromContributor.filter(
-                                              messageLabel => messageLabel &&
+                                              messageLabel =>
+                                                messageLabel &&
                                                 messageLabel.messageLabel.toLowerCase() ===
-                                                ContributionType_FATEHA.toLowerCase()
+                                                  ContributionType_FATEHA.toLowerCase()
                                             )[0].messageValue
                                           }
                                         </div>
@@ -253,18 +265,25 @@ class Dashboard extends Component<any, DashBoardState> {
                                 </div>
                               </React.Fragment>
                             )}
-                          {this.state.todaysSchedule && this.state.todaysSchedule.instructionsForSubscriber && this.state.todaysSchedule.instructionsForSubscriber.length>0  && this.state.todaysSchedule.instructionsForSubscriber[0].messageValue.length>0  && (
-                            <React.Fragment>
-                              <div className="Dashboard-instructionForSubscriber-container">
-                                <strong>
-                                  {buildMessages(
-                                  this.state.todaysSchedule
-                                    .instructionsForSubscriber
-                                  )}
-                                </strong>
-                              </div>
-                            </React.Fragment>
-                          )}
+                          {this.state.todaysSchedule &&
+                            this.state.todaysSchedule
+                              .instructionsForSubscriber &&
+                            this.state.todaysSchedule.instructionsForSubscriber
+                              .length > 0 &&
+                            this.state.todaysSchedule
+                              .instructionsForSubscriber[0].messageValue
+                              .length > 0 && (
+                              <React.Fragment>
+                                <div className="Dashboard-instructionForSubscriber-container">
+                                  <strong>
+                                    {buildMessages(
+                                      this.state.todaysSchedule
+                                        .instructionsForSubscriber
+                                    )}
+                                  </strong>
+                                </div>
+                              </React.Fragment>
+                            )}
                         </React.Fragment>
                       )}
                     </CardContent>
@@ -326,14 +345,14 @@ class Dashboard extends Component<any, DashBoardState> {
               <div></div>
             </React.Fragment>
           )}
-        </Spinner>  
+        </Spinner>
       </div>
     );
   }
 }
 
 const mapStateToProps = (state: AppState) => {
-  return  {
+  return {
     schedule: state.schedules.find(
       schedule =>
         schedule.dailyDate ===

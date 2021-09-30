@@ -121,7 +121,7 @@ class DailyMealCountReport extends React.Component<any, any> {
                 }
                 { countDetail. noRice && 
                     <span className ="daily-meal-count-report-count-details-container-col-name">
-                      <StyledBadge badgeContent={'NR'} color="secondary">
+                      <StyledBadge badgeContent={'White'} color="secondary">
                        {countDetail  && countDetail.firstName? `${countDetail.firstName} ${countDetail.lastName}` :  countDetail.subscriberId}
                        </StyledBadge> 
                     </span>
@@ -198,10 +198,10 @@ class DailyMealCountReport extends React.Component<any, any> {
                               <strong>Sector Name</strong>
                             </StyledTableCell >
                             <StyledTableCell align="right">
-                              <strong>Rice Count</strong>
+                              <strong>Grey Thali Count</strong>
                             </StyledTableCell>
                             <StyledTableCell align="right">
-                              <strong>No Rice Count</strong>
+                              <strong>White Thali Count</strong>
                             </StyledTableCell>
                             <StyledTableCell align="right">
                               <strong>Total Count</strong>

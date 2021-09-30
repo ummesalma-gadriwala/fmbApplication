@@ -5,7 +5,6 @@ import AppRouter from './components/AppRouter/AppRouter';
 import axios from 'axios';
 import { TOKEN_API_ENPOINT } from './api/API';
 
-
 class App extends Component {
   componentDidMount() {
     axios.get(`${TOKEN_API_ENPOINT}/hello`);
@@ -14,7 +13,6 @@ class App extends Component {
     return (
       <div className="container-fluid">
         <AppRouter />
-        
       </div>
     );
   }

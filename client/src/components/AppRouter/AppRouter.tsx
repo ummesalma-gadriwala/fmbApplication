@@ -14,9 +14,7 @@ import MenuDetails from '../Menu/Subscriber/MenuDetails';
 import DailyMealCountReport from '../Operations/Reports/DailyMealCountReport';
 import HelpContact from '../Contact/HelpContact';
 
-
 import GlobalErrorHandler from '../../components/ErrorHandler/GlobalErrorHandler';
-
 
 import { AppState } from '../../type/Type';
 
@@ -29,8 +27,8 @@ class AppRouter extends Component<any, any> {
       <div className="App-container">
         <Router>
           <div>
-           <Header />
-            <GlobalErrorHandler/> 
+            <Header />
+            <GlobalErrorHandler />
             <div>
               <Route
                 path="/"
@@ -45,13 +43,11 @@ class AppRouter extends Component<any, any> {
                 exact
                 path="/menu-schedule/details/:currentDate"
                 component={MenuDetails}
-
               />
               <Route
                 exact
                 path="/menu-schedule/review/:currentDate"
                 component={ReviewDetails}
-
               />
               <Route exact path="/profile/" component={UserForm} />
               <Route
@@ -59,7 +55,7 @@ class AppRouter extends Component<any, any> {
                 path="/operation/dashboard/"
                 component={OperationDashboard}
               />
-               <Route
+              <Route
                 exact
                 path="/operation/crm-dashboard/"
                 component={CRMDashboard}
@@ -74,13 +70,9 @@ class AppRouter extends Component<any, any> {
                 path="/operation/meal-count-report/"
                 component={DailyMealCountReport}
               />
-               <Route
-                exact
-                path="/logout"
-                component={Login}
-              />
-           </div>
-          <Navigator />
+              <Route exact path="/logout" component={Login} />
+            </div>
+            <Navigator />
           </div>
         </Router>
       </div>

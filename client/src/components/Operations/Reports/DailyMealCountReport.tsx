@@ -1,3 +1,7 @@
+/* eslint-disable react/jsx-key */
+/* eslint-disable linebreak-style */
+/* eslint-disable @typescript-eslint/no-inferrable-types */
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import {MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -24,6 +28,7 @@ import Spinner  from '../../Spinner/Spinner';
 
 import './DailyMealCountReport.css';
 import { Collapse, IconButton } from '@material-ui/core';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFns = require('date-fns');
 
 const StyledTableCell = withStyles(theme => ({

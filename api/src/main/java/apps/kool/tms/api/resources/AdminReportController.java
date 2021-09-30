@@ -131,6 +131,9 @@ public class AdminReportController {
 			    	overrideReportInfo.setNoRice(noRiceCount > 0 ? true : false);
 			    }
 				PackagingInfo packagingInfo = reportData.get(subscriptionSchedule.getZone());
+				if(noRiceCount > tiffinCount){
+					noRiceCount = tiffinCount;
+				}
 				packagingInfo = updatePackagingInfo(packagingInfo, tiffinCount, noRiceCount, noRiceCancellationCount, cancelCount, additionCount, noRiceAdditionCount, overrideReportInfo);
 				reportData.put(subscriptionSchedule.getZone(), packagingInfo);
 			}

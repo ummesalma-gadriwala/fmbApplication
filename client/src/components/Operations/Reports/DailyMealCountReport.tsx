@@ -1,7 +1,3 @@
-/* eslint-disable react/jsx-key */
-/* eslint-disable linebreak-style */
-/* eslint-disable @typescript-eslint/no-inferrable-types */
-/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import {MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';

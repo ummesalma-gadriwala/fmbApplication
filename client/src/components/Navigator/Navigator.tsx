@@ -103,7 +103,19 @@ class Navigator extends Component<any, any> {
             >
               <RefreshTwoToneIcon />
             </IconButton>
-            {doesUserBelongsToOperation(this.props.roles) && (
+            <div>
+              <IconButton
+                component={OperationDashBoardLink}
+                color="inherit"
+                aria-label="Show Notifications"
+              >
+                <OperationIcon
+                  color="inherit"
+                  aria-label="Open Operation Dashboard"
+                />
+              </IconButton>
+            </div>
+            {/* {doesUserBelongsToOperation(this.props.roles) && (
               <div>
                 <IconButton
                   component={OperationDashBoardLink}
@@ -116,7 +128,7 @@ class Navigator extends Component<any, any> {
                   />
                 </IconButton>
               </div>
-            )}
+            )} */}
             {doesUserBelongsToCRMOperation(this.props.roles) && (
               <div>
                 <IconButton

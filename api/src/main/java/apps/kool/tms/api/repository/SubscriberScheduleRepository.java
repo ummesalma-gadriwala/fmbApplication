@@ -16,12 +16,16 @@ import org.springframework.stereotype.Repository;
 
 import apps.kool.tms.api.agregate.OverrideSubscriptionSchedule;
 import apps.kool.tms.api.agregate.SubscriptionSchedule;
+import apps.kool.tms.api.agregate.TiffinPersonalization;
 import apps.kool.tms.api.agregate.User;
 
 @Repository
 public class SubscriberScheduleRepository implements ISubscriberScheduleRepository {
 	
 	private final MongoTemplate mongoTemplate;
+	
+	@Autowired
+	private ITiffinPersonalizationRepository personalizationRepository;  
 	
     @Autowired
     public SubscriberScheduleRepository(MongoTemplate mongoTemplate) {
@@ -45,6 +49,7 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 			query.addCriteria(Criteria.where("username").is(subscriptionSchedule.getSubscriberId()));
 			User user = mongoTemplate.findOne(query, User.class);
 			subscriptionSchedule.setUser(user);
+			subscriptionSchedule.setPersonalization(personalizationRepository.getPersonlizationBySubscriberId(subscriptionSchedule.getSubscriberId()));
 		});
 		return subscriptionSchedules;	
 //		 LookupOperation lookupOperation = LookupOperation.newLookup()
@@ -107,11 +112,14 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 		Query query = new Query();
 	    query.addCriteria(Criteria.where("subscriberId").is(subscriptionSchedule.getSubscriberId()));
 	    SubscriptionSchedule subscriptionScheduleFromDB = mongoTemplate.findOne(query, SubscriptionSchedule.class);
+	    TiffinPersonalization tiffinPersonalizationDB =  personalizationRepository.getPersonlizationBySubscriberId(subscriptionSchedule.getSubscriberId());
 	    //modify and update with save()
-	    subscriptionScheduleFromDB.setPersonalization(subscriptionSchedule.getPersonalization());
+	    tiffinPersonalizationDB.setNoRice(subscriptionSchedule.getPersonalization().getNoRice());
 	    subscriptionScheduleFromDB.setZone(subscriptionSchedule.getZone());
 	    subscriptionScheduleFromDB.setOptedSchedule(subscriptionSchedule.getOptedSchedule());
 	    mongoTemplate.save(subscriptionScheduleFromDB);
+	    mongoTemplate.save(tiffinPersonalizationDB);
+	   
 	    //get the updated object again
 	    SubscriptionSchedule subscriptionScheduleUpdated = mongoTemplate.findOne(query, SubscriptionSchedule.class);
 		return subscriptionScheduleUpdated;

@@ -84,6 +84,7 @@ public class AdminReportController {
 								filteredOverrideSubscriptionSchedule.get().getPersonalization().getNoRice().isActivate()){
 							noRiceCount = filteredOverrideSubscriptionSchedule.get().getPersonalization().getNoRice().getTiffinCount(); 
 						}
+						System.out.println( subscriptionSchedule.getSubscriberId());
 						boolean isTiffinCancelled = tiffinCount > overrideCount;
 						if(isTiffinCancelled ) {
 							if(noRiceCount > 0 ){

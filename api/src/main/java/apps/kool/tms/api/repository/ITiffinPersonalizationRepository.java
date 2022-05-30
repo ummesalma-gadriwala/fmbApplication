@@ -7,6 +7,7 @@ import apps.kool.tms.api.agregate.TiffinPersonalization;
 public interface ITiffinPersonalizationRepository {
 
 	List<TiffinPersonalization>getPersonlizations();
+	TiffinPersonalization getPersonlizationBySubscriberId(String subscriberId);
    
    
    

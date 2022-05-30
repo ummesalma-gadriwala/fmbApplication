@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import apiError from '../reducers/apiError';
 
 export enum DayOfWeek {
@@ -8,6 +9,11 @@ export enum DayOfWeek {
   Friday,
   Saturday,
   Sunday
+}
+
+export enum PackageColor {
+  Grey = 'Grey',
+  White = 'White'
 }
 
 export const ContributionType_TIFFIN = 'tiffin';
@@ -29,6 +35,15 @@ export interface SubscriptionSchedule {
   user?: Profile | null;
   subscriberId?: string | null;
   status?: string | null;
+  personalization:TiffinPersonalization | null;
+}
+
+export interface TiffinPersonalization {
+  subscriberId: string;
+  noRice: {
+    activate: boolean;
+    tiffinCount: number;
+  };
 }
 
 export interface OverrideSchedule {
@@ -69,11 +84,11 @@ export interface AppState {
   profile: Profile;
   schedules: Schedule[];
   apiError: APIError;
-  isBusyCommunicating: boolean; 
+  isBusyCommunicating: boolean;
   serviceWorkerUpdated: boolean;
   operations:Operations | null;
   crmOperation:CRMOperations | null;
-  content : Content | null;
+  content: Content | null;
 }
 
 export interface Profile {
@@ -124,40 +139,37 @@ export interface LabelValue {
 }
 
 export interface Operations {
-   reportDailyThaliCount:SectorCountSelectedDate; 
-  
+  reportDailyThaliCount: SectorCountSelectedDate;
 }
-
 
 export interface CRMOperations {
   subscribers:SubscriptionSchedule[];
-  selectedSubscriber: SubscriptionSchedule 
+  selectedSubscriber: SubscriptionSchedule;
 }
 
 export interface SectorCountSelectedDate {
-  selectedDate : string | null;
-  sectorCounts : SectorCount[];
+  selectedDate: string | null;
+  sectorCounts: SectorCount[];
 }
 
 export interface SectorCount {
-  sectorName : string;
-  tiffinCount : number;
-  cancellationScheduleCount:number;
-  additionScheduleCount:number;
+  sectorName: string;
+  tiffinCount: number;
+  cancellationScheduleCount: number;
+  additionScheduleCount: number;
   noRiceTiffinCount: number;
 }
 
 export interface Review {
-  id: Object| null;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  id: Object | null;
   scheduleDate: string;
-  username:string;
+  username: string;
   subscriberId: string;
-  questionAnswer: LabelValue [];
+  questionAnswer: LabelValue[];
 }
-
 
 export interface Content {
-  helpContacts : LabelValue[];
+  helpContacts: LabelValue[];
   sectors: LabelValue[];
 }
-

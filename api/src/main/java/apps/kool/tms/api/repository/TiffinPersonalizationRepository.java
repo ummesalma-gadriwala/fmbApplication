@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,14 @@ private final MongoTemplate mongoTemplate;
 		Query query = new Query();
 		List<TiffinPersonalization> tiffinPersonalizations = mongoTemplate.find(query, TiffinPersonalization.class);
 		return tiffinPersonalizations;
+	}
+
+	@Override
+	public TiffinPersonalization getPersonlizationBySubscriberId(String subscriberId) {
+		Query personalizationQuery = new Query();
+		personalizationQuery.addCriteria(Criteria.where("subscriberId").is(subscriberId));
+		TiffinPersonalization personalization = mongoTemplate.findOne(personalizationQuery, TiffinPersonalization.class);
+		return personalization;
 	}
 
 	

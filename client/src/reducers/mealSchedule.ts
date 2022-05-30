@@ -19,9 +19,9 @@ const INITIAL_STATE: SubscriptionSchedule = {
     SUNDAY: null
   },
   overrideSchedules: [],
-  zone:"",
-  user:null,
- 
+  zone: '',
+  user: null,
+  personalization: null
 };
 
 export default function(state = INITIAL_STATE, action: any) {
@@ -47,7 +47,7 @@ export default function(state = INITIAL_STATE, action: any) {
           schedule.overrideStartDate != action.payload.startDate
       );
       return { ...state, overrideSchedules: [...delOverrideSchedules] };
-      
+
     case API_USER_ERROR:
       return { ...state, errorMessage: action.payload };
     default:

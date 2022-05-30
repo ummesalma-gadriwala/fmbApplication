@@ -5,7 +5,7 @@ export const GET_THALI_SCHEDULE_ENDPOINT = (subscriberId: string) =>
   `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule/${subscriberId}`;
 export const DELETE_THALI_SCHEDULE_ENDPOINT = (
   subscriberId: string,
-  startDate: string|Date
+  startDate: string | Date
 ) =>
   `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule/override/${subscriberId}/${startDate}`;
 export const USER_PROFILE_ENDPOINT = (username: string | null) =>
@@ -14,22 +14,38 @@ export const USER_PROFILE_ENDPOINT = (username: string | null) =>
   }`;
 export const GET_SCHEDULLE_MONTH_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}schedule/month`;
 
-export const GET_MEAL_COUNT_SECTORWISE_DAILY_ENDPOINT = (selectedDate:string ) => `${process.env.REACT_APP_API_ENDPOINT}admin/sector/meal/count/${selectedDate}`;
+export const GET_MEAL_COUNT_SECTORWISE_DAILY_ENDPOINT = (
+  selectedDate: string
+) =>
+  `${process.env.REACT_APP_API_ENDPOINT}admin/sector/meal/count/${selectedDate}`;
 
-export const ADD_REVIEW =  `${process.env.REACT_APP_API_ENDPOINT}review`;
+export const ADD_REVIEW = `${process.env.REACT_APP_API_ENDPOINT}review`;
 
-export const GET_REVIEW_BY_USERID_SCHEDULEDATE =  (username:string, selectedDate:string ) => `${process.env.REACT_APP_API_ENDPOINT}review/${username}/${selectedDate}`;
+export const GET_REVIEW_BY_USERID_SCHEDULEDATE = (
+  username: string,
+  selectedDate: string
+) => `${process.env.REACT_APP_API_ENDPOINT}review/${username}/${selectedDate}`;
 
-export const GET_REVIEWS_BY_SCHEDULEDATE =  ( selectedDate:string ) => `${process.env.REACT_APP_API_ENDPOINT}review/${selectedDate}`;
+export const GET_REVIEWS_BY_SCHEDULEDATE = (selectedDate: string) =>
+  `${process.env.REACT_APP_API_ENDPOINT}review/${selectedDate}`;
 
 //export default let logConfig = () =>  console.log ( `'TOKEN_API_ENPOINT': ${TOKEN_API_ENPOINT}`  );
 
-export const GET_REVIEW_BY_USERID_FOR_DATERANGE =  (username:string, fromDate:string, toDate:string ) => `${process.env.REACT_APP_API_ENDPOINT}review/${username}/${fromDate}/${toDate} `;
+export const GET_REVIEW_BY_USERID_FOR_DATERANGE = (
+  username: string,
+  fromDate: string,
+  toDate: string
+) =>
+  `${process.env.REACT_APP_API_ENDPOINT}review/${username}/${fromDate}/${toDate} `;
 
-export const GET_CONTACTINFO_CONTENT =  () => `${process.env.REACT_APP_API_ENDPOINT}content/contactInfo`;
+export const GET_CONTACTINFO_CONTENT = () =>
+  `${process.env.REACT_APP_API_ENDPOINT}content/contactInfo`;
 
-export const GET_ALL_SUBSCRIBERINFO =  () => `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule/getAll`;
+export const GET_ALL_SUBSCRIBERINFO = () =>
+  `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule/getAll`;
 
-export const GET_SECTORS_CONTENT =  () => `${process.env.REACT_APP_API_ENDPOINT}content/sectors`;
+export const GET_SECTORS_CONTENT = () =>
+  `${process.env.REACT_APP_API_ENDPOINT}content/sectors`;
 
-export const UPDATE_SUBSCRIBER_SCHEUDULE =  () => `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule`;
+export const UPDATE_SUBSCRIBER_SCHEUDULE = () =>
+  `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule`;

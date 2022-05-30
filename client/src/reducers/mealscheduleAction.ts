@@ -61,7 +61,6 @@ export const addOverrideSchedule = (
   onErrorCallback: Function | null
 ) => async (dispatch: Function) => {
   try {
-    
     overrideSchedule.overrideStartDate = dateFns.format(
       overrideSchedule.overrideStartDate,
       'yyyy-MM-dd',
@@ -84,8 +83,8 @@ export const addOverrideSchedule = (
       });
       dispatch({
         type: CRM_OPERATIONS_CHANGE_MEAL_COUNT,
-        payload: {subscriberId, overrideSchedule }
-      })
+        payload: { subscriberId, overrideSchedule }
+      });
       //getSubscriptionSchedule(subscriberId, null, null);
     }
     workFlowProcessor &&
@@ -95,8 +94,8 @@ export const addOverrideSchedule = (
       );
   } catch (err) {
     onErrorCallback && onErrorCallback();
-    console.log('err------>', err)
-    if (err.response.status === 410) {
+    console.log('err------>', err);
+    if (err && err.response && err.response.status === 410) {
       dispatch({
         type: API_USER_ERROR,
         payload: 'Updated Schedule already exists'
@@ -121,22 +120,23 @@ export const deleteOverrideSchedule = (
       //const subscriptionSchedule: ISubscriptionSchedule = response.data;
       dispatch({
         type: DELETE_SUBSCRIBER_OVERRIDESCHEDULE,
-        payload: { startDate, subscriberId}
+        payload: { startDate, subscriberId }
       });
       //getSubscriptionSchedule(subscriberId, null, null);
       workFlowProcessor && workFlowProcessor();
     }
-    
   } catch (err) {
     onErrorCallback && onErrorCallback();
-    if (err.response.status === 410) {
-      dispatch({ type: API_USER_ERROR, payload: 'Cannot Update Meal Schedule' });
+    if (err && err.response && err.response.status === 410) {
+      dispatch({
+        type: API_USER_ERROR,
+        payload: 'Cannot Update Meal Schedule'
+      });
     } else {
       dispatch({ type: API_SERVER_ERROR });
     }
   }
 };
-
 
 export const updateSubscriptionSchedule = (
   subscriptionSchedule: SubscriptionSchedule,
@@ -144,18 +144,21 @@ export const updateSubscriptionSchedule = (
   onErrorCallback: Function | null
 ) => async (dispatch: Function) => {
   try {
-    const response = await axios.patch(UPDATE_SUBSCRIBER_SCHEUDULE(),subscriptionSchedule);
+    const response = await axios.patch(
+      UPDATE_SUBSCRIBER_SCHEUDULE(),
+      subscriptionSchedule
+    );
     if (response && response.status === 201) {
       dispatch({
         type: CRM_OPERATIONS_UPDATE_SUBSCRIPTION_SCHEDULE,
-        payload: {subscriptionSchedule}
-      })
+        payload: { subscriptionSchedule }
+      });
     }
-    workFlowProcessor &&  workFlowProcessor();
+    workFlowProcessor && workFlowProcessor();
   } catch (err) {
     onErrorCallback && onErrorCallback();
-    console.log('err------>', err)
-    if (err.response.status === 410) {
+    console.log('err------>', err);
+    if (err && err.response && err.response.status === 410) {
       dispatch({
         type: API_USER_ERROR,
         payload: 'Updated Schedule already exists'
@@ -165,4 +168,3 @@ export const updateSubscriptionSchedule = (
     }
   }
 };
-

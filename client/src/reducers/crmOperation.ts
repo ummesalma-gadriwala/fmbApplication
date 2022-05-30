@@ -10,7 +10,7 @@ export default function(state: CRMOperations = INITIAL_STATE, action: any) {
       console.log('CRM_OPERATIONS_GET_SUBSCRIBERS',action )
       return { ...state, "subscribers" : action.payload };
     case DELETE_SUBSCRIBER_OVERRIDESCHEDULE:
-      let updatedSubscribers = state.subscribers.map( (subscriber:SubscriptionSchedule) => {
+      let updatedSubscribers = state.subscribers &&  state.subscribers.map( (subscriber:SubscriptionSchedule) => {
         if(subscriber.subscriberId === action.payload.subscriberId) {
           let delOverrideSchedules = subscriber &&  subscriber.overrideSchedules 
           subscriber.overrideSchedules = delOverrideSchedules && delOverrideSchedules.filter((schedule: OverrideSchedule) => schedule.overrideStartDate !== action.payload.startDate);
@@ -21,7 +21,7 @@ export default function(state: CRMOperations = INITIAL_STATE, action: any) {
     return {...state, "subscribers":updatedSubscribers};
     case CRM_OPERATIONS_CHANGE_MEAL_COUNT:
       const updatedOverrideSchedule:OverrideSchedule = action.payload.overrideSchedule 
-      updatedSubscribers = state.subscribers.map( (subscriber:SubscriptionSchedule) => {
+      updatedSubscribers = state.subscribers && state.subscribers.map( (subscriber:SubscriptionSchedule) => {
         if(subscriber.subscriberId === action.payload.subscriberId) {
           subscriber.overrideSchedules && subscriber.overrideSchedules.push(updatedOverrideSchedule)
         }
@@ -29,7 +29,7 @@ export default function(state: CRMOperations = INITIAL_STATE, action: any) {
       })
     case CRM_OPERATIONS_UPDATE_SUBSCRIPTION_SCHEDULE:
       let subscriptionSchedule = action.payload.subscriptionSchedule as SubscriptionSchedule ;
-      updatedSubscribers = state.subscribers.map( (subscriber:SubscriptionSchedule) => {
+      updatedSubscribers = state.subscribers &&  state.subscribers.map( (subscriber:SubscriptionSchedule) => {
         if(subscriber.subscriberId === subscriptionSchedule.subscriberId) {
           subscriber = subscriptionSchedule
         }

@@ -28,8 +28,8 @@ class MealSchedule extends Component<any, IMealScheduleState> {
     super(props);
     this.handleMealCountChange = this.handleMealCountChange.bind(this);
     const newPlanOverride: OverrideSchedule = {
-      overrideStartDate: dateFns.addWeeks(new Date(), 2),
-      overrideEndDate: dateFns.addWeeks(new Date(), 3),
+      overrideStartDate: dateFns.addDays(new Date(), 2),
+      overrideEndDate: dateFns.addDays(new Date(), 3),
       weeklyOverrideSchedule: {
         MONDAY: null,
         TUESDAY: null,
@@ -161,12 +161,12 @@ class MealSchedule extends Component<any, IMealScheduleState> {
                 <DatePicker
                   name={'startDate'}
                   minDate={dateFns.format(
-                    dateFns.addWeeks(new Date(), 2),
+                    dateFns.addDays(new Date(), 2),
                     'yyyy-MM-dd',
                     { awareOfUnicodeTokens: true }
                   )}
                   maxDate={dateFns.format(
-                    dateFns.addMonths(new Date(), 2),
+                    dateFns.addMonths(new Date(), 1),
                     'yyyy-MM-dd',
                     { awareOfUnicodeTokens: true }
                   )}
@@ -184,8 +184,8 @@ class MealSchedule extends Component<any, IMealScheduleState> {
                 />
                 <DatePicker
                   name={'endDate'}
-                  minDate={dateFns.addWeeks(new Date(), 3)}
-                  maxDate={dateFns.addMonths(new Date(), 3)}
+                  minDate={dateFns.addDays(new Date(), 3)}
+                  maxDate={dateFns.addMonths(new Date(), 5)}
                   margin="normal"
                   label="To Date"
                   value={this.state.newPlanOverride.overrideEndDate}

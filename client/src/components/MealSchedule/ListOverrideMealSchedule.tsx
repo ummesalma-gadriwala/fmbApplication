@@ -55,7 +55,7 @@ class ListOverrideMealSchedule extends Component<any, any> {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {this.props.overrideSchedules.map(
+                    {this.props.overrideSchedules && this.props.overrideSchedules.map(
                       (overrideSchedule: OverrideSchedule, index: any) => {
                         return (
                           <TableRow key={index}>

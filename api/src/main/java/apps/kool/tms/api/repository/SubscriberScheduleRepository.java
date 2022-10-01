@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import apps.kool.tms.api.agregate.OverrideSubscriptionSchedule;
@@ -44,13 +48,13 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 	@Override
 	public List<SubscriptionSchedule> getAllSubscriptionSchedule() {
 		List<SubscriptionSchedule> subscriptionSchedules = mongoTemplate.findAll(SubscriptionSchedule.class);
-		subscriptionSchedules.forEach(subscriptionSchedule -> {
-			Query query = new Query();
-			query.addCriteria(Criteria.where("username").is(subscriptionSchedule.getSubscriberId()));
-			User user = mongoTemplate.findOne(query, User.class);
-			subscriptionSchedule.setUser(user);
-			subscriptionSchedule.setPersonalization(personalizationRepository.getPersonlizationBySubscriberId(subscriptionSchedule.getSubscriberId()));
-		});
+//		subscriptionSchedules.forEach(subscriptionSchedule -> {
+//			Query query = new Query();
+//			query.addCriteria(Criteria.where("username").is(subscriptionSchedule.getSubscriberId()));
+//			User user = mongoTemplate.findOne(query, User.class);
+//			subscriptionSchedule.setUser(user);
+//			subscriptionSchedule.setPersonalization(personalizationRepository.getPersonlizationBySubscriberId(subscriptionSchedule.getSubscriberId()));
+//		});
 		return subscriptionSchedules;	
 //		 LookupOperation lookupOperation = LookupOperation.newLookup()
 //               .from("user")
@@ -152,5 +156,54 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 		List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = mongoTemplate.find(query, OverrideSubscriptionSchedule.class);
 		return overrideSubscriptionSchedules;
 	}
+	
+	@Override
+	public List<OverrideSubscriptionSchedule> getAllOverrideSubscriptionSchedule() {
+		List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = mongoTemplate.findAll(OverrideSubscriptionSchedule.class);
+		return overrideSubscriptionSchedules;	
+	}
+
+	@Override
+	@Async
+	public CompletableFuture<List<SubscriptionSchedule>> getAllSubscriptionScheduleAsync() {
+		List<SubscriptionSchedule> subscriptionSchedules = mongoTemplate.findAll(SubscriptionSchedule.class);
+	    return CompletableFuture.completedFuture(subscriptionSchedules);
+
+	}
+	
+	@Override
+	@Async
+	public CompletableFuture<List<OverrideSubscriptionSchedule>> getOverrideScheduledForDateAsync(String selectedDate) throws Exception {
+		Date dateSelectedDate =new SimpleDateFormat("yyyy-MM-dd").parse(selectedDate);
+		Query query = new Query();
+		query.addCriteria(Criteria.where("overrideStartDate").lte(dateSelectedDate));
+		query.addCriteria(Criteria.where("overrideEndDate").gte(dateSelectedDate));
+		List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = mongoTemplate.find(query, OverrideSubscriptionSchedule.class);
+		return CompletableFuture.completedFuture(overrideSubscriptionSchedules);
+	}
+	
+	@Override
+	@Async
+	public CompletableFuture<List<SubscriptionSchedule>> getAllSubscriptionScheduleWithUserAsync() {
+			    //AggregationOperation unwind = Aggregation.unwind("studentIds");
+
+	    String query1 = "{$lookup: {from: 'user',"
+					    +"localField: 'subscriberId',"
+					    +"foreignField: 'username',"
+					    +"as: 'user'"
+						+" }},"
+						+"{$unwind: '$user'}";
+
+	    TypedAggregation <SubscriptionSchedule> aggregation = Aggregation.newAggregation(
+	    		SubscriptionSchedule.class,
+	        new CustomAggregationOperation(query1)
+	    );
+
+	    AggregationResults<SubscriptionSchedule> results = mongoTemplate.aggregate(aggregation, SubscriptionSchedule.class);
+	    return CompletableFuture.completedFuture(results.getMappedResults());
+
+	}
+	
+
 
 }

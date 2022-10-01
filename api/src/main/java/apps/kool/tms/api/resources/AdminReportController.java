@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +39,17 @@ public class AdminReportController {
 	@RequestMapping(method = RequestMethod.GET, value = "sector/meal/count/{selectedDate}")
 	ResponseEntity<Map<SectorName, PackagingInfo>> dailyThaliCountBySector(@PathVariable String selectedDate ) throws Exception {
 		LocalDate localDateSelectedDate = LocalDate.parse(selectedDate);
-		List <SubscriptionSchedule> subscriptionSchedules = subscriberScheduleRepository.getAllSubscriptionSchedule();
+		CompletableFuture<List <SubscriptionSchedule>> subscriptionSchedules = subscriberScheduleRepository.getAllSubscriptionScheduleAsync();
 		List <TiffinPersonalization> personalizations =  tiffinPersonalizationRepository.getPersonlizations();
-		List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = subscriberScheduleRepository.getOverrideScheduledForDate(selectedDate);
+		CompletableFuture<List<OverrideSubscriptionSchedule>> overrideSubscriptionAsyncSchedules = subscriberScheduleRepository.getOverrideScheduledForDateAsync(selectedDate);
 		Map<SectorName, PackagingInfo> reportData = new HashMap<SectorName, PackagingInfo>();
 		
-		
-		if(subscriptionSchedules == null || subscriptionSchedules.isEmpty())
+	    CompletableFuture.allOf(subscriptionSchedules,overrideSubscriptionAsyncSchedules).join();
+
+	    List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = overrideSubscriptionAsyncSchedules.get();
+		if(subscriptionSchedules == null || subscriptionSchedules.get().isEmpty())
 			return ResponseEntity.ok(reportData);
-		subscriptionSchedules.forEach(subscriptionSchedule -> {
+		subscriptionSchedules.get().forEach(subscriptionSchedule -> {
 			int tiffinCount = 0;
 			int noRiceCount = 0;
 			int cancelCount = 0;
@@ -84,7 +87,7 @@ public class AdminReportController {
 								filteredOverrideSubscriptionSchedule.get().getPersonalization().getNoRice().isActivate()){
 							noRiceCount = filteredOverrideSubscriptionSchedule.get().getPersonalization().getNoRice().getTiffinCount(); 
 						}
-						System.out.println( subscriptionSchedule.getSubscriberId());
+						//System.out.println( subscriptionSchedule.getSubscriberId()  + " -" +tiffinCount + " -" + overrideCount);
 						boolean isTiffinCancelled = tiffinCount > overrideCount;
 						if(isTiffinCancelled ) {
 							if(noRiceCount > 0 ){

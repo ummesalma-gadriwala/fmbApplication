@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +19,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import apps.kool.tms.api.agregate.OverrideSubscriptionSchedule;
 import apps.kool.tms.api.agregate.SubscriptionSchedule;
+import apps.kool.tms.api.agregate.TiffinPersonalization;
+import apps.kool.tms.api.agregate.User;
 import apps.kool.tms.api.errorhandling.EntityNotFoundException;
 import apps.kool.tms.api.repository.ISubscriberScheduleRepository;
+import apps.kool.tms.api.repository.ITiffinPersonalizationRepository;
+import apps.kool.tms.api.repository.UserRepository;
 import apps.kool.tms.api.reqres.APIResponse;
 import apps.kool.tms.api.reqres.AuthenticationCredentials;
 import apps.kool.tms.api.reqres.AuthenticationResponse;
 import apps.kool.tms.api.reqres.OverrideSubscriptionScheduleResponse;
 import apps.kool.tms.api.reqres.WorkFlowResponse;
 import apps.kool.tms.api.utils.WorkFlowUtils;
+import ch.qos.logback.core.net.SyslogOutputStream;
 
 @RestController
 @RequestMapping("/subscriber/schedule")
@@ -32,6 +39,13 @@ public class SubscriberScheduleController {
 	
 	@Autowired
 	ISubscriberScheduleRepository subscriberScheduleRepository; 
+	
+	@Autowired
+	ITiffinPersonalizationRepository tiffinPersonalizationRepository; 
+	
+	@Autowired
+	UserRepository userRepository;
+	
 	 
 	@RequestMapping(method = RequestMethod.POST)
 	ResponseEntity<Object> addSchedule(@RequestBody SubscriptionSchedule subscriptionSchedule ) {
@@ -84,8 +98,27 @@ public class SubscriberScheduleController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/getAll" )
-	ResponseEntity<List<SubscriptionSchedule>> getAllSubscriptionSchedule() {
-	   return ResponseEntity.ok(subscriberScheduleRepository.getAllSubscriptionSchedule()) ;
+	ResponseEntity<List<SubscriptionSchedule>> getAllSubscriptionSchedule() throws InterruptedException, ExecutionException {
+		CompletableFuture<List <SubscriptionSchedule>>  subscriptionSchedulesAsync = subscriberScheduleRepository.getAllSubscriptionScheduleWithUserAsync();
+		List <TiffinPersonalization> personalizations =  tiffinPersonalizationRepository.getPersonlizations();
+		List <User> users = null;//userRepository.findAll();
+	    //CompletableFuture.allOf(subscriptionSchedulesAsync).join();
+		List <SubscriptionSchedule>  subscriptionSchedules = subscriptionSchedulesAsync.get();
+		subscriptionSchedules.forEach(subscriptionSchedule -> {
+			TiffinPersonalization tiffinPersonalization = personalizations.stream().filter(personalization -> 
+			personalization.getSubscriptionScheduleId().toString().equals(subscriptionSchedule.getId().toString())
+			).findFirst().orElse(null);
+//			User user = users.stream().filter(filterUser -> 
+//			    filterUser != null && 
+//				filterUser.getUsername() !=null && 
+//				filterUser.getUsername().equals(subscriptionSchedule.getSubscriberId().toString())
+//			).findFirst().orElse(null);
+			if(subscriptionSchedule!=null)
+			subscriptionSchedule.setPersonalization(tiffinPersonalization);
+//			if(user!=null)
+//			subscriptionSchedule.setUser(user);
+		});
+		return ResponseEntity.ok(subscriptionSchedules) ;
 	}
 	 
 	@RequestMapping(method = RequestMethod.PATCH)

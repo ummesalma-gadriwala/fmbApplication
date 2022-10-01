@@ -39,7 +39,7 @@ public class AdminReportController {
 	@RequestMapping(method = RequestMethod.GET, value = "sector/meal/count/{selectedDate}")
 	ResponseEntity<Map<SectorName, PackagingInfo>> dailyThaliCountBySector(@PathVariable String selectedDate ) throws Exception {
 		LocalDate localDateSelectedDate = LocalDate.parse(selectedDate);
-		CompletableFuture<List <SubscriptionSchedule>> subscriptionSchedules = subscriberScheduleRepository.getAllSubscriptionScheduleAsync();
+		CompletableFuture<List <SubscriptionSchedule>> subscriptionSchedules = subscriberScheduleRepository.getAllSubscriptionScheduleWithUserAsync();
 		List <TiffinPersonalization> personalizations =  tiffinPersonalizationRepository.getPersonlizations();
 		CompletableFuture<List<OverrideSubscriptionSchedule>> overrideSubscriptionAsyncSchedules = subscriberScheduleRepository.getOverrideScheduledForDateAsync(selectedDate);
 		Map<SectorName, PackagingInfo> reportData = new HashMap<SectorName, PackagingInfo>();

@@ -71,7 +71,7 @@ public class AdminReportController {
 				).findFirst();
 				
 				if(tiffinPersonalization.isPresent() && tiffinPersonalization.get().getNoRice() != null && tiffinPersonalization.get().getNoRice().isActivate()) {
-					noRiceCount = tiffinPersonalization.get().getNoRice().getTiffinCount();
+					noRiceCount = tiffinCount;
 				}
 				
 				Optional<OverrideSubscriptionSchedule> filteredOverrideSubscriptionSchedule = overrideSubscriptionSchedules.stream().filter(overrideSubscriptionSchedule -> 

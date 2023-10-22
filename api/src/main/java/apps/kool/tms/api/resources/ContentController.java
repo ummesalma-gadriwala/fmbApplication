@@ -29,12 +29,12 @@ public class ContentController {
 
 	    InstructionMessage contactInfo1 = new InstructionMessage();
 	    contactInfo1.setMessageLabel("Thali Addition Request Approval");
-	    contactInfo1.setMessageValue("Bhai Hassan Doulatganjwala | (647)-997-5251");
+	    contactInfo1.setMessageValue("Bhai Hassan Doulatganjwala | (289) 885-1728");
 	    contacts.add(contactInfo1);
 	    
 	    InstructionMessage contactInfo2 = new InstructionMessage();
 	    contactInfo2.setMessageLabel("App Related Issue");
-	    contactInfo2.setMessageValue("Bhai Ismail Raja | (289) 885-1728");
+	    contactInfo2.setMessageValue("Bhai Ismail Raja | (902)-580-5152");
 	    contacts.add(contactInfo2);
 	    
 		return ResponseEntity.ok(contacts);

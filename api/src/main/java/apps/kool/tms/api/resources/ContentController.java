@@ -24,25 +24,19 @@ public class ContentController {
 	    
 	    InstructionMessage contactInfo = new InstructionMessage();
 	    contactInfo.setMessageLabel("General FMB Related Queries");
-	    contactInfo.setMessageValue("Bhai Murtaza Patanwala | (416)-618-8486");
+	    contactInfo.setMessageValue("Bhai Aliasgar Khokhar | (647)-825-5786");
 	    contacts.add(contactInfo);
 
 	    InstructionMessage contactInfo1 = new InstructionMessage();
 	    contactInfo1.setMessageLabel("Thali Addition Request Approval");
-	    contactInfo1.setMessageValue("Bhai Quresh Motiwala | (647)-997-5251");
+	    contactInfo1.setMessageValue("Bhai Hassan Doulatganjwala | (647)-997-5251");
 	    contacts.add(contactInfo1);
 	    
 	    InstructionMessage contactInfo2 = new InstructionMessage();
 	    contactInfo2.setMessageLabel("App Related Issue");
-	    contactInfo2.setMessageValue("Bhai Muffaddal Poonawala | (365)-998-5253");
+	    contactInfo2.setMessageValue("Bhai Ismail Raja | (289) 885-1728");
 	    contacts.add(contactInfo2);
 	    
-
-	    InstructionMessage contactInfo3 = new InstructionMessage();
-	    contactInfo3.setMessageLabel("App Related Issue");
-	    contactInfo3.setMessageValue("Bhai Nuruddin Bawangaonwala | (647)-704-6181");
-	    contacts.add(contactInfo3);
-	
 		return ResponseEntity.ok(contacts);
 	}
 	

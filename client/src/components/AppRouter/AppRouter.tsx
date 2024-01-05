@@ -12,6 +12,8 @@ import UserForm from '../User/UserForm';
 import MenuSchedule from '../Menu/Subscriber/MenuSchedule';
 import MenuDetails from '../Menu/Subscriber/MenuDetails';
 import DailyMealCountReport from '../Operations/Reports/DailyMealCountReport';
+import DailyMealCountReportV2 from '../Operations/Reports/DailyMealCountReport_V2';
+
 import HelpContact from '../Contact/HelpContact';
 
 import GlobalErrorHandler from '../../components/ErrorHandler/GlobalErrorHandler';
@@ -69,6 +71,11 @@ class AppRouter extends Component<any, any> {
                 exact
                 path="/operation/meal-count-report/"
                 component={DailyMealCountReport}
+              />
+              <Route
+                exact
+                path="/operation/meal-count-report/v2/"
+                component={DailyMealCountReportV2}
               />
               <Route exact path="/logout" component={Login} />
             </div>

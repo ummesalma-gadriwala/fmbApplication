@@ -119,6 +119,7 @@ public class SubscriberScheduleRepository implements ISubscriberScheduleReposito
 	    TiffinPersonalization tiffinPersonalizationDB =  personalizationRepository.getPersonlizationBySubscriberId(subscriptionSchedule.getSubscriberId());
 	    //modify and update with save()
 	    tiffinPersonalizationDB.setNoRice(subscriptionSchedule.getPersonalization().getNoRice());
+	    tiffinPersonalizationDB.setPackageType(subscriptionSchedule.getPersonalization().getPackageType());
 	    subscriptionScheduleFromDB.setZone(subscriptionSchedule.getZone());
 	    subscriptionScheduleFromDB.setOptedSchedule(subscriptionSchedule.getOptedSchedule());
 	    mongoTemplate.save(subscriptionScheduleFromDB);

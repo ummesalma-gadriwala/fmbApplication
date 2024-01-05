@@ -16,6 +16,8 @@ import Select from '@material-ui/core/Select';
 import {
   AppState,
   PackageColor,
+  PackageColorType,
+  PackageTypeColor,
   SubscriptionSchedule,
   TiffinPersonalization
 } from '../../../type/Type';
@@ -113,12 +115,17 @@ const SectorSubcriberList = ({
     ) => {
       let selectedPackagePreference: string = PackageColor[PackageColor.Grey];
 
-      selectedPackagePreference =
-        personalization !== null &&
-        personalization.noRice &&
-        personalization.noRice.activate === true
-          ? (selectedPackagePreference = PackageColor[PackageColor.White])
-          : selectedPackagePreference;
+      if (personalization !== null && personalization.packageType !== null) {
+        selectedPackagePreference =
+          PackageTypeColor[personalization.packageType];
+      } else {
+        selectedPackagePreference =
+          personalization !== null &&
+          personalization.noRice &&
+          personalization.noRice.activate === true
+            ? (selectedPackagePreference = PackageColor[PackageColor.White])
+            : selectedPackagePreference;
+      }
       return selectedPackagePreference;
     };
     const buildSchedule = (susbcriber: SubscriptionSchedule) => {
@@ -156,15 +163,19 @@ const SectorSubcriberList = ({
         if (
           updatedSchedule &&
           updatedSchedule.personalization &&
+          updatedSchedule.personalization.packageType
+        ) {
+          updatedSchedule.personalization.packageType = PackageColorType[value];
+          setNewSubscriptionScheudle(updatedSchedule);
+        } else if (
+          updatedSchedule &&
+          updatedSchedule.personalization &&
           updatedSchedule.personalization.noRice
         ) {
-          updatedSchedule.personalization.noRice.activate = value === PackageColor.White ? true : false;
+          updatedSchedule.personalization.noRice.activate =
+            value === PackageColor.White ? true : false;
           setNewSubscriptionScheudle(updatedSchedule);
-        }
-        console.log(
-          'handlePacakgeColorChange------------>',
-          newSubscriptionScheudle
-        );
+        } //remove this else if once noRice is sunset.
       };
 
       const renderSectorsBySelectedSetor = (selectedSector: string) => {
@@ -330,7 +341,7 @@ const SectorSubcriberList = ({
                 </TableBody>
               </Table>
             </Paper>
-             <Paper className="Margin-Container">
+            <Paper className="Margin-Container">
               <Table>
                 <TableHead>
                   <TableRow>
@@ -343,8 +354,8 @@ const SectorSubcriberList = ({
                       <FormControl>
                         <Select
                           value={extractPackageColor(
-                            currentSubscriptionSchedule.personalization)
-                          }
+                            currentSubscriptionSchedule.personalization
+                          )}
                           onChange={event => handlePacakgeColorChange(event)}
                           MenuProps={MenuProps}
                         >

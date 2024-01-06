@@ -47,7 +47,6 @@ export const getMealCountBySectorForSelectedDateV2 = (
       V2_GET_MEAL_COUNT_SECTORWISE_DAILY_ENDPOINT(selectedDate)
     );
     if (response && response.data) {
-      console.log('getMealCountBySectorForSelectedDateV2', response);
       const sectorCounts: SectorCount[] = response.data;
       dispatch({
         type: OPERATIONS_GET_SECTORWISE_MEAL_COUNT_V2,

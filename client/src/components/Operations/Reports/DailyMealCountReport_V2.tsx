@@ -28,6 +28,7 @@ import Badge from '@material-ui/core/Badge';
 import Spinner from '../../Spinner/Spinner';
 import './DailyMealCountReport.css';
 import { Collapse, IconButton } from '@material-ui/core';
+import color from '@material-ui/core/colors/amber';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFns = require('date-fns');
 
@@ -62,7 +63,7 @@ const StyledIconButton = withStyles(theme => ({
 
 const StyledBadge = withStyles(theme => ({
   badge: {
-    right: -21,
+    right: -31,
     top: 8,
     height: 18,
     border: `2px solid ${theme.palette.background.paper}`
@@ -181,7 +182,12 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
                     <span className="daily-meal-count-report-count-details-container-col-name">
                       <StyledBadge
                         badgeContent={PackageTypeColor[countDetail.packageType]}
-                        color="secondary"
+                        color={
+                          PackageTypeColor[countDetail.packageType] ===
+                          PackageColor.Blue
+                            ? 'primary'
+                            : 'secondary'
+                        }
                       >
                         {countDetail && countDetail.firstName
                           ? `${countDetail.firstName} ${countDetail.lastName}`

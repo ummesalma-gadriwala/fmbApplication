@@ -9,7 +9,7 @@ export enum DayOfWeek {
 }
 
 export enum PackageColorType {
-  Transparent = 'Single',
+  Blue = 'Single',
   White = 'Medium',
   Grey = 'Regular'
 }
@@ -17,19 +17,19 @@ export enum PackageColorType {
 export enum PackageTypeColor {
   Regular = 'Grey',
   Medium = 'White',
-  Single = 'Transparent'
+  Single = 'Blue'
 }
 
 export enum PackageColor {
-  Transparent = 'Transparent',
+  Blue = 'Blue',
   White = 'White',
   Grey = 'Grey'
 }
 
 export enum PackageType {
-  Regular = 'Regular',
+  Single = 'Single',
   Medium = 'Medium',
-  Single = 'Single'
+  Regular = 'Regular'
 }
 
 export const ContributionType_TIFFIN = 'tiffin';

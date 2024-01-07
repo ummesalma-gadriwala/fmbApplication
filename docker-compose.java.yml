@@ -1,7 +1,7 @@
 services:
-  web:
-    environment:
-      - REACT_APP_API_ENDPOINT=
+  # web:
+  #   environment:
+  #     - REACT_APP_API_ENDPOINT=
   mongodb:
     image: mongo:4.2-bionic
     ports:

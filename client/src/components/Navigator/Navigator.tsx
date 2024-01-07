@@ -42,7 +42,7 @@ class Navigator extends Component<any, any> {
   forceSWupdate() {
     window.location.reload(true);
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
         for (const registration of registrations) {
           registration.update();
         }
@@ -141,15 +141,26 @@ class Navigator extends Component<any, any> {
                     aria-label="Customer Relations"
                   />
                 </IconButton>
-                <IconButton
+                {/* <IconButton
                   color="inherit"
                   aria-label="Logoff Button"
                   onClick={() => logOff()}
                 >
                   <BlockIcon />
-                </IconButton>
+                </IconButton> */}
               </div>
             )}
+            <div>
+
+              <IconButton
+                color="inherit"
+                aria-label="Logoff Button"
+                onClick={() => logOff()}
+              >
+                <BlockIcon />
+              </IconButton>
+            </div>
+
           </Toolbar>
         </AppBar>
       </div>

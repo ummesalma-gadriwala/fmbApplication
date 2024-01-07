@@ -38,8 +38,9 @@ const StyledTableCell = withStyles(theme => ({
     color: theme.palette.common.white
   },
   body: {
-    fontSize: 14,
-    fontWeight: 'bold'
+    fontSize: 10,
+    fontWeight: 'bold',
+    padding: 8
   }
 }))(TableCell);
 
@@ -227,7 +228,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
         <TableHead>
           <TableRow>
             <StyledTableCell>
-              <strong>Sector Name</strong>
+              <strong>Sector</strong>
             </StyledTableCell>
             {Object.keys(PackageColor).map((key: any, index: any) => {
               return (
@@ -240,7 +241,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
               );
             })}
             <StyledTableCell align="right">
-              <strong>Total Count</strong>
+              <strong>Total</strong>
             </StyledTableCell>
           </TableRow>
         </TableHead>
@@ -270,7 +271,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
                 });
                 if (scheduleForSelectedDate) {
                   !scheduleForSelectedDate.noMeal &&
-                    this.props.getMealCountBySectorForSelectedDate(
+                    this.props.getMealCountBySectorForSelectedDateV2(
                       selectedDate
                     );
                 } else {

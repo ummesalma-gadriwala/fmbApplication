@@ -115,6 +115,7 @@ public class AdminReportController {
 									.sector(subscriptionSchedule.getZone())
 									.mealCountOverrideType(MealCountOverrideType.CANCEL)
 									.subscriberId(subscriptionSchedule.getSubscriberId())
+									.jamaatId(subscriptionSchedule.getJamaatId())
 									.build();
 
 						} else {
@@ -129,6 +130,7 @@ public class AdminReportController {
 									.sector(subscriptionSchedule.getZone())
 									.mealCountOverrideType(MealCountOverrideType.ADD)
 									.subscriberId(subscriptionSchedule.getSubscriberId())
+									.jamaatId(subscriptionSchedule.getJamaatId())
 									.build();
 
 						}
@@ -141,6 +143,7 @@ public class AdminReportController {
 								.sector(subscriptionSchedule.getZone())
 								.mealCountOverrideType(MealCountOverrideType.REGULAR)
 								.subscriberId(subscriptionSchedule.getSubscriberId())
+								.jamaatId(subscriptionSchedule.getJamaatId())
 								.build();
 
 					}
@@ -257,6 +260,7 @@ public class AdminReportController {
 				.sector(subscriptionSchedule.getZone())
 				.mealCountOverrideType(mealOverrideType)
 				.subscriberId(subscriptionSchedule.getSubscriberId())
+				.jamaatId(subscriptionSchedule.getJamaatId())
 				.build();
 		return overrideReportInfo;
 	}
@@ -273,6 +277,7 @@ public class AdminReportController {
 				.mealCountOverrideType(mealOverrideType)
 				.subscriberId(subscriptionSchedule.getSubscriberId())
 				.packageType(personalization.getPackageType())
+				.jamaatId(subscriptionSchedule.getJamaatId())
 				.build();
 		return overrideReportInfo;
 	}

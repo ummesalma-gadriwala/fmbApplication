@@ -45,18 +45,18 @@ export const generatePrintableLabels = (overrideDetails) => {
             for (let i = 0; i < count; i++) {
                 // Create a table row with table cells for each detail
                 tableRows += `
-                <div style="width: 100%;height:62mm;margin: 0;page-break-after: always">
-                    <table border="1" cellpadding="0" cellspacing="0" width="100%" height="100%">
+                <div class ="print-div ">
+                    <table border="1" cellpadding="0" cellspacing="0" >
                         <tbody>
-                            <tr style="font-size: 30px;font-weight: bold;">
-                                <td COLSPAN=2 align="center" >${sector.subscriberId}</td>
+                            <tr >
+                                <td COLSPAN=2 align="center" >${sector.jamaatId}</td>
                             </tr>
-                            <tr style="font-size: 30px;font-weight: bold;">
+                            <tr >
                                 <td COLSPAN=2 align="center">${sector.firstName} ${sector.lastName}</td>
                             </tr>
-                            <tr style="font-size: 10px;">
-                                <td align="center"> ${sector.sector}</td>
-                                <td align="center">${color}</td>
+                            <tr >
+                                <td align="center" style="font-size: 20px;"> ${sector.sector}</td>
+                                <td align="center" style="font-size: 20px;">${color}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -85,68 +85,44 @@ export const handlePrint = (overrideDetails) => {
         <head>
           <title>A4 Page Using CSS</title>
           <style>
-           body {
-             width: 100mm;
-             margin: 0 auto;
-             padding: 0;
-             font-size: 12pt;
-             background: rgb(204,204,204); 
-           }
-           * {
-             box-sizing: border-box;
-             -moz-box-sizing: border-box;
-           }
-           .main-page {
-             width: 100mm;
-             margin: 0mm auto;
-             background: white;
-             box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
-           }
-           .sub-page {
-             padding: 1cm;
-           }
-           @page {
-             size: Custom;
-             margin: 0;
-           }
-           @media print {
-             html, body {
-               width: 100mm;
-             }
-             .main-page {
-               margin: 0;
-               page-break-after: always;
-             }
-           }
-        </style>
+          .print-div {
+            width: 100mm; /* Width is now the height in landscape */
+            height: 60mm; /* Height is now the width in landscape */
+            page-break-after: always;
+            margin: 0;
+            padding: 10px; /* Padding added on all sides */
+            transform: rotate(-90deg) translateX(-100%);
+            transform-origin: top left;
+          }
+          .print-div table {
+            width: 100%; /* Adjusting table width considering padding */
+            height: 100%; /* Adjusting table height considering padding */
+            border-collapse: collapse;
+          }
+          .print-div table td {
+            border: 1px solid black;
+            text-align: center;
+          }
+          .print-div table td:nth-child(1) {
+            font-size: 50px;
+            font-weight: bold;
+          }
+          .print-div table td:nth-child(2) {
+            font-size: 40px;
+            font-weight: bold;
+          }
+          .print-div table td:nth-child(3),
+          .print-div table td:nth-child(4) {
+            font-size: 20px;
+          }
+        }
+            </style>
         </head>
         <body>${printableLabels}</body>
       </html>
         </html>
     `);
         printWindow.document.close();
-
-        //     // Set window options to exclude headers and footers
-        //     printWindow.document.title = 'Print Document';
-        //     const style = printWindow.document.createElement('style');
-        //     style.innerHTML = `
-        //     @media print {
-        //         @page {
-        //             size: 62mm 100mm landscape;
-        //             margin: 0;
-        //         }
-        //         /* Hide headers */
-        //         @top-center, @top-left, @top-right {
-        //             display: none !important;
-        //         }
-        //         /* Hide footers */
-        //         @bottom-center, @bottom-left, @bottom-right {
-        //             display: none !important;
-        //         }
-        //     }
-        // `;
-        //     printWindow.document.head.appendChild(style);
-
         printWindow.focus();
 
         // Wait for the content to load before printing

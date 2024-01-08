@@ -17,22 +17,22 @@ import apps.kool.tms.api.utils.WorkFlowStatus;
 import lombok.Data;
 
 @Data
-@Document( collection= "subscriptionSchedule")
+@Document(collection = "subscriptionSchedule")
 public class SubscriptionSchedule extends APIResponse {
-	
+
 	@JsonIgnore
-    private @Id  ObjectId id;
-	private String subscriberId; //hof
-	private Map <DayOfWeek, Integer > optedSchedule;
+	private @Id ObjectId id;
+	private String subscriberId; // hof
+	private Map<DayOfWeek, Integer> optedSchedule;
 	private SectorName zone;
 	@DBRef
 	private List<OverrideSubscriptionSchedule> overrideSchedules;
 	@DBRef
-	private TiffinPersonalization personalization; 
-	
+	private TiffinPersonalization personalization;
+	private String jamaatId; // AEF id
 	private WorkFlowStatus status;
-	
+
 	private User user;
 	private boolean isActive;
-	
+
 }

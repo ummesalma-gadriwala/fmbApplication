@@ -16,6 +16,6 @@ public class MealOverridedReportInfo {
    private MealCountOverrideType mealCountOverrideType;
    private boolean isNoRice;
    private PackageType packageType;
-   
-   
+   private String jamaatId;
+
 }

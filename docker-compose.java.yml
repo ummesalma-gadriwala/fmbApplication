@@ -12,3 +12,8 @@ services:
 volumes:
   mongodb_data:
     driver: local
+
+
+# mongodump --uri="mongodb+srv://aefDbUser:faizMawaid123@fmb-mhfjb.azure.mongodb.net/fmb_prod?retryWrites=true" --out=/data/backup
+# mongorestore --uri="mongodb://localhost:27017" --nsFrom="fmb_prod.*" --nsTo="fmb_prod.*" --dir=/data/backup
+

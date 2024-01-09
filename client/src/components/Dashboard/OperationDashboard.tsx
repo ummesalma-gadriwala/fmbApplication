@@ -3,11 +3,7 @@ import requireAuth from '../../requireAuth';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-
-import DeleteIcon from '@material-ui/icons/Delete';
 import CalendarTodayRoundedIcon from '@material-ui/icons/CalendarTodayRounded';
-import RestaurantMenuRoundedIcon from '@material-ui/icons/RestaurantMenuRounded';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import TableChartTwoToneIcon from '@material-ui/icons/TableChartTwoTone';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
@@ -20,6 +16,9 @@ class OperationDashboard extends Component<any, any> {
   render() {
     const ThaliCountReportLink = (props: any) => (
       <Link to="/operation/meal-count-report" {...props} />
+    );
+    const ThaliCountReportLinkV2 = (props: any) => (
+      <Link to="/operation/meal-count-report/v2/" {...props} />
     );
     return (
       <div>
@@ -51,7 +50,7 @@ class OperationDashboard extends Component<any, any> {
               </div> */}
               <div className="Dashboard-button-container">
                 <Button
-                  component={ThaliCountReportLink}
+                  component={ThaliCountReportLinkV2}
                   variant="contained"
                   color="secondary"
                   className="Dashboard-button"

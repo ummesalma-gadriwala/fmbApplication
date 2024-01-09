@@ -19,6 +19,11 @@ export const GET_MEAL_COUNT_SECTORWISE_DAILY_ENDPOINT = (
 ) =>
   `${process.env.REACT_APP_API_ENDPOINT}admin/sector/meal/count/${selectedDate}`;
 
+export const V2_GET_MEAL_COUNT_SECTORWISE_DAILY_ENDPOINT = (
+  selectedDate: string
+) =>
+  `${process.env.REACT_APP_API_ENDPOINT}admin/v2/sector/meal/count/${selectedDate}`;
+
 export const ADD_REVIEW = `${process.env.REACT_APP_API_ENDPOINT}review`;
 
 export const GET_REVIEW_BY_USERID_SCHEDULEDATE = (

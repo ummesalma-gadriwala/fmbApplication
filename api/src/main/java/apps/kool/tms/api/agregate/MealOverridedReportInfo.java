@@ -15,6 +15,7 @@ public class MealOverridedReportInfo {
    private int count;
    private MealCountOverrideType mealCountOverrideType;
    private boolean isNoRice;
+   private PackageType packageType;
    
    
 }

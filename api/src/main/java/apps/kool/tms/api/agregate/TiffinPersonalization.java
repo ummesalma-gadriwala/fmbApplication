@@ -29,7 +29,5 @@ public class TiffinPersonalization {
     private ObjectId subscriptionScheduleId;
 	private String subscriberId;
 	private RicePersonalization noRice;
-	
-    
-	
+	private PackageType packageType;
 }

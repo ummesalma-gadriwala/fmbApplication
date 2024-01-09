@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-import apiError from '../reducers/apiError';
-
 export enum DayOfWeek {
   Monday,
   Tuesday,
@@ -11,9 +8,28 @@ export enum DayOfWeek {
   Sunday
 }
 
+export enum PackageColorType {
+  Blue = 'Single',
+  White = 'Medium',
+  Grey = 'Regular'
+}
+
+export enum PackageTypeColor {
+  Regular = 'Grey',
+  Medium = 'White',
+  Single = 'Blue'
+}
+
 export enum PackageColor {
-  Grey = 'Grey',
-  White = 'White'
+  Blue = 'Blue',
+  White = 'White',
+  Grey = 'Grey'
+}
+
+export enum PackageType {
+  Single = 'Single',
+  Medium = 'Medium',
+  Regular = 'Regular'
 }
 
 export const ContributionType_TIFFIN = 'tiffin';
@@ -44,6 +60,7 @@ export interface TiffinPersonalization {
     activate: boolean;
     tiffinCount: number;
   };
+  packageType: PackageType;
 }
 
 export interface OverrideSchedule {
@@ -143,7 +160,7 @@ export interface Operations {
 }
 
 export interface CRMOperations {
-  subscribers:SubscriptionSchedule[];
+  subscribers: SubscriptionSchedule[];
   selectedSubscriber: SubscriptionSchedule;
 }
 
@@ -152,12 +169,26 @@ export interface SectorCountSelectedDate {
   sectorCounts: SectorCount[];
 }
 
+export interface PackageTiffinCount {
+  actualCount: number;
+  cancellationCount: number;
+  additionCount: number;
+}
+
+export type SectorWiseCount = {
+  [sectorName: string]: SectorCount;
+};
+
+export type PackageTypeTiffinCount = {
+  [packageType in PackageType]: PackageTiffinCount;
+};
 export interface SectorCount {
   sectorName: string;
   tiffinCount: number;
   cancellationScheduleCount: number;
   additionScheduleCount: number;
   noRiceTiffinCount: number;
+  packageTypeTiffinCount: PackageTypeTiffinCount;
 }
 
 export interface Review {

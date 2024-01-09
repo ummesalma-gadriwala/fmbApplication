@@ -8,7 +8,7 @@ import { store } from './store/store';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {updateServiceworker } from '../src/reducers/serviceWorker'
+import { updateServiceworker } from '../src/reducers/serviceWorker';
 import createHistory from 'history/createBrowserHistory';
 import httpService from './api/axiosInterceptor';
 
@@ -20,7 +20,6 @@ ReactDOM.render(
     <App />
   </Provider>,
   document.getElementById('root')
-
 );
 
 // If you want your app to work offline and load faster, you can change

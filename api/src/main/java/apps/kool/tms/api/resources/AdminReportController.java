@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +26,16 @@ import apps.kool.tms.api.agregate.PackagingInfo;
 import apps.kool.tms.api.agregate.SubscriptionSchedule;
 import apps.kool.tms.api.agregate.TiffinPersonalization;
 import apps.kool.tms.api.agregate.MealOverridedReportInfo;
+import apps.kool.tms.api.agregate.OrganizationLookup;
+import apps.kool.tms.api.repository.IOrganizationLookupRepository;
 import apps.kool.tms.api.repository.ISubscriberScheduleRepository;
 import apps.kool.tms.api.repository.ITiffinPersonalizationRepository;
 import apps.kool.tms.api.utils.MealCountOverrideType;
-import apps.kool.tms.api.utils.PersonalizationType;
 import apps.kool.tms.api.utils.SectorName;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 @RestController
 @RequestMapping("/admin")
@@ -38,12 +46,17 @@ public class AdminReportController {
 	
 	@Autowired
 	ITiffinPersonalizationRepository tiffinPersonalizationRepository; 
+	
+	@Autowired
+	IOrganizationLookupRepository  organizationLookupRepository;
 		
 	@RequestMapping(method = RequestMethod.GET, value = "sector/meal/count/{selectedDate}")
 	ResponseEntity<Map<SectorName, PackagingInfo>> dailyThaliCountBySector(@PathVariable String selectedDate ) throws Exception {
 		LocalDate localDateSelectedDate = LocalDate.parse(selectedDate);
 		CompletableFuture<List <SubscriptionSchedule>> subscriptionSchedules = subscriberScheduleRepository.getAllSubscriptionScheduleWithUserAsync();
 		List <TiffinPersonalization> personalizations =  tiffinPersonalizationRepository.getPersonlizations();
+		List <OrganizationLookup>  aefListIds = organizationLookupRepository.getOrganizationLookupByOrgCode("AEF");
+		Map<String, OrganizationLookup> aefIdLookupBySubscriberId = convertList(aefListIds);
 		CompletableFuture<List<OverrideSubscriptionSchedule>> overrideSubscriptionAsyncSchedules = subscriberScheduleRepository.getOverrideScheduledForDateAsync(selectedDate);
 		Map<SectorName, PackagingInfo> reportData = new HashMap<SectorName, PackagingInfo>();
 		
@@ -161,6 +174,9 @@ public class AdminReportController {
 	    CompletableFuture.allOf(subscriptionSchedules,overrideSubscriptionAsyncSchedules).join();
 
 	    List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = overrideSubscriptionAsyncSchedules.get();
+	    
+		List <OrganizationLookup>  aefListIds = organizationLookupRepository.getOrganizationLookupByOrgCode("AEF");
+		Map<String, OrganizationLookup> aefIdLookupBySubscriberId = convertList(aefListIds);
 		
 		subscriptionSchedules.get().forEach(subscriptionSchedule -> {
 			int tiffinCount = 0;
@@ -195,18 +211,18 @@ public class AdminReportController {
                         switch (mealOverrideType) {
                         case ADD:
 							additionCount = overrideCount - tiffinCount;
-				    		overrideReportInfo = setOverrideInfo(subscriptionSchedule, overrideCount, firstName,lastName,mealOverrideType,tiffinPersonalization.get());
+				    		overrideReportInfo = setOverrideInfo(subscriptionSchedule, overrideCount, firstName,lastName,mealOverrideType,tiffinPersonalization.get(), aefIdLookupBySubscriberId.get(subscriptionSchedule.getSubscriberId()));
 
 							break;
 						case CANCEL:
 							cancelCount = tiffinCount - overrideCount;	
-				    		overrideReportInfo = setOverrideInfo(subscriptionSchedule, overrideCount, firstName,lastName,mealOverrideType,tiffinPersonalization.get());
+				    		overrideReportInfo = setOverrideInfo(subscriptionSchedule, overrideCount, firstName,lastName,mealOverrideType,tiffinPersonalization.get(),aefIdLookupBySubscriberId.get(subscriptionSchedule.getSubscriberId()));
 							break;
 						default:
 							break;
 						}
 			    	} else {
-			    		overrideReportInfo = setOverrideInfo(subscriptionSchedule, tiffinCount, firstName,lastName,MealCountOverrideType.REGULAR,tiffinPersonalization.get());
+			    		overrideReportInfo = setOverrideInfo(subscriptionSchedule, tiffinCount, firstName,lastName,MealCountOverrideType.REGULAR,tiffinPersonalization.get(),aefIdLookupBySubscriberId.get(subscriptionSchedule.getSubscriberId()));
 			    	}
 			    	
 			    }
@@ -219,23 +235,9 @@ public class AdminReportController {
 	}
 
 	private MealOverridedReportInfo setOverrideInfo(SubscriptionSchedule subscriptionSchedule, 
-													int tiffinCount,String firstName, String lastName,
-													MealCountOverrideType mealOverrideType) {
-		MealOverridedReportInfo overrideReportInfo;
-		overrideReportInfo = MealOverridedReportInfo.builder()
-		    .firstName(firstName)
-		    .count(tiffinCount) 
-		    .lastName(lastName)
-		    .sector(subscriptionSchedule.getZone())
-		    .mealCountOverrideType(mealOverrideType)
-		    .subscriberId(subscriptionSchedule.getSubscriberId())
-		    .build();
-		return overrideReportInfo;
-	}
-	
-	private MealOverridedReportInfo setOverrideInfo(SubscriptionSchedule subscriptionSchedule, 
 					int tiffinCount,String firstName, String lastName,
-					MealCountOverrideType mealOverrideType, TiffinPersonalization personalization) {
+					MealCountOverrideType mealOverrideType, 
+					TiffinPersonalization personalization, OrganizationLookup aefOrganizationLookup) {
 		MealOverridedReportInfo overrideReportInfo;
 		overrideReportInfo = MealOverridedReportInfo.builder()
 		.firstName(firstName)
@@ -245,11 +247,23 @@ public class AdminReportController {
 		.mealCountOverrideType(mealOverrideType)
 		.subscriberId(subscriptionSchedule.getSubscriberId())
 		.packageType(personalization.getPackageType())
+		.aefOrganizationLookup(aefOrganizationLookup)
 		.build();
 		return overrideReportInfo;
 	}
 
 
+	private static Map<String, OrganizationLookup> convertList(List<OrganizationLookup> list) {
+		
+		List<OrganizationLookup> unique = list.stream()
+                .collect(collectingAndThen(toCollection(() -> new TreeSet<>(comparing(OrganizationLookup::getSubscriberId))),
+                                           ArrayList::new));
+		
+	    Map<String, OrganizationLookup> map = unique.stream()
+	      .collect(Collectors.toMap(OrganizationLookup::getSubscriberId, Function.identity()));
+	    return map;
+	}
+	
 	
 	private static PackagingInfo updatePackagingInfo (PackagingInfo packagingInfo, int tiffinCount, int noRiceCount, int noRiceCancellationCount, int cancelCount, int additionCount, int noRiceAdditionCount, MealOverridedReportInfo overrideReportInfo) {
 		List<MealOverridedReportInfo> overrideDetailList = null;

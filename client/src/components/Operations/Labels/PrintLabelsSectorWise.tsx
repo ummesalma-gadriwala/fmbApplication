@@ -12,7 +12,8 @@ import {
   PackageColor,
   PackageColorType,
   PackageType,
-  SectorCount
+  SectorCount,
+  PackageTypeColor
 } from '../../../type/Type';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -22,9 +23,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
-import Badge from '@material-ui/core/Badge';
 import Spinner from '../../Spinner/Spinner';
-import { IconButton } from '@material-ui/core';
+import { IconButton, TableFooter } from '@material-ui/core';
 import PrintIcon from '@material-ui/icons/Print';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFns = require('date-fns');
@@ -59,15 +59,6 @@ const StyledIconButton = withStyles(theme => ({
   }
 }))(IconButton);
 
-const StyledBadge = withStyles(theme => ({
-  badge: {
-    right: -31,
-    top: 8,
-    height: 18,
-    border: `2px solid ${theme.palette.background.paper}`
-  }
-}))(Badge);
-
 class PrintLabelSectorWise extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
@@ -100,6 +91,7 @@ class PrintLabelSectorWise extends React.Component<any, any> {
     const sectorCounts: SectorCount[] = this.props.reportDailyThaliCount
       .sectorCounts;
     const totalCountPacakageType = {};
+    let totalCount = 0;
     const buildTotalCountPacakageType = () =>
       Object.keys(PackageType).forEach((key: any) => {
         totalCountPacakageType[key] = 0;
@@ -168,13 +160,13 @@ class PrintLabelSectorWise extends React.Component<any, any> {
           let rowStyle = ''; // Inline style for table row
           // Determine CSS classes based on index (row number)
           if (index === 0) {
-            rowStyle = 'font-weight: bold; font-size: 30px;'; // Apply bold and font size 30 to first row
+            rowStyle = 'font-weight: bold; font-size: 20px;'; // Apply bold and font size 30 to first row
           } else if (index === 1) {
-            rowStyle = 'font-size: 30px;'; // Apply font size 30 to second row
+            rowStyle = 'font-size: 15px;'; // Apply font size 30 to second row
           } else {
-            rowStyle = 'font-size: 10px;'; // Apply font size 10 to other rows
+            rowStyle = 'font-size: 15px;'; // Apply font size 10 to other rows
           }
-          color = PackageColorType[sector.packageType];
+          color = PackageTypeColor[sector.packageType];
           // If count is 1 or greater, print the label based on the count value
           for (let i = 0; i < count; i++) {
             // Create a table row with table cells for each detail
@@ -195,8 +187,8 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                                     } ${sector.lastName}</td>
                                 </tr>
                                 <tr >
-                                    <td align="center" style="font-size: 20px;"> ${sector.sector}</td>
-                                    <td align="center" style="font-size: 20px;">${color}</td>
+                                    <td align="center" style="font-size: 15px;"> ${sector.sector}</td>
+                                    <td align="center" style="font-size: 15px;">${color}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -415,6 +407,50 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                           }
                         )}
                       </TableBody>
+                      <TableFooter>
+                        <StyledTableRow>
+                          <StyledTableCell>
+                            <strong> Total Thali Count : </strong>
+                          </StyledTableCell>
+                          {Object.keys(PackageType).map(
+                            (packageTypeTiffinCountKey: any) => {
+                              if (
+                                !isNaN(
+                                  totalCountPacakageType[
+                                    packageTypeTiffinCountKey
+                                  ]
+                                )
+                              ) {
+                                totalCount =
+                                  totalCount +
+                                  totalCountPacakageType[
+                                    packageTypeTiffinCountKey
+                                  ];
+                              }
+                              return (
+                                <React.Fragment
+                                  key={
+                                    'total-count-' + packageTypeTiffinCountKey
+                                  }
+                                >
+                                  <StyledTableCell>
+                                    <strong>
+                                      {
+                                        totalCountPacakageType[
+                                          packageTypeTiffinCountKey
+                                        ]
+                                      }
+                                    </strong>
+                                  </StyledTableCell>
+                                </React.Fragment>
+                              );
+                            }
+                          )}
+                          <StyledTableCell>
+                            <strong>{totalCount}</strong>
+                          </StyledTableCell>
+                        </StyledTableRow>
+                      </TableFooter>
                     </Table>
                   )}
                 </Paper>

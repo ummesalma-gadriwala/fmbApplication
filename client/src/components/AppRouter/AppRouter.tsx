@@ -23,6 +23,7 @@ import { AppState } from '../../type/Type';
 import './AppRouter.css';
 import ReviewDetails from '../Menu/Subscriber/ReviewDetails';
 import AddTiffin from '../Operations/CRM/AddTiffin';
+import PrintLabelsSectorWise from '../Operations/Labels/PrintLabelsSectorWise';
 class AppRouter extends Component<any, any> {
   render() {
     return (
@@ -76,6 +77,11 @@ class AppRouter extends Component<any, any> {
                 exact
                 path="/operation/meal-count-report/v2/"
                 component={DailyMealCountReportV2}
+              />
+              <Route
+                exact
+                path="/operation/label-print/"
+                component={PrintLabelsSectorWise}
               />
               <Route exact path="/logout" component={Login} />
             </div>

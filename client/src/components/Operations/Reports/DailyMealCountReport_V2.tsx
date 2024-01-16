@@ -28,11 +28,6 @@ import Badge from '@material-ui/core/Badge';
 import Spinner from '../../Spinner/Spinner';
 import './DailyMealCountReport.css';
 import { Collapse, IconButton } from '@material-ui/core';
-import color from '@material-ui/core/colors/amber';
-import PrintIcon from '@material-ui/icons/Print';
-import { handlePrint } from '../Labels/PrintLabelsSectorWise'; // Adjust the path if needed
-import { doesUserBelongsToCRMOperation } from '../../../util/authorization';
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFns = require('date-fns');
 

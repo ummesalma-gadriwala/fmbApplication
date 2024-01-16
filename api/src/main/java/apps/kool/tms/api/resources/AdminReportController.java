@@ -1,6 +1,5 @@
 package apps.kool.tms.api.resources;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,10 +39,10 @@ import static java.util.stream.Collectors.toCollection;
 @RestController
 @RequestMapping("/admin")
 public class AdminReportController {
-	
+
 	@Autowired
-	ISubscriberScheduleRepository subscriberScheduleRepository; 
-	
+	ISubscriberScheduleRepository subscriberScheduleRepository;
+
 	@Autowired
 	ITiffinPersonalizationRepository tiffinPersonalizationRepository; 
 	
@@ -51,7 +50,8 @@ public class AdminReportController {
 	IOrganizationLookupRepository  organizationLookupRepository;
 		
 	@RequestMapping(method = RequestMethod.GET, value = "sector/meal/count/{selectedDate}")
-	ResponseEntity<Map<SectorName, PackagingInfo>> dailyThaliCountBySector(@PathVariable String selectedDate ) throws Exception {
+	ResponseEntity<Map<SectorName, PackagingInfo>> dailyThaliCountBySector(@PathVariable String selectedDate)
+			throws Exception {
 		LocalDate localDateSelectedDate = LocalDate.parse(selectedDate);
 		CompletableFuture<List <SubscriptionSchedule>> subscriptionSchedules = subscriberScheduleRepository.getAllSubscriptionScheduleWithUserAsync();
 		List <TiffinPersonalization> personalizations =  tiffinPersonalizationRepository.getPersonlizations();
@@ -59,119 +59,136 @@ public class AdminReportController {
 		Map<String, OrganizationLookup> aefIdLookupBySubscriberId = convertList(aefListIds);
 		CompletableFuture<List<OverrideSubscriptionSchedule>> overrideSubscriptionAsyncSchedules = subscriberScheduleRepository.getOverrideScheduledForDateAsync(selectedDate);
 		Map<SectorName, PackagingInfo> reportData = new HashMap<SectorName, PackagingInfo>();
-		
-	    CompletableFuture.allOf(subscriptionSchedules,overrideSubscriptionAsyncSchedules).join();
 
-	    List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = overrideSubscriptionAsyncSchedules.get();
-		if(subscriptionSchedules == null || subscriptionSchedules.get().isEmpty())	return ResponseEntity.ok(reportData);
-		
+		CompletableFuture.allOf(subscriptionSchedules, overrideSubscriptionAsyncSchedules).join();
+
+		List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = overrideSubscriptionAsyncSchedules.get();
+		if (subscriptionSchedules == null || subscriptionSchedules.get().isEmpty())
+			return ResponseEntity.ok(reportData);
+
 		subscriptionSchedules.get().forEach(subscriptionSchedule -> {
 			int tiffinCount = 0;
 			int noRiceCount = 0;
 			int cancelCount = 0;
-			int noRiceCancellationCount =0 ;
+			int noRiceCancellationCount = 0;
 			int noRiceAdditionCount = 0;
 			int additionCount = 0;
-			MealOverridedReportInfo overrideReportInfo= null;
-			String firstName = subscriptionSchedule.getUser() != null? subscriptionSchedule.getUser().getFirstName() : null;
-			String lastName = subscriptionSchedule.getUser() != null? subscriptionSchedule.getUser().getLastName() : null;
+			MealOverridedReportInfo overrideReportInfo = null;
+			String firstName = subscriptionSchedule.getUser() != null ? subscriptionSchedule.getUser().getFirstName()
+					: null;
+			String lastName = subscriptionSchedule.getUser() != null ? subscriptionSchedule.getUser().getLastName()
+					: null;
 
-			if(subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek()) != null) {
-				
-				tiffinCount =  subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek());
-				
-				Optional<TiffinPersonalization> tiffinPersonalization = personalizations.stream().filter(personalization -> 
-					personalization.getSubscriptionScheduleId().toString().equals(subscriptionSchedule.getId().toString())
-				).findFirst();
-				
-				if(tiffinPersonalization.isPresent() && tiffinPersonalization.get().getNoRice() != null && tiffinPersonalization.get().getNoRice().isActivate()) {
+			if (subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek()) != null) {
+
+				tiffinCount = subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek());
+
+				Optional<TiffinPersonalization> tiffinPersonalization = personalizations.stream()
+						.filter(personalization -> personalization.getSubscriptionScheduleId().toString()
+								.equals(subscriptionSchedule.getId().toString()))
+						.findFirst();
+
+				if (tiffinPersonalization.isPresent() && tiffinPersonalization.get().getNoRice() != null
+						&& tiffinPersonalization.get().getNoRice().isActivate()) {
 					noRiceCount = tiffinCount;
 				}
-				
-				Optional<OverrideSubscriptionSchedule> filteredOverrideSubscriptionSchedule = overrideSubscriptionSchedules.stream().filter(overrideSubscriptionSchedule -> 
-					      overrideSubscriptionSchedule.getSubscriptionScheduleId().equals(subscriptionSchedule.getId().toString())
-						).findFirst();
-				
-				if(subscriptionSchedule.getZone()!=null && subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek())!=null){
-			    	Integer overrideCount = null;
-			    	overrideReportInfo= null;
-			    	if(filteredOverrideSubscriptionSchedule.isPresent()) {
-						overrideCount =  filteredOverrideSubscriptionSchedule.get().getWeeklyOverrideSchedule().get(localDateSelectedDate.getDayOfWeek());
-						if(filteredOverrideSubscriptionSchedule.get().getPersonalization() != null && 
-								filteredOverrideSubscriptionSchedule.get().getPersonalization().getNoRice().isActivate()){
-							noRiceCount = filteredOverrideSubscriptionSchedule.get().getPersonalization().getNoRice().getTiffinCount(); 
+
+				Optional<OverrideSubscriptionSchedule> filteredOverrideSubscriptionSchedule = overrideSubscriptionSchedules
+						.stream().filter(overrideSubscriptionSchedule -> overrideSubscriptionSchedule
+								.getSubscriptionScheduleId().equals(subscriptionSchedule.getId().toString()))
+						.findFirst();
+
+				if (subscriptionSchedule.getZone() != null
+						&& subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek()) != null) {
+					Integer overrideCount = null;
+					overrideReportInfo = null;
+					if (filteredOverrideSubscriptionSchedule.isPresent()) {
+						overrideCount = filteredOverrideSubscriptionSchedule.get().getWeeklyOverrideSchedule()
+								.get(localDateSelectedDate.getDayOfWeek());
+						if (filteredOverrideSubscriptionSchedule.get().getPersonalization() != null &&
+								filteredOverrideSubscriptionSchedule.get().getPersonalization().getNoRice()
+										.isActivate()) {
+							noRiceCount = filteredOverrideSubscriptionSchedule.get().getPersonalization().getNoRice()
+									.getTiffinCount();
 						}
-						//System.out.println( subscriptionSchedule.getSubscriberId()  + " -" +tiffinCount + " -" + overrideCount);
+						// System.out.println( subscriptionSchedule.getSubscriberId() + " -"
+						// +tiffinCount + " -" + overrideCount);
 						boolean isTiffinCancelled = tiffinCount > overrideCount;
-						if(isTiffinCancelled ) {
-							if(noRiceCount > 0 ){
+						if (isTiffinCancelled) {
+							if (noRiceCount > 0) {
 								noRiceCancellationCount = tiffinCount - overrideCount;
 							}
 							cancelCount = tiffinCount - overrideCount;
 							overrideReportInfo = MealOverridedReportInfo.builder()
-									            .firstName(firstName)
-									            .count(overrideCount) 
-									            .lastName(lastName)
-									            .sector(subscriptionSchedule.getZone())
-									            .mealCountOverrideType(MealCountOverrideType.CANCEL)
-									            .subscriberId(subscriptionSchedule.getSubscriberId())
-									            .build(); 
-									           
-							                                                      
+									.firstName(firstName)
+									.count(overrideCount)
+									.lastName(lastName)
+									.sector(subscriptionSchedule.getZone())
+									.mealCountOverrideType(MealCountOverrideType.CANCEL)
+									.subscriberId(subscriptionSchedule.getSubscriberId())
+									.jamaatId(subscriptionSchedule.getJamaatId())
+									.build();
+
 						} else {
-							if(noRiceCount > 0) {
-								noRiceAdditionCount = overrideCount - tiffinCount; 
+							if (noRiceCount > 0) {
+								noRiceAdditionCount = overrideCount - tiffinCount;
 							}
-				    		additionCount = overrideCount - tiffinCount; 
-				    		overrideReportInfo = MealOverridedReportInfo.builder()
-						            .firstName(firstName)
-						            .count(overrideCount) 
-						            .lastName(lastName)
-						            .sector(subscriptionSchedule.getZone())
-						            .mealCountOverrideType(MealCountOverrideType.ADD)
-						            .subscriberId(subscriptionSchedule.getSubscriberId())
-						            .build(); 
-						           
-				    	}
-				    	
+							additionCount = overrideCount - tiffinCount;
+							overrideReportInfo = MealOverridedReportInfo.builder()
+									.firstName(firstName)
+									.count(overrideCount)
+									.lastName(lastName)
+									.sector(subscriptionSchedule.getZone())
+									.mealCountOverrideType(MealCountOverrideType.ADD)
+									.subscriberId(subscriptionSchedule.getSubscriberId())
+									.jamaatId(subscriptionSchedule.getJamaatId())
+									.build();
+
+						}
+
 					} else {
 						overrideReportInfo = MealOverridedReportInfo.builder()
-					            .firstName(firstName)
-					            .count(tiffinCount) 
-					            .lastName(lastName)
-					            .sector(subscriptionSchedule.getZone())
-					            .mealCountOverrideType(MealCountOverrideType.REGULAR)
-					            .subscriberId(subscriptionSchedule.getSubscriberId())
-					            .build(); 
-				
+								.firstName(firstName)
+								.count(tiffinCount)
+								.lastName(lastName)
+								.sector(subscriptionSchedule.getZone())
+								.mealCountOverrideType(MealCountOverrideType.REGULAR)
+								.subscriberId(subscriptionSchedule.getSubscriberId())
+								.jamaatId(subscriptionSchedule.getJamaatId())
+								.build();
+
 					}
-			    	overrideReportInfo.setNoRice(noRiceCount > 0 ? true : false);
-			    }
+					overrideReportInfo.setNoRice(noRiceCount > 0 ? true : false);
+				}
 				PackagingInfo zonewisePackagingInfo = reportData.get(subscriptionSchedule.getZone());
-				if(noRiceCount > tiffinCount){
+				if (noRiceCount > tiffinCount) {
 					noRiceCount = tiffinCount;
 				}
-				zonewisePackagingInfo = updatePackagingInfo(zonewisePackagingInfo, tiffinCount, noRiceCount, noRiceCancellationCount, cancelCount, additionCount, noRiceAdditionCount, overrideReportInfo);
+				zonewisePackagingInfo = updatePackagingInfo(zonewisePackagingInfo, tiffinCount, noRiceCount,
+						noRiceCancellationCount, cancelCount, additionCount, noRiceAdditionCount, overrideReportInfo);
 				reportData.put(subscriptionSchedule.getZone(), zonewisePackagingInfo);
 			}
-		 });
-		
-				
+		});
+
 		return ResponseEntity.ok(reportData);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "v2/sector/meal/count/{selectedDate}")
-	ResponseEntity<Map<SectorName, PackagingInfo>> dailyThaliCountBySectorPackageType(@PathVariable String selectedDate ) throws Exception {
+	ResponseEntity<Map<SectorName, PackagingInfo>> dailyThaliCountBySectorPackageType(@PathVariable String selectedDate)
+			throws Exception {
 		Map<SectorName, PackagingInfo> reportData = new HashMap<SectorName, PackagingInfo>();
-		
+
 		LocalDate localDateSelectedDate = LocalDate.parse(selectedDate);
-		CompletableFuture<List <SubscriptionSchedule>> subscriptionSchedules = subscriberScheduleRepository.getAllSubscriptionScheduleWithUserAsync();
-		if(subscriptionSchedules == null || subscriptionSchedules.get().isEmpty())	return ResponseEntity.ok(reportData);
-		
-		List <TiffinPersonalization> personalizations =  tiffinPersonalizationRepository.getPersonlizations();
-		CompletableFuture<List<OverrideSubscriptionSchedule>> overrideSubscriptionAsyncSchedules = subscriberScheduleRepository.getOverrideScheduledForDateAsync(selectedDate);
-		
-	    CompletableFuture.allOf(subscriptionSchedules,overrideSubscriptionAsyncSchedules).join();
+		CompletableFuture<List<SubscriptionSchedule>> subscriptionSchedules = subscriberScheduleRepository
+				.getAllSubscriptionScheduleWithUserAsync();
+		if (subscriptionSchedules == null || subscriptionSchedules.get().isEmpty())
+			return ResponseEntity.ok(reportData);
+
+		List<TiffinPersonalization> personalizations = tiffinPersonalizationRepository.getPersonlizations();
+		CompletableFuture<List<OverrideSubscriptionSchedule>> overrideSubscriptionAsyncSchedules = subscriberScheduleRepository
+				.getOverrideScheduledForDateAsync(selectedDate);
+
+		CompletableFuture.allOf(subscriptionSchedules, overrideSubscriptionAsyncSchedules).join();
 
 	    List<OverrideSubscriptionSchedule> overrideSubscriptionSchedules = overrideSubscriptionAsyncSchedules.get();
 	    
@@ -182,29 +199,35 @@ public class AdminReportController {
 			int tiffinCount = 0;
 			int cancelCount = 0;
 			int additionCount = 0;
-			MealOverridedReportInfo overrideReportInfo= null;
+			MealOverridedReportInfo overrideReportInfo = null;
 			boolean isTiffinCancelled = false;
-			String firstName = subscriptionSchedule.getUser() != null? subscriptionSchedule.getUser().getFirstName() : null;
-			String lastName = subscriptionSchedule.getUser() != null? subscriptionSchedule.getUser().getLastName() : null;
+			String firstName = subscriptionSchedule.getUser() != null ? subscriptionSchedule.getUser().getFirstName()
+					: null;
+			String lastName = subscriptionSchedule.getUser() != null ? subscriptionSchedule.getUser().getLastName()
+					: null;
 
-			if(subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek()) != null) {
-				
-				tiffinCount =  subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek());
-				
-				Optional<TiffinPersonalization> tiffinPersonalization = personalizations.stream().filter(personalization -> 
-					personalization.getSubscriptionScheduleId().toString().equals(subscriptionSchedule.getId().toString())
-				).findFirst();
-							
-				Optional<OverrideSubscriptionSchedule> filteredOverrideSubscriptionSchedule = overrideSubscriptionSchedules.stream().filter(overrideSubscriptionSchedule -> 
-					      overrideSubscriptionSchedule.getSubscriptionScheduleId().equals(subscriptionSchedule.getId().toString())
-						).findFirst();
-				
-				if(subscriptionSchedule.getZone()!=null && subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek())!=null){
-			    	Integer overrideCount = null;
-			    	overrideReportInfo= null;
-			    	MealCountOverrideType mealOverrideType = null;
-			    	if(filteredOverrideSubscriptionSchedule.isPresent()) {
-						overrideCount =  filteredOverrideSubscriptionSchedule.get().getWeeklyOverrideSchedule().get(localDateSelectedDate.getDayOfWeek());
+			if (subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek()) != null) {
+
+				tiffinCount = subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek());
+
+				Optional<TiffinPersonalization> tiffinPersonalization = personalizations.stream()
+						.filter(personalization -> personalization.getSubscriptionScheduleId().toString()
+								.equals(subscriptionSchedule.getId().toString()))
+						.findFirst();
+
+				Optional<OverrideSubscriptionSchedule> filteredOverrideSubscriptionSchedule = overrideSubscriptionSchedules
+						.stream().filter(overrideSubscriptionSchedule -> overrideSubscriptionSchedule
+								.getSubscriptionScheduleId().equals(subscriptionSchedule.getId().toString()))
+						.findFirst();
+
+				if (subscriptionSchedule.getZone() != null
+						&& subscriptionSchedule.getOptedSchedule().get(localDateSelectedDate.getDayOfWeek()) != null) {
+					Integer overrideCount = null;
+					overrideReportInfo = null;
+					MealCountOverrideType mealOverrideType = null;
+					if (filteredOverrideSubscriptionSchedule.isPresent()) {
+						overrideCount = filteredOverrideSubscriptionSchedule.get().getWeeklyOverrideSchedule()
+								.get(localDateSelectedDate.getDayOfWeek());
 						isTiffinCancelled = tiffinCount > overrideCount;
 						mealOverrideType = (!filteredOverrideSubscriptionSchedule.isPresent()) ? MealCountOverrideType.REGULAR 
                                 : isTiffinCancelled ? MealCountOverrideType.CANCEL : MealCountOverrideType.ADD;
@@ -227,10 +250,12 @@ public class AdminReportController {
 			    	
 			    }
 				PackagingInfo zonewisePackagingInfo = reportData.get(subscriptionSchedule.getZone());
-				zonewisePackagingInfo = updatePackagingInfo(zonewisePackagingInfo, tiffinPersonalization.get().getPackageType(), tiffinCount, cancelCount, additionCount, overrideReportInfo);
+				zonewisePackagingInfo = updatePackagingInfo(zonewisePackagingInfo,
+						tiffinPersonalization.get().getPackageType(), tiffinCount, cancelCount, additionCount,
+						overrideReportInfo);
 				reportData.put(subscriptionSchedule.getZone(), zonewisePackagingInfo);
 			}
-		 });
+		});
 		return ResponseEntity.ok(reportData);
 	}
 
@@ -267,53 +292,57 @@ public class AdminReportController {
 	
 	private static PackagingInfo updatePackagingInfo (PackagingInfo packagingInfo, int tiffinCount, int noRiceCount, int noRiceCancellationCount, int cancelCount, int additionCount, int noRiceAdditionCount, MealOverridedReportInfo overrideReportInfo) {
 		List<MealOverridedReportInfo> overrideDetailList = null;
-		if(packagingInfo == null){
-			packagingInfo =  PackagingInfo.builder().build();
+		if (packagingInfo == null) {
+			packagingInfo = PackagingInfo.builder().build();
 		}
-		if(packagingInfo.getOverrideDetails() == null){
+		if (packagingInfo.getOverrideDetails() == null) {
 			overrideDetailList = new ArrayList<MealOverridedReportInfo>();
 		} else {
 			overrideDetailList = packagingInfo.getOverrideDetails();
 		}
 		overrideDetailList.add(overrideReportInfo);
-		
+
 		packagingInfo.setOverrideDetails(overrideDetailList);
-		packagingInfo.setTiffinCount(packagingInfo.getTiffinCount()+tiffinCount);
-		packagingInfo.setNoRiceTiffinCount(packagingInfo.getNoRiceTiffinCount()+noRiceCount);
-		packagingInfo.setCancellationScheduleCount(packagingInfo.getCancellationScheduleCount()+cancelCount);
-		packagingInfo.setAdditionScheduleCount(packagingInfo.getAdditionScheduleCount()+additionCount);
-		packagingInfo.setNoRiceCancellationCount(packagingInfo.getNoRiceCancellationCount()+noRiceCancellationCount);
-		packagingInfo.setNoRiceAdditionCount(packagingInfo.getNoRiceAdditionCount()+ noRiceAdditionCount);
+		packagingInfo.setTiffinCount(packagingInfo.getTiffinCount() + tiffinCount);
+		packagingInfo.setNoRiceTiffinCount(packagingInfo.getNoRiceTiffinCount() + noRiceCount);
+		packagingInfo.setCancellationScheduleCount(packagingInfo.getCancellationScheduleCount() + cancelCount);
+		packagingInfo.setAdditionScheduleCount(packagingInfo.getAdditionScheduleCount() + additionCount);
+		packagingInfo.setNoRiceCancellationCount(packagingInfo.getNoRiceCancellationCount() + noRiceCancellationCount);
+		packagingInfo.setNoRiceAdditionCount(packagingInfo.getNoRiceAdditionCount() + noRiceAdditionCount);
 		return packagingInfo;
 	}
-	
-	private static PackagingInfo updatePackagingInfo (PackagingInfo zonewisePackagingInfo, PackageType packageType, int tiffinCount, int cancelCount, int additionCount, MealOverridedReportInfo overrideReportInfo) {
+
+	private static PackagingInfo updatePackagingInfo(PackagingInfo zonewisePackagingInfo, PackageType packageType,
+			int tiffinCount, int cancelCount, int additionCount, MealOverridedReportInfo overrideReportInfo) {
 		List<MealOverridedReportInfo> overrideDetailList = null;
-		if(zonewisePackagingInfo == null){
-			zonewisePackagingInfo =  PackagingInfo.builder().build();
+		if (zonewisePackagingInfo == null) {
+			zonewisePackagingInfo = PackagingInfo.builder().build();
 		}
-		if(zonewisePackagingInfo.getOverrideDetails() == null){
+		if (zonewisePackagingInfo.getOverrideDetails() == null) {
 			overrideDetailList = new ArrayList<MealOverridedReportInfo>();
 		} else {
 			overrideDetailList = zonewisePackagingInfo.getOverrideDetails();
 		}
 		overrideDetailList.add(overrideReportInfo);
-		Map<PackageType, PackagingCountInfo> zoneWisePackageTypeTiffinCount = zonewisePackagingInfo.getPackageTypeTiffinCount();
-		if(zoneWisePackageTypeTiffinCount == null ){
+		Map<PackageType, PackagingCountInfo> zoneWisePackageTypeTiffinCount = zonewisePackagingInfo
+				.getPackageTypeTiffinCount();
+		if (zoneWisePackageTypeTiffinCount == null) {
 			zoneWisePackageTypeTiffinCount = new HashMap<PackageType, PackagingCountInfo>();
 			zoneWisePackageTypeTiffinCount.put(packageType, PackagingCountInfo.builder().build());
 			zonewisePackagingInfo.setPackageTypeTiffinCount(zoneWisePackageTypeTiffinCount);
 		}
-		if(zonewisePackagingInfo.getPackageTypeTiffinCount().get(packageType) == null){
+		if (zonewisePackagingInfo.getPackageTypeTiffinCount().get(packageType) == null) {
 			zonewisePackagingInfo.getPackageTypeTiffinCount().put(packageType, PackagingCountInfo.builder().build());
 		}
-		PackagingCountInfo zonewisePackagingCountInfo = zonewisePackagingInfo.getPackageTypeTiffinCount().get(packageType);
-		zonewisePackagingCountInfo.setActualCount(zonewisePackagingCountInfo.getActualCount()+tiffinCount);
-		zonewisePackagingCountInfo.setAdditionCount(zonewisePackagingCountInfo.getAdditionCount()+ additionCount);
-		zonewisePackagingCountInfo.setCancellationCount(zonewisePackagingCountInfo.getCancellationCount()+cancelCount);
+		PackagingCountInfo zonewisePackagingCountInfo = zonewisePackagingInfo.getPackageTypeTiffinCount()
+				.get(packageType);
+		zonewisePackagingCountInfo.setActualCount(zonewisePackagingCountInfo.getActualCount() + tiffinCount);
+		zonewisePackagingCountInfo.setAdditionCount(zonewisePackagingCountInfo.getAdditionCount() + additionCount);
+		zonewisePackagingCountInfo
+				.setCancellationCount(zonewisePackagingCountInfo.getCancellationCount() + cancelCount);
 		zonewisePackagingInfo.setOverrideDetails(overrideDetailList);
 		zonewisePackagingInfo.getPackageTypeTiffinCount().put(packageType, zonewisePackagingCountInfo);
 		return zonewisePackagingInfo;
 	}
-		
+
 }

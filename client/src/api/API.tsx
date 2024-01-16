@@ -9,8 +9,7 @@ export const DELETE_THALI_SCHEDULE_ENDPOINT = (
 ) =>
   `${process.env.REACT_APP_API_ENDPOINT}subscriber/schedule/override/${subscriberId}/${startDate}`;
 export const USER_PROFILE_ENDPOINT = (username: string | null) =>
-  `${process.env.REACT_APP_API_ENDPOINT}subscriber/profile${
-    username ? '/' + username : ''
+  `${process.env.REACT_APP_API_ENDPOINT}subscriber/profile${username ? '/' + username : ''
   }`;
 export const GET_SCHEDULLE_MONTH_ENDPOINT = `${process.env.REACT_APP_API_ENDPOINT}schedule/month`;
 

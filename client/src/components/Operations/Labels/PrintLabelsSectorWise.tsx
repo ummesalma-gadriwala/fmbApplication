@@ -3,7 +3,8 @@ import './PrintLabelsSectorWise.css';
 
 export const generatePrintableLabels = (overrideDetails) => {
     let tableRows = ''; // Initialize an empty string to store table rows
-
+    overrideDetails = overrideDetails.sort((a, b) => (a.packageType > b.packageType) ? 1 : ((b.packageType > a.packageType) ? -1 : 0));
+    console.log(overrideDetails);
     // Loop through each sector in overrideDetails and create table rows
     Object.keys(overrideDetails).forEach((key, index) => {
         const sector = overrideDetails[key];
@@ -49,7 +50,7 @@ export const generatePrintableLabels = (overrideDetails) => {
                     <table border="1" cellpadding="0" cellspacing="0" >
                         <tbody>
                             <tr >
-                                <td COLSPAN=2 align="center" >${sector.jamaatId}</td>
+                                <td COLSPAN=2 align="center" ></td>
                             </tr>
                             <tr >
                                 <td COLSPAN=2 align="center">${sector.firstName} ${sector.lastName}</td>

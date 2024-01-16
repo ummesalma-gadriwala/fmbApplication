@@ -31,6 +31,7 @@ import { Collapse, IconButton } from '@material-ui/core';
 import color from '@material-ui/core/colors/amber';
 import PrintIcon from '@material-ui/icons/Print';
 import { handlePrint } from '../Labels/PrintLabelsSectorWise'; // Adjust the path if needed
+import { doesUserBelongsToCRMOperation } from '../../../util/authorization';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFns = require('date-fns');
@@ -88,8 +89,9 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
     ) as Schedule;
   };
   componentDidMount() {
+    console.log("Props roles:", this.props.roles);
     console.log('componentDidMount DailyMealCountReportV2', this.props);
-    if (this.props.schedules.length == 0) {
+    if (this.props.schedules.length === 0) {
       this.props.getMonthsSchedule();
     }
     const scheduleForToday = this.getScheduleForSelectedDate(
@@ -121,15 +123,19 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
       return (
         <StyledTableCell component="th" scope="row">
           {sectorKey}
-          <IconButton
-            color="inherit"
-            aria-label="Print"
-            onClick={() => handlePrint(this.props.reportDailyThaliCount.sectorCounts[sectorKey].overrideDetails)}
-          >
-            <PrintIcon />
-          </IconButton>
-
-        </StyledTableCell>
+          {doesUserBelongsToCRMOperation(this.props.roles) && (
+            < div >
+              <IconButton
+                color="inherit"
+                aria-label="Print"
+                onClick={() => handlePrint(this.props.reportDailyThaliCount.sectorCounts[sectorKey].overrideDetails)}
+              >
+                <PrintIcon />
+              </IconButton>
+            </div>
+          )
+          }
+        </StyledTableCell >
       );
     };
 
@@ -202,7 +208,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
                           }
                         >
                           {countDetail && countDetail.firstName
-                            ? `${countDetail.firstName} ${countDetail.lastName}`
+                            ? `${countDetail.subscriberId}-${countDetail.jamaatId}-${countDetail.firstName} ${countDetail.lastName}`
                             : countDetail.subscriberId}
                         </StyledBadge>
                       </span>
@@ -259,7 +265,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
       );
     };
     return (
-      <div className="daily-meal-count-report-container">
+      <div className="daily-meal-count-report-container" >
         <h5>Sector Wise Thali Count Report</h5>
         <Divider />
         <div>
@@ -300,7 +306,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
             <React.Fragment>
               {this.props.reportDailyThaliCount && (
                 <Paper>
-                  {Object.keys(sectorCounts).length == 0 ||
+                  {Object.keys(sectorCounts).length === 0 ||
                     (this.state && this.state.noMeal) ? (
                     <div className="daily-meal-count-no-report-container">
                       <h6> Report Not Available!!</h6>
@@ -436,12 +442,12 @@ const mapStateToProps = (state: AppState) => {
     reportDailyThaliCount:
       state.operations && state.operations.reportDailyThaliCount,
     isBusyCommunicating: state.isBusyCommunicating,
-    schedules: state.schedules
+    schedules: state.schedules,
+    authenticated: state.authentication.authenticated,
+    roles: state.authentication.decodedToken.roles
   };
 };
 
 export default requireAuth(
-  connect(mapStateToProps, { ...adminReportsAction, ...scheduleAction })(
-    DailyMealCountReportV2
-  )
+  connect(mapStateToProps, { ...adminReportsAction, ...scheduleAction })(DailyMealCountReportV2)
 );

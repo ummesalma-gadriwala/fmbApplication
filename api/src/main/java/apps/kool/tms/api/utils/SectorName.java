@@ -1,7 +1,7 @@
 package apps.kool.tms.api.utils;
 
 public enum SectorName {
-	Fakhri,
+    Fakhri,
     Burhani,
     Ezzi,
     Wajihi,
@@ -14,5 +14,7 @@ public enum SectorName {
     Badri,
     Waterloo,
     Qutbi,
-    Mohammedi
+    Mohammedi,
+    Kalimi,
+    Hakimi
 }

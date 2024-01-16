@@ -12,6 +12,8 @@ import UserForm from '../User/UserForm';
 import MenuSchedule from '../Menu/Subscriber/MenuSchedule';
 import MenuDetails from '../Menu/Subscriber/MenuDetails';
 import DailyMealCountReport from '../Operations/Reports/DailyMealCountReport';
+import DailyMealCountReportV2 from '../Operations/Reports/DailyMealCountReport_V2';
+
 import HelpContact from '../Contact/HelpContact';
 
 import GlobalErrorHandler from '../../components/ErrorHandler/GlobalErrorHandler';
@@ -21,6 +23,7 @@ import { AppState } from '../../type/Type';
 import './AppRouter.css';
 import ReviewDetails from '../Menu/Subscriber/ReviewDetails';
 import AddTiffin from '../Operations/CRM/AddTiffin';
+import PrintLabelsSectorWise from '../Operations/Labels/PrintLabelsSectorWise';
 class AppRouter extends Component<any, any> {
   render() {
     return (
@@ -69,6 +72,16 @@ class AppRouter extends Component<any, any> {
                 exact
                 path="/operation/meal-count-report/"
                 component={DailyMealCountReport}
+              />
+              <Route
+                exact
+                path="/operation/meal-count-report/v2/"
+                component={DailyMealCountReportV2}
+              />
+              <Route
+                exact
+                path="/operation/label-print/"
+                component={PrintLabelsSectorWise}
               />
               <Route exact path="/logout" component={Login} />
             </div>

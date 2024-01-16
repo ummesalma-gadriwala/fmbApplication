@@ -1,5 +1,7 @@
 package apps.kool.tms.api.agregate;
 
+import java.util.ArrayList;
+
 import apps.kool.tms.api.utils.MealCountOverrideType;
 import apps.kool.tms.api.utils.SectorName;
 import lombok.Builder;
@@ -15,6 +17,8 @@ public class MealOverridedReportInfo {
    private int count;
    private MealCountOverrideType mealCountOverrideType;
    private boolean isNoRice;
+   private PackageType packageType;
+   private OrganizationLookup aefOrganizationLookup;
    
    
 }

@@ -1,0 +1,15 @@
+.bold {
+  font-weight: bold;
+}
+
+.font-size-30 {
+  font-size: 30px;
+}
+
+.font-size-10 {
+  font-size: 10px;
+}
+
+.page-break {
+  page-break-after: always;
+}

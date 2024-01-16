@@ -1,3 +1,4 @@
+import './PrintLabelsSectorWise.css';
 import React, { Component } from 'react';
 import { MuiPickersUtilsProvider, DatePicker } from 'material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -11,7 +12,6 @@ import {
   PackageColor,
   PackageColorType,
   PackageType,
-  PackageTypeColor,
   SectorCount
 } from '../../../type/Type';
 import Table from '@material-ui/core/Table';
@@ -19,15 +19,13 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TableFooter from '@material-ui/core/TableFooter';
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Badge from '@material-ui/core/Badge';
 import Spinner from '../../Spinner/Spinner';
-import './DailyMealCountReport.css';
-import { Collapse, IconButton } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
+import PrintIcon from '@material-ui/icons/Print';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const dateFns = require('date-fns');
 
@@ -70,7 +68,7 @@ const StyledBadge = withStyles(theme => ({
   }
 }))(Badge);
 
-class DailyMealCountReportV2 extends React.Component<any, any> {
+class PrintLabelSectorWise extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     this.getScheduleForSelectedDate = this.getScheduleForSelectedDate.bind(
@@ -84,7 +82,6 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
     ) as Schedule;
   };
   componentDidMount() {
-    console.log('componentDidMount DailyMealCountReportV2', this.props);
     if (this.props.schedules.length == 0) {
       this.props.getMonthsSchedule();
     }
@@ -108,11 +105,6 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
         totalCountPacakageType[key] = 0;
       });
     buildTotalCountPacakageType();
-    let totalCount = 0;
-    const handleExpandClick = () => {
-      this.setState({ expanded: !this.state.expanded });
-    };
-
     const buildSectorNameCell = (sectorKey: string) => {
       return (
         <StyledTableCell component="th" scope="row">
@@ -159,67 +151,125 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
       return sectorCount;
     };
 
-    const buildCountDetails = countDetails => {
-      countDetails &&
-        countDetails.sort((a, b) =>
-          a.mealCountOverrideType > b.mealCountOverrideType
-            ? 1
-            : b.mealCountOverrideType > a.mealCountOverrideType
-            ? -1
-            : 0
-        );
-      return (
-        countDetails &&
-        countDetails.map((countDetail: any, index: number) => {
-          return (
-            <React.Fragment key={'count-details-container-' + index}>
-              {!(
-                countDetail.count === 0 &&
-                countDetail.mealCountOverrideType === 'REGULAR'
-              ) && (
-                <div className="daily-meal-count-report-count-details-container">
-                  {countDetail.packageType && (
-                    <span className="daily-meal-count-report-count-details-container-col-name">
-                      <StyledBadge
-                        badgeContent={PackageTypeColor[countDetail.packageType]}
-                        color={
-                          PackageTypeColor[countDetail.packageType] ===
-                          PackageColor.Blue
-                            ? 'primary'
-                            : 'secondary'
-                        }
-                      >
-                        {countDetail && countDetail.firstName
-                          ? `${countDetail.firstName} ${countDetail.lastName}`
-                          : countDetail.subscriberId}
-                      </StyledBadge>
-                    </span>
-                  )}
-                  <span className="daily-meal-count-report-count-details-container-col">
-                    {countDetail && countDetail.mealCountOverrideType}
-                  </span>
-                  <span className="daily-meal-count-report-count-details-container-col">
-                    {countDetail && countDetail.count}
-                  </span>
-                  <Divider />
-                </div>
-              )}
-            </React.Fragment>
-          );
-        })
-      );
+    const generatePrintableLabels = overrideDetails => {
+      let tableRows = ''; // Initialize an empty string to store table rows
+
+      // Loop through each sector in overrideDetails and create table rows
+      Object.keys(overrideDetails).forEach((key, index) => {
+        const sector = overrideDetails[key];
+        // Check the value of sector.count
+        const count = parseInt(sector.count); // Convert count to an integer
+        if (count === 0) {
+          // If count is 0, don't print the label
+          return; // Skip this iteration
+        } else {
+          // Determine the color based on packageType
+          let color = '';
+          let rowStyle = ''; // Inline style for table row
+          // Determine CSS classes based on index (row number)
+          if (index === 0) {
+            rowStyle = 'font-weight: bold; font-size: 30px;'; // Apply bold and font size 30 to first row
+          } else if (index === 1) {
+            rowStyle = 'font-size: 30px;'; // Apply font size 30 to second row
+          } else {
+            rowStyle = 'font-size: 10px;'; // Apply font size 10 to other rows
+          }
+          color = PackageColorType[sector.packageType];
+          // If count is 1 or greater, print the label based on the count value
+          for (let i = 0; i < count; i++) {
+            // Create a table row with table cells for each detail
+            tableRows += `
+                    <div class ="print-div ">
+                        <table border="1" cellpadding="0" cellspacing="0" >
+                            <tbody>
+                                <tr >
+                                    <td COLSPAN=2 align="center" >${
+                                      sector.aefOrganizationLookup != null
+                                        ? sector.aefOrganizationLookup.orgId
+                                        : ''
+                                    }</td>
+                                </tr>
+                                <tr >
+                                    <td COLSPAN=2 align="center">${
+                                      sector.firstName
+                                    } ${sector.lastName}</td>
+                                </tr>
+                                <tr >
+                                    <td align="center" style="font-size: 20px;"> ${sector.sector}</td>
+                                    <td align="center" style="font-size: 20px;">${color}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+    
+                    `;
+          }
+        }
+      });
+      // Create the complete HTML table with headers and rows
+      const table = `
+                    ${tableRows} <!-- Insert generated table rows -->
+      
+        `;
+      return table; // Return the complete HTML table
     };
 
-    const details = countDetails => {
-      return this.state && this.state.expanded ? (
-        <StyledTableRow>
-          <StyledTableCell colSpan={4}>
-            <Collapse in={this.state.expanded} unmountOnExit={true}>
-              {buildCountDetails(countDetails)}
-            </Collapse>
-          </StyledTableCell>
-        </StyledTableRow>
-      ) : null;
+    const handlePrint = overrideDetails => {
+      const printableLabels = generatePrintableLabels(overrideDetails);
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.open();
+        printWindow.document.write(`
+            <html>
+            <head>
+              <title>A4 Page Using CSS</title>
+              <style>
+              .print-div {
+                width: 100mm; /* Width is now the height in landscape */
+                height: 60mm; /* Height is now the width in landscape */
+                page-break-after: always;
+                margin: 0;
+                padding: 10px; /* Padding added on all sides */
+                transform: rotate(-90deg) translateX(-100%);
+                transform-origin: top left;
+              }
+              .print-div table {
+                width: 100%; /* Adjusting table width considering padding */
+                height: 100%; /* Adjusting table height considering padding */
+                border-collapse: collapse;
+              }
+              .print-div table td {
+                border: 1px solid black;
+                text-align: center;
+              }
+              .print-div table td:nth-child(1) {
+                font-size: 50px;
+                font-weight: bold;
+              }
+              .print-div table td:nth-child(2) {
+                font-size: 40px;
+                font-weight: bold;
+              }
+              .print-div table td:nth-child(3),
+              .print-div table td:nth-child(4) {
+                font-size: 20px;
+              }
+            }
+                </style>
+            </head>
+            <body>${printableLabels}</body>
+          </html>
+            </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+
+        // Wait for the content to load before printing
+        printWindow.print();
+        // printWindow.close(); // Close the window after printing
+      } else {
+        console.log('Could not open new window for printing');
+      }
     };
 
     const buildHeader = () => {
@@ -248,7 +298,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
     };
     return (
       <div className="daily-meal-count-report-container">
-        <h5>Sector Wise Thali Count Report</h5>
+        <h5>Print Label Sector Wise</h5>
         <Divider />
         <div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -340,10 +390,17 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
                                               <div className="daily-meal-count-report-expand-more">
                                                 <span>{sectorCount}</span>
                                                 <StyledIconButton
-                                                  onClick={handleExpandClick}
+                                                  onClick={() =>
+                                                    handlePrint(
+                                                      this.props
+                                                        .reportDailyThaliCount
+                                                        .sectorCounts[sectorKey]
+                                                        .overrideDetails
+                                                    )
+                                                  }
                                                   aria-label="Show more"
                                                 >
-                                                  <ExpandMoreIcon />
+                                                  <PrintIcon />
                                                 </StyledIconButton>
                                               </div>
                                             </StyledTableCell>
@@ -353,60 +410,11 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
                                     }
                                   )}
                                 </StyledTableRow>
-                                {details(
-                                  this.props.reportDailyThaliCount.sectorCounts[
-                                    sectorKey
-                                  ].overrideDetails
-                                )}
                               </React.Fragment>
                             );
                           }
                         )}
                       </TableBody>
-                      <TableFooter>
-                        <StyledTableRow>
-                          <StyledTableCell>
-                            <strong> Total Thali Count : </strong>
-                          </StyledTableCell>
-                          {Object.keys(PackageType).map(
-                            (packageTypeTiffinCountKey: any) => {
-                              if (
-                                !isNaN(
-                                  totalCountPacakageType[
-                                    packageTypeTiffinCountKey
-                                  ]
-                                )
-                              ) {
-                                totalCount =
-                                  totalCount +
-                                  totalCountPacakageType[
-                                    packageTypeTiffinCountKey
-                                  ];
-                              }
-                              return (
-                                <React.Fragment
-                                  key={
-                                    'total-count-' + packageTypeTiffinCountKey
-                                  }
-                                >
-                                  <StyledTableCell>
-                                    <strong>
-                                      {
-                                        totalCountPacakageType[
-                                          packageTypeTiffinCountKey
-                                        ]
-                                      }
-                                    </strong>
-                                  </StyledTableCell>
-                                </React.Fragment>
-                              );
-                            }
-                          )}
-                          <StyledTableCell>
-                            <strong>{totalCount}</strong>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      </TableFooter>
                     </Table>
                   )}
                 </Paper>
@@ -430,6 +438,6 @@ const mapStateToProps = (state: AppState) => {
 
 export default requireAuth(
   connect(mapStateToProps, { ...adminReportsAction, ...scheduleAction })(
-    DailyMealCountReportV2
+    PrintLabelSectorWise
   )
 );

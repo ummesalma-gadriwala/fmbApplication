@@ -131,11 +131,11 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
           .packageTypeTiffinCount[packageTypeTiffinCountKey] &&
         this.props.reportDailyThaliCount.sectorCounts[sectorKey]
           .packageTypeTiffinCount[packageTypeTiffinCountKey].actualCount +
-          this.props.reportDailyThaliCount.sectorCounts[sectorKey]
-            .packageTypeTiffinCount[packageTypeTiffinCountKey].additionCount -
-          this.props.reportDailyThaliCount.sectorCounts[sectorKey]
-            .packageTypeTiffinCount[packageTypeTiffinCountKey]
-            .cancellationCount;
+        this.props.reportDailyThaliCount.sectorCounts[sectorKey]
+          .packageTypeTiffinCount[packageTypeTiffinCountKey].additionCount -
+        this.props.reportDailyThaliCount.sectorCounts[sectorKey]
+          .packageTypeTiffinCount[packageTypeTiffinCountKey]
+          .cancellationCount;
       return sectorPackageCount;
     };
 
@@ -160,14 +160,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
     };
 
     const buildCountDetails = countDetails => {
-      countDetails &&
-        countDetails.sort((a, b) =>
-          a.mealCountOverrideType > b.mealCountOverrideType
-            ? 1
-            : b.mealCountOverrideType > a.mealCountOverrideType
-            ? -1
-            : 0
-        );
+
       return (
         countDetails &&
         countDetails.map((countDetail: any, index: number) => {
@@ -177,40 +170,72 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
                 countDetail.count === 0 &&
                 countDetail.mealCountOverrideType === 'REGULAR'
               ) && (
-                <div className="daily-meal-count-report-count-details-container">
-                  {countDetail.packageType && (
-                    <span className="daily-meal-count-report-count-details-container-col-name">
-                      <StyledBadge
-                        badgeContent={PackageTypeColor[countDetail.packageType]}
-                        color={
-                          PackageTypeColor[countDetail.packageType] ===
-                          PackageColor.Blue
-                            ? 'primary'
-                            : 'secondary'
-                        }
-                      >
-                        {countDetail && countDetail.firstName
-                          ? `${countDetail.firstName} ${countDetail.lastName}`
-                          : countDetail.subscriberId}
-                      </StyledBadge>
+                  <div className="daily-meal-count-report-count-details-container">
+                    {countDetail.packageType && (
+                      <span className="daily-meal-count-report-count-details-container-col-name">
+                        <StyledBadge
+                          badgeContent={PackageTypeColor[countDetail.packageType]}
+                          color={
+                            PackageTypeColor[countDetail.packageType] ===
+                              PackageColor.Blue
+                              ? 'primary'
+                              : 'secondary'
+                          }
+                        >
+                          {countDetail && countDetail.firstName
+                            ? `${countDetail.firstName} ${countDetail.lastName}`
+                            : countDetail.subscriberId}
+                        </StyledBadge>
+                      </span>
+                    )}
+                    <span className="daily-meal-count-report-count-details-container-col">
+                      {countDetail && countDetail.mealCountOverrideType}
                     </span>
-                  )}
-                  <span className="daily-meal-count-report-count-details-container-col">
-                    {countDetail && countDetail.mealCountOverrideType}
-                  </span>
-                  <span className="daily-meal-count-report-count-details-container-col">
-                    {countDetail && countDetail.count}
-                  </span>
-                  <Divider />
-                </div>
-              )}
+                    <span className="daily-meal-count-report-count-details-container-col">
+                      {countDetail && countDetail.count}
+                    </span>
+                    <Divider />
+                  </div>
+                )}
             </React.Fragment>
           );
         })
       );
     };
 
+    // const details = countDetails => {
+    //   return this.state && this.state.expanded ? (
+    //     <StyledTableRow>
+    //       <StyledTableCell colSpan={4}>
+    //         <Collapse in={this.state.expanded} unmountOnExit={true}>
+    //           {buildCountDetails(countDetails)}
+    //         </Collapse>
+    //       </StyledTableCell>
+    //     </StyledTableRow>
+    //   ) : null;
+    // };
+
     const details = countDetails => {
+      countDetails = countDetails.slice().sort((a, b) => {
+        if (a.mealCountOverrideType > b.mealCountOverrideType) {
+          return 1;
+        } else if (b.mealCountOverrideType > a.mealCountOverrideType) {
+          return -1;
+        } else {
+          // If mealCountOverrideType is the same, sort by packageType
+          const packageTypeComparison = a.packageType.localeCompare(b.packageType);
+
+          if (packageTypeComparison !== 0) {
+            return packageTypeComparison;
+          } else {
+            // If packageType is also the same, sort by firstName if available
+            const firstNameA = a.firstName || ''; // Default to an empty string if null or undefined
+            const firstNameB = b.firstName || ''; // Default to an empty string if null or undefined
+            return firstNameA.localeCompare(firstNameB);
+          }
+        }
+      });
+
       return this.state && this.state.expanded ? (
         <StyledTableRow>
           <StyledTableCell colSpan={4}>
@@ -289,7 +314,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
               {this.props.reportDailyThaliCount && (
                 <Paper>
                   {Object.keys(sectorCounts).length == 0 ||
-                  (this.state && this.state.noMeal) ? (
+                    (this.state && this.state.noMeal) ? (
                     <div className="daily-meal-count-no-report-container">
                       <h6> Report Not Available!!</h6>
                     </div>
@@ -336,18 +361,18 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
                                           {Object.keys(PackageType).length -
                                             1 ===
                                             packageTypeTiffinCountIndex && (
-                                            <StyledTableCell>
-                                              <div className="daily-meal-count-report-expand-more">
-                                                <span>{sectorCount}</span>
-                                                <StyledIconButton
-                                                  onClick={handleExpandClick}
-                                                  aria-label="Show more"
-                                                >
-                                                  <ExpandMoreIcon />
-                                                </StyledIconButton>
-                                              </div>
-                                            </StyledTableCell>
-                                          )}
+                                              <StyledTableCell>
+                                                <div className="daily-meal-count-report-expand-more">
+                                                  <span>{sectorCount}</span>
+                                                  <StyledIconButton
+                                                    onClick={handleExpandClick}
+                                                    aria-label="Show more"
+                                                  >
+                                                    <ExpandMoreIcon />
+                                                  </StyledIconButton>
+                                                </div>
+                                              </StyledTableCell>
+                                            )}
                                         </React.Fragment>
                                       );
                                     }
@@ -373,14 +398,14 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
                               if (
                                 !isNaN(
                                   totalCountPacakageType[
-                                    packageTypeTiffinCountKey
+                                  packageTypeTiffinCountKey
                                   ]
                                 )
                               ) {
                                 totalCount =
                                   totalCount +
                                   totalCountPacakageType[
-                                    packageTypeTiffinCountKey
+                                  packageTypeTiffinCountKey
                                   ];
                               }
                               return (
@@ -393,7 +418,7 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
                                     <strong>
                                       {
                                         totalCountPacakageType[
-                                          packageTypeTiffinCountKey
+                                        packageTypeTiffinCountKey
                                         ]
                                       }
                                     </strong>

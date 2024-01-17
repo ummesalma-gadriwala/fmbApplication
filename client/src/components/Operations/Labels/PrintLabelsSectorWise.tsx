@@ -115,11 +115,11 @@ class PrintLabelSectorWise extends React.Component<any, any> {
           .packageTypeTiffinCount[packageTypeTiffinCountKey] &&
         this.props.reportDailyThaliCount.sectorCounts[sectorKey]
           .packageTypeTiffinCount[packageTypeTiffinCountKey].actualCount +
-          this.props.reportDailyThaliCount.sectorCounts[sectorKey]
-            .packageTypeTiffinCount[packageTypeTiffinCountKey].additionCount -
-          this.props.reportDailyThaliCount.sectorCounts[sectorKey]
-            .packageTypeTiffinCount[packageTypeTiffinCountKey]
-            .cancellationCount;
+        this.props.reportDailyThaliCount.sectorCounts[sectorKey]
+          .packageTypeTiffinCount[packageTypeTiffinCountKey].additionCount -
+        this.props.reportDailyThaliCount.sectorCounts[sectorKey]
+          .packageTypeTiffinCount[packageTypeTiffinCountKey]
+          .cancellationCount;
       return sectorPackageCount;
     };
 
@@ -144,6 +144,17 @@ class PrintLabelSectorWise extends React.Component<any, any> {
     };
 
     const generatePrintableLabels = overrideDetails => {
+      overrideDetails = overrideDetails.sort((a, b) => {
+        // First, sort by packageType
+        if (a.packageType > b.packageType) {
+          return 1;
+        } else if (b.packageType > a.packageType) {
+          return -1;
+        } else {
+          // If packageType is the same, sort alphabetically by FirstName
+          return a.firstName.localeCompare(b.firstName);
+        }
+      });
       let tableRows = ''; // Initialize an empty string to store table rows
 
       // Loop through each sector in overrideDetails and create table rows
@@ -175,16 +186,14 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                         <table border="1" cellpadding="0" cellspacing="0" >
                             <tbody>
                                 <tr >
-                                    <td COLSPAN=2 align="center" >${
-                                      sector.aefOrganizationLookup != null
-                                        ? sector.aefOrganizationLookup.orgId
-                                        : ''
-                                    }</td>
+                                    <td COLSPAN=2 align="center" >${sector.aefOrganizationLookup != null
+                ? sector.aefOrganizationLookup.orgId
+                : ''
+              }</td>
                                 </tr>
                                 <tr >
-                                    <td COLSPAN=2 align="center">${
-                                      sector.firstName
-                                    } ${sector.lastName}</td>
+                                    <td COLSPAN=2 align="center">${sector.firstName
+              } ${sector.lastName}</td>
                                 </tr>
                                 <tr >
                                     <td align="center" style="font-size: 15px;"> ${sector.sector}</td>
@@ -331,7 +340,7 @@ class PrintLabelSectorWise extends React.Component<any, any> {
               {this.props.reportDailyThaliCount && (
                 <Paper>
                   {Object.keys(sectorCounts).length == 0 ||
-                  (this.state && this.state.noMeal) ? (
+                    (this.state && this.state.noMeal) ? (
                     <div className="daily-meal-count-no-report-container">
                       <h6> Report Not Available!!</h6>
                     </div>
@@ -378,25 +387,25 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                                           {Object.keys(PackageType).length -
                                             1 ===
                                             packageTypeTiffinCountIndex && (
-                                            <StyledTableCell>
-                                              <div className="daily-meal-count-report-expand-more">
-                                                <span>{sectorCount}</span>
-                                                <StyledIconButton
-                                                  onClick={() =>
-                                                    handlePrint(
-                                                      this.props
-                                                        .reportDailyThaliCount
-                                                        .sectorCounts[sectorKey]
-                                                        .overrideDetails
-                                                    )
-                                                  }
-                                                  aria-label="Show more"
-                                                >
-                                                  <PrintIcon />
-                                                </StyledIconButton>
-                                              </div>
-                                            </StyledTableCell>
-                                          )}
+                                              <StyledTableCell>
+                                                <div className="daily-meal-count-report-expand-more">
+                                                  <span>{sectorCount}</span>
+                                                  <StyledIconButton
+                                                    onClick={() =>
+                                                      handlePrint(
+                                                        this.props
+                                                          .reportDailyThaliCount
+                                                          .sectorCounts[sectorKey]
+                                                          .overrideDetails
+                                                      )
+                                                    }
+                                                    aria-label="Show more"
+                                                  >
+                                                    <PrintIcon />
+                                                  </StyledIconButton>
+                                                </div>
+                                              </StyledTableCell>
+                                            )}
                                         </React.Fragment>
                                       );
                                     }
@@ -417,14 +426,14 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                               if (
                                 !isNaN(
                                   totalCountPacakageType[
-                                    packageTypeTiffinCountKey
+                                  packageTypeTiffinCountKey
                                   ]
                                 )
                               ) {
                                 totalCount =
                                   totalCount +
                                   totalCountPacakageType[
-                                    packageTypeTiffinCountKey
+                                  packageTypeTiffinCountKey
                                   ];
                               }
                               return (
@@ -437,7 +446,7 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                                     <strong>
                                       {
                                         totalCountPacakageType[
-                                          packageTypeTiffinCountKey
+                                        packageTypeTiffinCountKey
                                         ]
                                       }
                                     </strong>

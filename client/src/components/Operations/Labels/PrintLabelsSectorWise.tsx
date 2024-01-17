@@ -152,9 +152,12 @@ class PrintLabelSectorWise extends React.Component<any, any> {
           return -1;
         } else {
           // If packageType is the same, sort alphabetically by FirstName
-          return a.firstName.localeCompare(b.firstName);
+          const firstNameA = a.firstName || ''; // Default to an empty string if null or undefined
+          const firstNameB = b.firstName || ''; // Default to an empty string if null or undefined
+          return firstNameA.localeCompare(firstNameB);
         }
       });
+
       let tableRows = ''; // Initialize an empty string to store table rows
 
       // Loop through each sector in overrideDetails and create table rows
@@ -225,6 +228,16 @@ class PrintLabelSectorWise extends React.Component<any, any> {
             <head>
               <title>A4 Page Using CSS</title>
               <style>
+              @media print {
+                body, html, p {
+                    margin: 0pt !important;
+                    padding: 0pt !important;
+                }
+                @page {
+                   margin: 0pt !important;
+                   padding: 0pt !important;
+                }
+              } 
               .print-div {
                 width: 100mm; /* Width is now the height in landscape */
                 height: 60mm; /* Height is now the width in landscape */
@@ -244,7 +257,7 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                 text-align: center;
               }
               .print-div table td:nth-child(1) {
-                font-size: 50px;
+                font-size: 47px;
                 font-weight: bold;
               }
               .print-div table td:nth-child(2) {

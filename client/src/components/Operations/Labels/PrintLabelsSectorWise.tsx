@@ -144,7 +144,23 @@ class PrintLabelSectorWise extends React.Component<any, any> {
     };
 
     const generatePrintableLabels = overrideDetails => {
+      overrideDetails = overrideDetails.sort((a, b) => {
+        // First, sort by packageType
+        if (a.packageType > b.packageType) {
+          return 1;
+        } else if (b.packageType > a.packageType) {
+          return -1;
+        } else {
+          // If packageType is the same, sort alphabetically by FirstName
+          const firstNameA = a.firstName || ''; // Default to an empty string if null or undefined
+          const firstNameB = b.firstName || ''; // Default to an empty string if null or undefined
+          return firstNameA.localeCompare(firstNameB);
+        }
+      });
+
       let tableRows = ''; // Initialize an empty string to store table rows
+      let noOfThaali = 0;
+      let prevColor = ''; // Variable to store the previous color
 
       // Loop through each sector in overrideDetails and create table rows
       Object.keys(overrideDetails).forEach((key, index) => {
@@ -156,48 +172,50 @@ class PrintLabelSectorWise extends React.Component<any, any> {
           return; // Skip this iteration
         } else {
           // Determine the color based on packageType
-          let color = '';
-          let rowStyle = ''; // Inline style for table row
-          // Determine CSS classes based on index (row number)
-          if (index === 0) {
-            rowStyle = 'font-weight: bold; font-size: 20px;'; // Apply bold and font size 30 to first row
-          } else if (index === 1) {
-            rowStyle = 'font-size: 15px;'; // Apply font size 30 to second row
+          let color = PackageTypeColor[sector.packageType];
+
+          // Check if the current color is different from the previous color
+          if (color !== prevColor) {
+            noOfThaali = 1; // Reset noOfThaali to 1
+            prevColor = color; // Update the previous color
           } else {
-            rowStyle = 'font-size: 15px;'; // Apply font size 10 to other rows
+            noOfThaali += 1; // Increment noOfThaali
           }
-          color = PackageTypeColor[sector.packageType];
+
           // If count is 1 or greater, print the label based on the count value
           for (let i = 0; i < count; i++) {
             // Create a table row with table cells for each detail
             tableRows += `
-                    <div class ="print-div ">
-                        <table border="1" cellpadding="0" cellspacing="0" >
-                            <tbody>
-                                <tr >
-                                    <td COLSPAN=2 align="center" >${
-                                      sector.aefOrganizationLookup != null
-                                        ? sector.aefOrganizationLookup.orgId
-                                        : ''
-                                    }</td>
-                                </tr>
-                                <tr >
-                                    <td COLSPAN=2 align="center">${
-                                      sector.firstName
-                                    } ${sector.lastName}</td>
-                                </tr>
-                                <tr >
-                                    <td align="center" style="font-size: 15px;"> ${sector.sector}</td>
-                                    <td align="center" style="font-size: 15px;">${color}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-    
-                    `;
+                <div class="print-div">
+                  <table border="1" cellpadding="0" cellspacing="0">
+                    <tbody>
+                      <tr>
+                        <td COLSPAN=2 align="center">${
+                          sector.aefOrganizationLookup != null
+                            ? sector.aefOrganizationLookup.orgId
+                            : ''
+                        }</td>
+                      </tr>
+                      <tr>
+                        <td COLSPAN=2 align="center">${sector.firstName} ${
+              sector.lastName
+            }</td>
+                      </tr>
+                      <tr>
+                        <td align="center" style="font-size: 15px;">${
+                          sector.sector
+                        }</td>
+                        <td align="center" style="font-size: 15px;">${color} <span style="font-size: 10px; ">
+                           ${noOfThaali}
+                        </span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>`;
           }
         }
       });
+
       // Create the complete HTML table with headers and rows
       const table = `
                     ${tableRows} <!-- Insert generated table rows -->
@@ -216,6 +234,16 @@ class PrintLabelSectorWise extends React.Component<any, any> {
             <head>
               <title>A4 Page Using CSS</title>
               <style>
+              @media print {
+                body, html, p {
+                    margin: 0pt !important;
+                    padding: 0pt !important;
+                }
+                @page {
+                   margin: 0pt !important;
+                   padding: 0pt !important;
+                }
+              } 
               .print-div {
                 width: 100mm; /* Width is now the height in landscape */
                 height: 60mm; /* Height is now the width in landscape */
@@ -235,7 +263,7 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                 text-align: center;
               }
               .print-div table td:nth-child(1) {
-                font-size: 50px;
+                font-size: 47px;
                 font-weight: bold;
               }
               .print-div table td:nth-child(2) {

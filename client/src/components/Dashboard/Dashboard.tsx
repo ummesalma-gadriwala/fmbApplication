@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 
 import CalendarTodayRoundedIcon from '@material-ui/icons/CalendarTodayRounded';
 import RestaurantMenuRoundedIcon from '@material-ui/icons/RestaurantMenuRounded';
+import NewReleasesRoundedIcon from '@material-ui/icons/NewReleasesRounded';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
 import * as scheduleAction from '../../reducers/scheduleAction';
 import Spinner from '../Spinner/Spinner';
@@ -132,6 +133,29 @@ class Dashboard extends Component<any, DashBoardState> {
             <React.Fragment>
               <div className="Dashboard-container">
                 <div className="Dashboard-card-container">
+                  <div className="important-notice-container">
+                    <div className="Dashboard-button-row">
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="secondary"
+                        onClick={() =>
+                          window.open(
+                            'https://forms.gle/4vuYrsgNayLYRwxC7',
+                            '_blank'
+                          )
+                        }
+                      >
+                        <NewReleasesRoundedIcon />
+                        <span>
+                          &nbsp; &nbsp;Click here to proceed with FMB Renewal
+                          For 1445-46H&nbsp; &nbsp;
+                        </span>
+                        <NewReleasesRoundedIcon />
+                      </Button>
+                    </div>
+                  </div>
                   <Card className="Card-container">
                     <CardContent>
                       <div className="Dashboard-date-display-container">

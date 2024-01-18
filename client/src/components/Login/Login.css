@@ -13,6 +13,14 @@
   align-items: center;
   padding: 40px 15px 0px 15px ; 
  }
+
+ .important-notice-container {
+  display: flex;
+  margin: 10px;
+  outline: none;
+  border-color: #20c997;
+  box-shadow: 0 0 15px #20c997;
+}
  
   @media screen and (min-width : 1224px) {
     .Login {

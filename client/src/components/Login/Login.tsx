@@ -170,6 +170,24 @@ class Login extends Component<any, any> {
               Sign in
             </Button>
           </Paper>
+          <div className="important-notice-container">
+            <div className="Dashboard-button-row">
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="secondary"
+                onClick={() =>
+                  window.open('https://forms.gle/4vuYrsgNayLYRwxC7', '_blank')
+                }
+              >
+                <span>
+                  &nbsp; &nbsp;Click here to proceed with FMB
+                  Registration&nbsp;&nbsp;
+                </span>
+              </Button>
+            </div>
+          </div>
         </div>
       </Spinner>
     );

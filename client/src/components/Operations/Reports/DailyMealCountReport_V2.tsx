@@ -160,14 +160,6 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
     };
 
     const buildCountDetails = countDetails => {
-      countDetails &&
-        countDetails.sort((a, b) =>
-          a.mealCountOverrideType > b.mealCountOverrideType
-            ? 1
-            : b.mealCountOverrideType > a.mealCountOverrideType
-            ? -1
-            : 0
-        );
       return (
         countDetails &&
         countDetails.map((countDetail: any, index: number) => {
@@ -211,6 +203,28 @@ class DailyMealCountReportV2 extends React.Component<any, any> {
     };
 
     const details = countDetails => {
+      countDetails = countDetails.slice().sort((a, b) => {
+        if (a.mealCountOverrideType > b.mealCountOverrideType) {
+          return 1;
+        } else if (b.mealCountOverrideType > a.mealCountOverrideType) {
+          return -1;
+        } else {
+          // If mealCountOverrideType is the same, sort by packageType
+          const packageTypeComparison = a.packageType.localeCompare(
+            b.packageType
+          );
+
+          if (packageTypeComparison !== 0) {
+            return packageTypeComparison;
+          } else {
+            // If packageType is also the same, sort by firstName if available
+            const firstNameA = a.firstName || ''; // Default to an empty string if null or undefined
+            const firstNameB = b.firstName || ''; // Default to an empty string if null or undefined
+            return firstNameA.localeCompare(firstNameB);
+          }
+        }
+      });
+
       return this.state && this.state.expanded ? (
         <StyledTableRow>
           <StyledTableCell colSpan={4}>

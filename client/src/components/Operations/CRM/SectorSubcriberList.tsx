@@ -110,6 +110,19 @@ const SectorSubcriberList = ({
     subscriberList: Array<SubscriptionSchedule> | null,
     sectorName: string
   ) => {
+    const sortedSubscriberList = subscriberList
+      ? [...subscriberList].sort((a, b) => {
+        const firstNameA = a.user ? a.user.firstName || '' : '';
+        const lastNameA = a.user ? a.user.lastName || '' : '';
+        const firstNameB = b.user ? b.user.firstName || '' : '';
+        const lastNameB = b.user ? b.user.lastName || '' : '';
+
+        const fullNameA = `${firstNameA} ${lastNameA}`;
+        const fullNameB = `${firstNameB} ${lastNameB}`;
+
+        return fullNameA.localeCompare(fullNameB);
+      })
+      : [];
     const extractPackageColor = (
       personalization: TiffinPersonalization | null
     ) => {
@@ -121,8 +134,8 @@ const SectorSubcriberList = ({
       } else {
         selectedPackagePreference =
           personalization !== null &&
-          personalization.noRice &&
-          personalization.noRice.activate === true
+            personalization.noRice &&
+            personalization.noRice.activate === true
             ? (selectedPackagePreference = PackageColor[PackageColor.White])
             : selectedPackagePreference;
       }
@@ -252,46 +265,46 @@ const SectorSubcriberList = ({
           susbcriber.optedSchedule &&
           Object.keys(susbcriber.optedSchedule).length > 0
           ? Object.keys(susbcriber.optedSchedule).map((day: any, index) => {
-              return (
-                <TableRow key={index}>
-                  <TableCell component="th" scope="row">
-                    {day}
-                  </TableCell>
-                  <TableCell align="right">
-                    <Select
-                      name={day}
-                      value={
-                        susbcriber.optedSchedule[day] ||
+            return (
+              <TableRow key={index}>
+                <TableCell component="th" scope="row">
+                  {day}
+                </TableCell>
+                <TableCell align="right">
+                  <Select
+                    name={day}
+                    value={
+                      susbcriber.optedSchedule[day] ||
                         susbcriber.optedSchedule[day] === 0
-                          ? susbcriber.optedSchedule[day]
-                          : ''
-                      }
-                      onChange={event =>
-                        handleSubscriptionDayCountChange(event)
-                      }
-                      input={<Input id={day} />}
-                      MenuProps={MenuProps}
-                    >
-                      <MenuItem key="0" value="0">
-                        No Thali
-                      </MenuItem>
-                      <MenuItem key="1" value="1">
-                        1{' '}
-                      </MenuItem>
-                      <MenuItem key="2" value="2">
-                        2{' '}
-                      </MenuItem>
-                      <MenuItem key="3" value="3">
-                        3{' '}
-                      </MenuItem>
-                      <MenuItem key="4" value="4">
-                        4{' '}
-                      </MenuItem>
-                    </Select>
-                  </TableCell>
-                </TableRow>
-              );
-            })
+                        ? susbcriber.optedSchedule[day]
+                        : ''
+                    }
+                    onChange={event =>
+                      handleSubscriptionDayCountChange(event)
+                    }
+                    input={<Input id={day} />}
+                    MenuProps={MenuProps}
+                  >
+                    <MenuItem key="0" value="0">
+                      No Thali
+                    </MenuItem>
+                    <MenuItem key="1" value="1">
+                      1{' '}
+                    </MenuItem>
+                    <MenuItem key="2" value="2">
+                      2{' '}
+                    </MenuItem>
+                    <MenuItem key="3" value="3">
+                      3{' '}
+                    </MenuItem>
+                    <MenuItem key="4" value="4">
+                      4{' '}
+                    </MenuItem>
+                  </Select>
+                </TableCell>
+              </TableRow>
+            );
+          })
           : null;
       };
 
@@ -382,8 +395,8 @@ const SectorSubcriberList = ({
       );
     };
     return (
-      subscriberList &&
-      subscriberList
+      sortedSubscriberList &&
+      sortedSubscriberList
         .filter(
           (susbcriber: SubscriptionSchedule) =>
             susbcriber && susbcriber.user && susbcriber.zone === sectorName
@@ -418,11 +431,11 @@ const SectorSubcriberList = ({
                     <Typography variant="overline" display="block">
                       {susbcriber &&
                         `${susbcriber.user &&
-                          susbcriber.user.primaryAddress.city} - 
+                        susbcriber.user.primaryAddress.city} - 
                              ${susbcriber.user &&
-                               susbcriber.user.primaryAddress.province}-
+                        susbcriber.user.primaryAddress.province}-
                              ${susbcriber.user &&
-                               susbcriber.user.primaryAddress.country} `}
+                        susbcriber.user.primaryAddress.country} `}
                     </Typography>
                     <Typography variant="overline" display="block">
                       {susbcriber &&

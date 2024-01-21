@@ -110,6 +110,19 @@ const SectorSubcriberList = ({
     subscriberList: Array<SubscriptionSchedule> | null,
     sectorName: string
   ) => {
+    const sortedSubscriberList = subscriberList
+      ? [...subscriberList].sort((a, b) => {
+          const firstNameA = a.user ? a.user.firstName || '' : '';
+          const lastNameA = a.user ? a.user.lastName || '' : '';
+          const firstNameB = b.user ? b.user.firstName || '' : '';
+          const lastNameB = b.user ? b.user.lastName || '' : '';
+
+          const fullNameA = `${firstNameA} ${lastNameA}`;
+          const fullNameB = `${firstNameB} ${lastNameB}`;
+
+          return fullNameA.localeCompare(fullNameB);
+        })
+      : [];
     const extractPackageColor = (
       personalization: TiffinPersonalization | null
     ) => {
@@ -382,8 +395,8 @@ const SectorSubcriberList = ({
       );
     };
     return (
-      subscriberList &&
-      subscriberList
+      sortedSubscriberList &&
+      sortedSubscriberList
         .filter(
           (susbcriber: SubscriptionSchedule) =>
             susbcriber && susbcriber.user && susbcriber.zone === sectorName

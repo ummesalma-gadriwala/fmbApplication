@@ -145,16 +145,21 @@ class PrintLabelSectorWise extends React.Component<any, any> {
 
     const generatePrintableLabels = overrideDetails => {
       overrideDetails = overrideDetails.sort((a, b) => {
-        // First, sort by packageType
-        if (a.packageType > b.packageType) {
-          return 1;
-        } else if (b.packageType > a.packageType) {
-          return -1;
+        const packageOrder = { Single: 0, Medium: 1, Regular: 2 };
+        // For REGULAR and ADD types, sort by packageType first
+        const packageComparison = packageOrder[a.packageType] - packageOrder[b.packageType];
+
+        if (packageComparison !== 0) {
+          return packageComparison;
         } else {
-          // If packageType is the same, sort alphabetically by FirstName
-          const firstNameA = a.firstName || ''; // Default to an empty string if null or undefined
-          const firstNameB = b.firstName || ''; // Default to an empty string if null or undefined
-          return firstNameA.localeCompare(firstNameB);
+          // If packageType is the same, sort by firstName and then lastName
+          const nameComparison = (a.firstName || '').localeCompare(b.firstName || '');
+
+          if (nameComparison !== 0) {
+            return nameComparison;
+          } else {
+            return (a.lastName || '').localeCompare(b.lastName || '');
+          }
         }
       });
 

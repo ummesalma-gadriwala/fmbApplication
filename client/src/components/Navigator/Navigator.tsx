@@ -141,15 +141,15 @@ class Navigator extends Component<any, any> {
                     aria-label="Customer Relations"
                   />
                 </IconButton>
-                <IconButton
-                  color="inherit"
-                  aria-label="Logoff Button"
-                  onClick={() => logOff()}
-                >
-                  <BlockIcon />
-                </IconButton>
               </div>
             )}
+            <IconButton
+              color="inherit"
+              aria-label="Logoff Button"
+              onClick={() => logOff()}
+            >
+              <BlockIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </div>

@@ -27,14 +27,30 @@ export default function(state: CRMOperations = INITIAL_STATE, action: any) {
         }
         return subscriber;
       })
+    //case CRM_OPERATIONS_UPDATE_SUBSCRIPTION_SCHEDULE:
+    //  let subscriptionSchedule = action.payload.subscriptionSchedule as SubscriptionSchedule ;
+    //  updatedSubscribers = state.subscribers &&  state.subscribers.map( (subscriber:SubscriptionSchedule) => {
+    //    if(subscriber.subscriberId === subscriptionSchedule.subscriberId) {
+    //      subscriber = subscriptionSchedule
+    //    }
+    //    return subscriber;
+    //  })
     case CRM_OPERATIONS_UPDATE_SUBSCRIPTION_SCHEDULE:
-      let subscriptionSchedule = action.payload.subscriptionSchedule as SubscriptionSchedule ;
-      updatedSubscribers = state.subscribers &&  state.subscribers.map( (subscriber:SubscriptionSchedule) => {
-        if(subscriber.subscriberId === subscriptionSchedule.subscriberId) {
-          subscriber = subscriptionSchedule
-        }
-        return subscriber;
-      })
+      const subscriptionSchedule = action.payload.subscriptionSchedule as SubscriptionSchedule;
+
+      if (subscriptionSchedule && subscriptionSchedule.subscriberId) {
+        const updatedSubscribers = state.subscribers && state.subscribers.map((subscriber: SubscriptionSchedule) => {
+          if (subscriber && subscriber.subscriberId === subscriptionSchedule.subscriberId) {
+            return { ...subscriber, ...subscriptionSchedule };
+          }
+          return subscriber;
+        });
+
+        return { ...state, subscribers: updatedSubscribers };
+      } else {
+        console.error("Invalid subscriptionSchedule:", subscriptionSchedule);
+        return state; // Return the current state in case of an error
+      }
       
       
     return {...state, "subscribers":updatedSubscribers};

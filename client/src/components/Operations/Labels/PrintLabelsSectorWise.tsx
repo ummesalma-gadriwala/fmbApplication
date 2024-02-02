@@ -222,7 +222,8 @@ class PrintLabelSectorWise extends React.Component<any, any> {
     };
 
     const handlePrint = overrideDetails => {
-      const printableLabels = generatePrintableLabels(overrideDetails);
+      const printableLabels =
+        generatePrintableLabels(overrideDetails);
       const printWindow = window.open('', '_blank');
       if (printWindow) {
         printWindow.document.open();
@@ -242,13 +243,13 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                 }
               } 
               .print-div {
-                width: 100mm; /* Width is now the height in landscape */
-                height: 60mm; /* Height is now the width in landscape */
+                width: 114mm; /* Width is now the height in landscape */
+                height: 81mm; /* Height is now the width in landscape */
                 page-break-after: always;
                 margin: 0;
                 padding: 10px; /* Padding added on all sides */
-                transform: rotate(-90deg) translateX(-100%);
-                transform-origin: top left;
+                // transform: rotate(-90deg) translateX(-100%);
+                // transform-origin: top left;
               }
               .print-div table {
                 width: 100%; /* Adjusting table width considering padding */

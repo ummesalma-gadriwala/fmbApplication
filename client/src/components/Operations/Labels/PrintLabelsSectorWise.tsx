@@ -250,8 +250,8 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                 page-break-after: always;
                 margin: 0;
                 padding: 10px; /* Padding added on all sides */
-                transform: rotate(-90deg) translateX(-100%);
-                transform-origin: top left;
+                //transform: rotate(-90deg) translateX(-100%);
+                //transform-origin: top left;
               }
               .print-div table {
                 width: 100%; /* Adjusting table width considering padding */

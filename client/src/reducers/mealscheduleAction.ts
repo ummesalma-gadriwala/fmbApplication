@@ -81,11 +81,16 @@ export const addOverrideSchedule = (
         type: ADD_SUBSCRIBER_OVERRIDESCHEDULE,
         payload: overrideSchedule
       });
-      dispatch({
-        type: CRM_OPERATIONS_CHANGE_MEAL_COUNT,
-        payload: { subscriberId, overrideSchedule }
-      });
-      //getSubscriptionSchedule(subscriberId, null, null);
+      if (subscriberId) {
+        dispatch({
+          type: CRM_OPERATIONS_CHANGE_MEAL_COUNT,
+          payload: { subscriberId, overrideSchedule }
+        });
+        //getSubscriptionSchedule(subscriberId, null, null);
+      } else {
+        // Handle the case where subscriberId is undefined or null
+        console.error("Invalid subscriberId:", subscriberId);
+      }
     }
     workFlowProcessor &&
       workFlowProcessor(

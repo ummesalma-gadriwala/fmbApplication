@@ -76,6 +76,7 @@ const AddTiffin = props => {
           })
       );
       isValidDate = overlapDate ? false : true;
+      setErrorState('Success');
     }
     setIsValid(() => isValidDate);
     if (isValidDate) {

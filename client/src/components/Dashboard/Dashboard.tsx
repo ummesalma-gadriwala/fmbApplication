@@ -134,27 +134,7 @@ class Dashboard extends Component<any, DashBoardState> {
               <div className="Dashboard-container">
                 <div className="Dashboard-card-container">
                   <div className="important-notice-container">
-                    <div className="Dashboard-button-row">
-                      <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="secondary"
-                        onClick={() =>
-                          window.open(
-                            'https://forms.gle/4vuYrsgNayLYRwxC7',
-                            '_blank'
-                          )
-                        }
-                      >
-                        <NewReleasesRoundedIcon />
-                        <span>
-                          &nbsp; &nbsp;Click here to proceed with FMB Renewal
-                          For 1445-46H&nbsp; &nbsp;
-                        </span>
-                        <NewReleasesRoundedIcon />
-                      </Button>
-                    </div>
+                    <React.Fragment></React.Fragment>
                   </div>
                   <Card className="Card-container">
                     <CardContent>

@@ -245,8 +245,8 @@ class PrintLabelSectorWise extends React.Component<any, any> {
                 }
               } 
               .print-div {
-                width: 100mm; /* Width is now the height in landscape */
-                height: 60mm; /* Height is now the width in landscape */
+                width: 114mm; /* Width is now the height in landscape */
+                height: 81mm; /* Height is now the width in landscape */
                 page-break-after: always;
                 margin: 0;
                 padding: 10px; /* Padding added on all sides */

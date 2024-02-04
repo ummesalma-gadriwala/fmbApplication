@@ -81,7 +81,7 @@ export const addOverrideSchedule = (
         type: ADD_SUBSCRIBER_OVERRIDESCHEDULE,
         payload: overrideSchedule
       });
-      if (subscriberId) {
+      if (subscriberId) { // If update is from CRM subscriberId will not be present
         dispatch({
           type: CRM_OPERATIONS_CHANGE_MEAL_COUNT,
           payload: { subscriberId, overrideSchedule }
